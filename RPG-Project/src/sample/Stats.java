@@ -62,7 +62,7 @@ public class Stats {
         ArrayList<Integer> list = new ArrayList<>();
         // Then, add each roll to the list
         for (int i=0; i<4; i++) {
-            list.add(r.nextInt(1, 7));
+            list.add(r.nextInt(7));
         }
         // Finally, sort the list in ascending order,
         // and reverse it to get a descending list
