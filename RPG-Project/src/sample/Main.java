@@ -3,15 +3,44 @@ package sample;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    protected Controller controller;
+
+    protected CombatModel combatModel;
+    protected CombatView combatView;
+
+    //test classes
+    protected CombatTests combatTests;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-        primaryStage.setTitle("Hello World");
+        controller = new Controller();
+        combatModel = new CombatModel();
+        combatView = new CombatView();
+
+        combatView.setModel(combatModel);
+        controller.setModels(combatModel);
+
+        combatView.setController(controller);
+
+        combatModel.addSubscriber(combatView);
+
+        //test classes
+        combatTests = new CombatTests();
+        combatTests.setCombatModel(combatModel);
+        combatTests.runTests();
+
+
         HBox root = new HBox();
-        primaryStage.setScene(new Scene(root, 300, 275));
+        Scene scene = new Scene(combatView, 800, 800);
+        scene.setFill(Color.BLACK);
+
+        primaryStage.setTitle("Hello World");
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
