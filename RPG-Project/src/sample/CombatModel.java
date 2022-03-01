@@ -6,18 +6,10 @@ public class CombatModel {
 
     ArrayList<CombatSubscriber> subs = new ArrayList<>();
 
-    //uncomment once character generator is implemented
-    /**
-     protected Character player;
-     protected Character enemy;
-     */
+    protected Character player;
+    protected Character enemy;
 
-    //temp variables which should be deleted once character generator is implemented
-    public int health;
-    public int damage;
-    public int dex;
-    public int strength;
-
+    protected CombatScenario scenario;
 
     public int phase;
     public boolean playerTurn;
@@ -27,6 +19,19 @@ public class CombatModel {
 
     public CombatModel(){
         combatDialogue = new ArrayList<String>();
+    }
+
+    /**
+     * When the player triggers a combat scenario, then the traversal system will call this method, which triggers combat
+     * NOTE: this method is incomplete
+     * @param s: a new combat scenario
+     */
+    public void setCombatScenario(CombatScenario s){
+        scenario = s;
+
+        player = scenario.player;
+        enemy = scenario.enemy;
+
         combatDialogue.add("A wild Charizard has appeared!");
         combatDialogue.add("It is the players turn!");
         combatDialogue.add("It is the enemies turn!");
@@ -38,19 +43,19 @@ public class CombatModel {
      * subtract damage from character health
      */
     public void attack(){
-        // remove this line
-        health -= (damage * strength);
-
-        // uncomment code when character generator is implemented
-        /**
         if(playerTurn){
-            enemy.health -= (player.damage * player.strength);
+            //player attacks
+            int newHealth = enemy.characterStats.getHealth() - player.characterStats.getStr();
+            enemy.characterStats.setHealth(newHealth);
+            playerTurn = false;
         }else{
-            player.health -= (enemy.damage * enemy.strength);
+            //enemy attacks
+            int newHealth = player.characterStats.getHealth() - enemy.characterStats.getStr();
+            player.characterStats.setHealth(newHealth);
+            enemyTurn = false;
         }
-         */
+
         phase += 1;
-        playerTurn = false;
         notifySubscribers();
     }
 
@@ -68,12 +73,11 @@ public class CombatModel {
      * calls playerPhase() if player dex is higher, enemyPhase() if not
      */
     public void whoGoesFirst(){
-        /**
-        if(player.dexterity > enemy.dexterity){
+        if(player.characterStats.Dexterity > enemy.characterStats.Dexterity){   //player's turn
             playerTurn = true;
-        }else if (player.dexterity < enemy.dexterity){
+        }else if (player.characterStats.Dexterity < enemy.characterStats.Dexterity){    //enemies turn
             enemyTurn = true;
-        }else{
+        }else{  // playerDex == enemyDex, so roll dice
             int decision = (int) (Math.random() * 101 + 1);
 
             if(decision >= 50){
@@ -85,7 +89,6 @@ public class CombatModel {
 
             }
         }
-        */
     }
 
     /**
@@ -184,5 +187,71 @@ public class CombatModel {
         for(CombatSubscriber sub : subs){
             sub.modelChanged();
         }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        CombatModel model = new CombatModel();
+
+        //set combat scenario test #1
+        model.setCombatScenario(new CombatScenario(new Character(), new Character()));
+
+
+        //nextPhase() test #1
+        model.nextPhase();
+        int expected = 1;
+        int result = model.phase;
+        if(expected != result){
+            System.out.println("nextPhase() test #1 failed! expected = " + expected + ", result = " + result);
+        }
+
+        //nextPhase() test #2
+        for (int i = 0; i < 10; i++){
+            model.nextPhase();
+        }
+
+        expected = 1;
+        result = model.phase;
+        if(expected != result){
+            System.out.println("nextPhase() test #1 failed! expected = " + expected + ", result = " + result);
+        }
+
+        //whoGoesFirst() test #1
+        model.whoGoesFirst();
+        expected = 1;
+        if(model.playerTurn){
+            result = 1;
+        }else if(model.enemyTurn){
+            result = 0;
+        }else{
+            result = -1;
+        }
+        if(result == 0){
+            System.out.println("whoGoesFirst() test #1 failed! expected = playerTurn, result = enemyTurn");
+        }else if(result == -1){
+            System.out.println("whoGoesFirst() test #1 failed! expected = playerTurn, result = nobodies turn");
+        }
+
+        //typeOutDialogue() test #1
+        //model.typeOutDialogue(model.phase);
+
+        //the following tests should be uncommented once character generator is implemented
+        /**
+         //create enemy test #1
+         model.createEnemy();
+         Character characterResult = model.enemy;
+         if(characterResult == null){
+         System.out.println("createEnemy() test #1 failed! result = " + result);
+         }
+
+
+         //attack() test #1
+         model.attack(true);
+
+         expected = 50;
+         result = model.enemy.health;
+         if(expected != result){
+         System.out.println("test #1 failed! expected = " + expected + ", result = " + result);
+         }
+         */
     }
 }

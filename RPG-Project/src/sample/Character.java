@@ -32,8 +32,4 @@ public class Character {
         return null;
     }
 
-
-
-
-
 }

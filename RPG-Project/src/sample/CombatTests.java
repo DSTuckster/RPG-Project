@@ -13,6 +13,10 @@ public class CombatTests {
     }
 
     public void runTests() throws InterruptedException {
+        //set combat scenario test #1
+        model.setCombatScenario(new CombatScenario(new Character(), new Character()));
+
+
         //nextPhase() test #1
         model.nextPhase();
         int expected = 1;

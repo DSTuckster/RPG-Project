@@ -4,12 +4,13 @@ import java.util.Collections;
 import java.util.Random;
 
 public class Stats {
-    private int Strength;
-    private int Dexterity;
-    private int Constitution;
-    private int Wisdom;
-    private int Intelligence;
-    private int Charisma;
+    protected int health;
+    protected int Strength;
+    protected int Dexterity;
+    protected int Constitution;
+    protected int Wisdom;
+    protected int Intelligence;
+    protected int Charisma;
 
     private Random r;
 
@@ -28,29 +29,33 @@ public class Stats {
         Charisma = roll4toss1();
     }
 
+    // health get & set methods
+    public int getHealth(){ return health; }
+    public void setHealth(int newHealth){ health = newHealth; }
+
     // Strength get & set methods
-    private int getStr() { return Strength; }
-    private void setStr(int newStrength) { Strength = newStrength; }
+    public int getStr() { return Strength; }
+    public void setStr(int newStrength) { Strength = newStrength; }
 
     // Dexterity get & set methods
-    private int getDex() { return Dexterity; }
-    private void setDex(int newDexterity) { Dexterity = newDexterity; }
+    public int getDex() { return Dexterity; }
+    public void setDex(int newDexterity) { Dexterity = newDexterity; }
 
     // Constitution get & set methods
-    private int getCon() { return Constitution; }
-    private void setCon(int newConstitution) { Constitution = newConstitution; }
+    public int getCon() { return Constitution; }
+    public void setCon(int newConstitution) { Constitution = newConstitution; }
 
     // Wisdom get & set methods
-    private int getWis() { return Wisdom; }
-    private void setWis(int newWisdom) { Wisdom = newWisdom; }
+    public int getWis() { return Wisdom; }
+    public void setWis(int newWisdom) { Wisdom = newWisdom; }
 
     // Intelligence get & set methods
-    private int getInt() { return Intelligence; }
-    private void setInt(int newIntelligence) { Intelligence = newIntelligence; }
+    public int getInt() { return Intelligence; }
+    public void setInt(int newIntelligence) { Intelligence = newIntelligence; }
 
     // Charisma get & set methods
-    private int getCha() { return Charisma; }
-    private void setCha(int newCharisma) { Charisma = newCharisma; }
+    public int getCha() { return Charisma; }
+    public void setCha(int newCharisma) { Charisma = newCharisma; }
 
     /**
      * roll4Toss1()

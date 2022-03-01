@@ -13,9 +13,6 @@ public class Main extends Application {
     protected CombatModel combatModel;
     protected CombatView combatView;
 
-    //test classes
-    protected CombatTests combatTests;
-
     @Override
     public void start(Stage primaryStage) throws Exception{
         controller = new Controller();
@@ -29,10 +26,8 @@ public class Main extends Application {
 
         combatModel.addSubscriber(combatView);
 
-        //test classes
-        combatTests = new CombatTests();
-        combatTests.setCombatModel(combatModel);
-        combatTests.runTests();
+        //NOTE: This is for testing the view, delete it later
+        combatModel.setCombatScenario(new CombatScenario(new Character(), new Character()));
 
 
         HBox root = new HBox();

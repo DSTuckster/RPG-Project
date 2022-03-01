@@ -24,7 +24,7 @@ public class CombatView extends Pane implements CombatSubscriber{
         root.setPrefHeight(300);
 
         phaseText = new Text("Phase 0");
-        phaseText.setFill(Color.WHITE);
+        phaseText.setFill(Color.BLACK);
 
         attack = new Button("Attack");
         attack.setDisable(true);
@@ -32,7 +32,6 @@ public class CombatView extends Pane implements CombatSubscriber{
 
         VBox stack = new VBox();
         dialogueBox = new HBox();
-        dialogueBox.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
         stack.getChildren().addAll(phaseText, dialogueBox);
         dialogueBox.getChildren().addAll(attack);
