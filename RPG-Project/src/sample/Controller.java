@@ -34,7 +34,7 @@ public class Controller {
     }
 
     public void nextPhase(MouseEvent e) {
-        if(!combatModel.playerTurn){
+        if(combatModel.phase != combatModel.playerTurnPhase){
             try {
                 combatModel.nextPhase();
                 combatModel.typeOutDialogue(0, combatText);

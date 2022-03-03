@@ -26,7 +26,8 @@ public class Main extends Application {
         g = new gameModel();
         gView = new gameView();
 
-        g.startThread();
+        //enable this line if you are running the traversal mechanic
+        //g.startThread();
 
         gView.setController(controller);
 
@@ -37,12 +38,15 @@ public class Main extends Application {
 
         combatModel.addSubscriber(combatView);
 
-        //NOTE: This is for testing the view, delete it later
+        //NOTE: This is for testing the combatView, delete it later
         combatModel.setCombatScenario(new CombatScenario(new Character(), new Character()));
 
 
         HBox root = new HBox();
-        Scene scene = new Scene(gView, 800, 800);
+
+        //Change gView to combatView (or vice versa). If you want to see combat
+            //we will have to find a way to do scene transitions
+        Scene scene = new Scene(combatView, 800, 800);
         scene.setFill(Color.BLACK);
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
