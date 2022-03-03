@@ -26,6 +26,7 @@ public class gameView extends StackPane implements GameSubscriber {
         controller = c;
     }
 
+
     public void modelChanged(){
 
     }
