@@ -38,7 +38,7 @@ public class Main extends Application {
         combatModel.addSubscriber(combatView);
 
         //NOTE: This is for testing the view, delete it later
-        //combatModel.setCombatScenario(new CombatScenario(new Character(), new Character()));
+        combatModel.setCombatScenario(new CombatScenario(new Character(), new Character()));
 
 
         HBox root = new HBox();
@@ -49,7 +49,6 @@ public class Main extends Application {
             public void handle(KeyEvent event) {
                 switch (event.getCode()) {
                     case UP:
-                        System.out.println("yes");
                         controller.moveUp();
                         break;
                     case DOWN:

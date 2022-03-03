@@ -12,7 +12,7 @@ import javafx.scene.shape.Rectangle;
 
 
 
-public class gameView extends StackPane {
+public class gameView extends StackPane implements GameSubscriber {
     protected Controller controller;
 
     public gameView(){
@@ -24,6 +24,10 @@ public class gameView extends StackPane {
 
     public void setController(Controller c){
         controller = c;
+    }
+
+    public void modelChanged(){
+
     }
 }
 

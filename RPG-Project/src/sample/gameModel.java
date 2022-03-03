@@ -1,11 +1,15 @@
 package sample;
 
+import java.util.ArrayList;
+
 public class gameModel implements Runnable{
 
     Thread thread;
     int playerX=100,playerY=100,playerSpeed=4;
     protected final int FPS = 60;
     double drawInterval = 1000000000/FPS;
+
+    ArrayList<GameSubscriber> subs = new ArrayList<>();
 
 
 
@@ -57,6 +61,14 @@ public class gameModel implements Runnable{
 
     public void update() {
         System.out.println(getPlayerX()+ " " +getPlayerY());
+
+    }
+
+    public void addSubscriber(){
+
+    }
+
+    public void notifySubscribers(){
 
     }
 }
