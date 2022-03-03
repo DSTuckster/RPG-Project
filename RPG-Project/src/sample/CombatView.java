@@ -23,7 +23,7 @@ public class CombatView extends Pane implements CombatSubscriber{
         root.setPrefWidth(275);
         root.setPrefHeight(300);
 
-        phaseText = new Text("Phase 0");
+        phaseText = new Text("MORTAL KOMBAT!!! Fight!");
         phaseText.setFill(Color.BLACK);
 
         attack = new Button("Attack");
@@ -53,10 +53,11 @@ public class CombatView extends Pane implements CombatSubscriber{
     public void setController(Controller controller){
         root.setOnMousePressed(controller::nextPhase);
         attack.setOnAction(controller::handleAttack);
+        controller.combatText = phaseText;
     }
 
     public void modelChanged(){
-        phaseText.setText("Phase " + combatModel.phase);
+        phaseText.setText(combatModel.combatDialogue.get(combatModel.phase));
         if(combatModel.playerTurn){
             attack.setDisable(false);
         }else{

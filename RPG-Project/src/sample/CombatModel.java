@@ -1,6 +1,10 @@
 package sample;
 
+import javafx.scene.text.Text;
+
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.concurrent.TimeUnit;
 
 public class CombatModel {
 
@@ -12,13 +16,14 @@ public class CombatModel {
     protected CombatScenario scenario;
 
     public int phase;
+    public int playerTurnPhase;
     public boolean playerTurn;
     public boolean enemyTurn;
 
-    public ArrayList<String> combatDialogue;
+    public Hashtable<Integer, String> combatDialogue;
 
     public CombatModel(){
-        combatDialogue = new ArrayList<String>();
+        combatDialogue = new Hashtable<>();
     }
 
     /**
@@ -32,11 +37,8 @@ public class CombatModel {
         player = scenario.player;
         enemy = scenario.enemy;
 
-        combatDialogue.add("A wild Charizard has appeared!");
-        combatDialogue.add("It is the players turn!");
-        combatDialogue.add("It is the enemies turn!");
-        combatDialogue.add("The player did x damage");
-        combatDialogue.add("The enemy did x damage");
+        combatDialogue.put(0 ,"A wild Charizard has appeared!");
+        setCombatDialogue();
     }
 
     /**
@@ -69,14 +71,17 @@ public class CombatModel {
     }
 
     /**
+     * NOTE: something is wrong with this method, not sure what - Dylan
      * use dexterity stat to find who goes first
      * calls playerPhase() if player dex is higher, enemyPhase() if not
      */
     public void whoGoesFirst(){
-        if(player.characterStats.Dexterity > enemy.characterStats.Dexterity){   //player's turn
+        if(player.characterStats.getDex() > enemy.characterStats.getDex()){   //player's turn
             playerTurn = true;
-        }else if (player.characterStats.Dexterity < enemy.characterStats.Dexterity){    //enemies turn
+            enemyTurn = false;
+        }else if (player.characterStats.getDex() < enemy.characterStats.getDex()){    //enemies turn
             enemyTurn = true;
+            playerTurn = false;
         }else{  // playerDex == enemyDex, so roll dice
             int decision = (int) (Math.random() * 101 + 1);
 
@@ -86,25 +91,45 @@ public class CombatModel {
             }else{
                 enemyTurn = true;
                 playerTurn = false;
-
             }
+        }
+        setCombatDialogue();
+    }
+
+    public void setCombatDialogue(){
+        if(playerTurn){
+            playerTurnPhase = 1;
+            combatDialogue.put(1, "It is the players turn!");
+            combatDialogue.put(2, "The player did x damage");
+            combatDialogue.put(3, "It is the enemies turn!");
+            combatDialogue.put(4, "The enemy did x damage");
+        }else{
+            playerTurnPhase = 2;
+            combatDialogue.put(1, "It is the enemies turn!");
+            combatDialogue.put(2, "The enemy did x damage");
+            combatDialogue.put(3, "It is the players turn!");
+            combatDialogue.put(4, "The player did x damage");
         }
     }
 
     /**
      * type out dialogue automatically one letter at a time
      * (i.e. pokemon/final fantasy)
+     * NOTE: can't get typeOutDialogue to work for some reason, I will come back to it later - Dylan
      */
-    public void typeOutDialogue(int index) throws InterruptedException {
-        for(int i = 0; i < combatDialogue.get(index).length(); i++){
+    public void typeOutDialogue(int index, Text text) throws InterruptedException {
+        text.setText("");
+        for(int i = 0; i < combatDialogue.get(phase).length(); i++){
+            /**
             try{
-                Thread.sleep((int) (Math.random() * 175 + 100));
+                TimeUnit.SECONDS.sleep(1);
             }catch(InterruptedException ex){
                 Thread.currentThread().interrupt();
             }
+             */
 
             // This line will need to be modified when the UI is complete
-            System.out.print(combatDialogue.get(index).charAt(i));
+            text.setText(text.getText() + combatDialogue.get(phase).charAt(i));
         }
     }
 
@@ -133,7 +158,7 @@ public class CombatModel {
      * enemies turn
      */
     public void enemyPhase(){
-
+        return;
     }
 
     /**
@@ -148,10 +173,10 @@ public class CombatModel {
      * NOTE: this method is likely to change
      */
     public void nextPhase() throws InterruptedException {
-        if(phase >= 10){
+        if(phase >= 4){
             phase = 0;
         }
-        if(phase == 3){
+        if(phase == playerTurnPhase){
             playerTurn = true;
             playerPhase();
         }else{
@@ -168,7 +193,7 @@ public class CombatModel {
 
     //end combat
     public void endCombat(){
-
+        combatDialogue.clear();
     }
 
     /**
@@ -217,17 +242,20 @@ public class CombatModel {
 
         //whoGoesFirst() test #1
         model.whoGoesFirst();
-        expected = 1;
-        if(model.playerTurn){
+
+        if(model.player.characterStats.getDex() > model.enemy.characterStats.getDex() && model.playerTurn){
             result = 1;
-        }else if(model.enemyTurn){
+        }else if(model.player.characterStats.getDex() < model.enemy.characterStats.getDex() && model.enemyTurn){
             result = 0;
         }else{
             result = -1;
         }
-        if(result == 0){
+        if(result == 0 && model.playerTurn){
             System.out.println("whoGoesFirst() test #1 failed! expected = playerTurn, result = enemyTurn");
-        }else if(result == -1){
+        }else if(result == 1 && model.enemyTurn){
+            System.out.println("whoGoesFirst() test #1 failed! expected = enemyTurn, result = PlayerTurn");
+        }
+        else if(result == -1){
             System.out.println("whoGoesFirst() test #1 failed! expected = playerTurn, result = nobodies turn");
         }
 

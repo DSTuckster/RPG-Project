@@ -9,9 +9,6 @@ public class Controller  {
         g = new gameModel();
         g.startThread();
         Application.launch(gameView.class);
-
-
-
     }
    public void moveUp(){
             g.setPlayerY(g.getPlayerY()-g.getPlayerSpeed());
