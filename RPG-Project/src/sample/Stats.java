@@ -4,7 +4,9 @@ import java.util.Collections;
 import java.util.Random;
 
 public class Stats {
-    protected int health;
+    protected int CharacterLevel;
+    protected int Health;
+
     protected int Strength;
     protected int Dexterity;
     protected int Constitution;
@@ -17,21 +19,31 @@ public class Stats {
     public Stats() {
         r = new Random();
 
+        CharacterLevel = 1;
+
         // In 'Dungeons & Dragons 5e', the standard method of rolling stats is "Roll 4d6, drop the lowest"
         // The sum of those values is then assigned as the stat value
         // To simulate this, we will 'roll' 4 dice using the Random package, then take the top value to use as a stat
-
         Strength = roll4toss1();
         Dexterity = roll4toss1();
         Constitution = roll4toss1();
         Wisdom = roll4toss1();
         Intelligence = roll4toss1();
         Charisma = roll4toss1();
+
+        // Health is calculated from the CharacterLevel as 'Hit Dice'
+        // For instance, a character at level 5 would have "5d12" max hp, or 60hp
+        Health = CharacterLevel * 12;
+
     }
 
-    // health get & set methods
-    public int getHealth(){ return health; }
-    public void setHealth(int newHealth){ health = newHealth; }
+    // TODO: levelUp()
+    //          - Increment CharacterLevel
+    //          - Increase max Health (+ 12)
+
+    // Health get & set methods
+    public int getHealth(){ return Health; }
+    public void setHealth(int newHealth){ Health = newHealth; }
 
     // Strength get & set methods
     public int getStr() { return Strength; }

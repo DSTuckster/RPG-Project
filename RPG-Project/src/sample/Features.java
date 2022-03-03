@@ -16,5 +16,9 @@ public class Features {
 
     public Features() {
 
+        // TODO: Write methods to add user inputs to the Presets!
+        //       Paige needs those methods to do the user story:
+        //          "Add new values to pre-existing ones"
+
     }
 }
