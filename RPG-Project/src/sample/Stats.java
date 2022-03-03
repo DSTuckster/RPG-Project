@@ -14,9 +14,6 @@ public class Stats {
 
     private static Random r;
 
-    private boolean Expected;
-    private boolean Result;
-
     public Stats() {
         r = new Random();
 
@@ -61,6 +58,20 @@ public class Stats {
     public void setCha(int newCharisma) { Charisma = newCharisma; }
 
     /**
+     * reRollStats()
+     * A simple function to re-roll stats in one go
+     * Changes all of the stats to a random value between 3 and 18 (inclusive)
+     */
+    protected void reRollStats() {
+        Strength = roll4toss1();
+        Dexterity = roll4toss1();
+        Constitution = roll4toss1();
+        Wisdom = roll4toss1();
+        Intelligence = roll4toss1();
+        Charisma = roll4toss1();
+    }
+
+    /**
      * roll4Toss1()
      *  Simply rolls 4 values from 1-6, returning the top value
      * return: max of 4 d6 rolls
@@ -81,22 +92,51 @@ public class Stats {
         return list.get(0)+list.get(1)+list.get(2);
     }
 
+    // TEST METHODS
+    private boolean TestRollsAccuracy() {
+        return (Strength > 2 && Strength < 19) &&
+                (Dexterity > 2 && Dexterity < 19) &&
+                (Constitution > 2 && Constitution < 19) &&
+                (Wisdom > 2 && Wisdom < 19) &&
+                (Intelligence > 2 && Intelligence < 19) &&
+                (Charisma > 2 && Charisma < 19);
+    }
+
+
+
     public static void main(String[] args) {
         System.out.println("This is the Stats Test Suite\n");
 
         Stats stats = new Stats();
+        Boolean Expected;
+        Boolean Result;
+        Boolean ErrorDetected = false;
 
 
+        // Test 1
+        // Test to see that the values rolled range from 3 to 18 (max and min roll of 3 dice)
+        // Run test 100 times to assert validity of rolls through iteration
+        for (int i = 0; i < 100; i++) {
+            Result = stats.TestRollsAccuracy();
+//            System.out.println(stats.getStr());
+//            System.out.println(stats.getDex());
+//            System.out.println(stats.getCon());
+//            System.out.println(stats.getWis());
+//            System.out.println(stats.getInt());
+//            System.out.println(stats.getCha());
+            if (!Result) {
+                System.out.println("ERROR in Test 1, <Result> != Expected");
+                ErrorDetected = true;
+            }
+            System.out.println();
+        }
+        if (!ErrorDetected) {
+            System.out.println("Roll accuracy tests successful\n");
+        }
 
 
+        // Test 2
 
     }
-
-    private boolean test() {
-        return true;
-    }
-
-    // TODO: Finish the Stats tests
-
 
 }
