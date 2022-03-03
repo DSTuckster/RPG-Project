@@ -98,8 +98,6 @@ public class CombatView extends StackPane implements CombatSubscriber{
 
     public void setController(Controller controller){}
 
-    public void update(){}
-
     @Override
     public void modelChanged() {
 
