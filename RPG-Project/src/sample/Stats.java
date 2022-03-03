@@ -11,7 +11,10 @@ public class Stats {
     private int Intelligence;
     private int Charisma;
 
-    private Random r;
+    private static Random r;
+
+    private boolean Expected;
+    private boolean Result;
 
     public Stats() {
         r = new Random();
@@ -55,7 +58,7 @@ public class Stats {
     /**
      * roll4Toss1()
      *  Simply rolls 4 values from 1-6, returning the top value
-     * @return: max of 4 d6 rolls
+     * return: max of 4 d6 rolls
      */
     private int roll4toss1() {
         // First, initializes an array list to hold the rolls
@@ -69,13 +72,26 @@ public class Stats {
         Collections.sort(list);
         Collections.reverse(list);
 
-        // return sum of the first 3 items (highest values)
+        // return sum of the first 3 items (the highest values)
         return list.get(0)+list.get(1)+list.get(2);
     }
 
     public static void main(String[] args) {
         System.out.println("This is the Stats Test Suite\n");
+
+        Stats stats = new Stats();
+
+
+
+
+
+    }
+
+    private boolean test() {
+        return true;
     }
 
     // TODO: Finish the Stats tests
+
+
 }
