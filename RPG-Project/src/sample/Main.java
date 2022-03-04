@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -58,6 +59,11 @@ public class Main extends Application {
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(scene);
         primaryStage.show();
+        primaryStage.setOnCloseRequest(windowEvent -> {
+            controller.dispose(); // close thread
+            Platform.exit(); // close gui thread
+            System.exit(0); //kill JVM
+        });
 
 
     }
