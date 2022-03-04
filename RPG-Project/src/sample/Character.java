@@ -21,7 +21,7 @@ public class Character {
     }
 
     private Features generateFeatures() {
-        return null;
+        return new Features();
     }
 
     private String generateName() {

@@ -33,13 +33,19 @@ public class Stats {
 
         // Health is calculated from the CharacterLevel as 'Hit Dice'
         // For instance, a character at level 5 would have "5d12" max hp, or 60hp
+        //
+        //      * For now, only adds max value, 12 *
+        //
         Health = CharacterLevel * 12;
 
     }
 
-    // TODO: levelUp()
-    //          - Increment CharacterLevel
-    //          - Increase max Health (+ 12)
+    // Character Level get & set methods
+    public int getCharacterLevel(){ return CharacterLevel; }
+    public void levelUp(){
+        CharacterLevel++;
+        Health = getHealth() + 12;
+    }
 
     // Health get & set methods
     public int getHealth(){ return Health; }
@@ -72,7 +78,7 @@ public class Stats {
     /**
      * reRollStats()
      * A simple function to re-roll stats in one go
-     * Changes all of the stats to a random value between 3 and 18 (inclusive)
+     * Changes all the stats to a random value between 2 and 18 (inclusive)
      */
     protected void reRollStats() {
         Strength = roll4toss1();
@@ -114,8 +120,6 @@ public class Stats {
                 (Charisma > 2 && Charisma < 19);
     }
 
-
-
     public static void main(String[] args) {
         System.out.println("This is the Stats Test Suite\n");
 
@@ -140,7 +144,6 @@ public class Stats {
                 System.out.println("ERROR in Test 1, <Result> != Expected");
                 ErrorDetected = true;
             }
-            System.out.println();
         }
         if (!ErrorDetected) {
             System.out.println("Roll accuracy tests successful\n");
