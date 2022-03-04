@@ -1,68 +1,105 @@
 package sample;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 
-public class CombatView extends Pane implements CombatSubscriber{
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
-    protected CombatModel combatModel;
+public class CombatView extends StackPane implements CombatSubscriber{
+    Image background;
+    Button attack, run, magic, retryYes, retryNo, attackOne, attackTwo, attackThree, attackFour;
+    ProgressBar playerXPBar, playerHealthBar, enemyXPBar, enemyHealthBar;
+    Label Enemy, Player;
 
-    public StackPane root;
-    public HBox dialogueBox;
+    public CombatView() throws FileNotFoundException {
 
-    //combat text
-    public Text phaseText;
-    public Button attack;
+        // Background Picture
+        FileInputStream inputStream = new FileInputStream("background.png");
+        background = new Image(inputStream);
+        ImageView imageView = new ImageView();
+        imageView.setImage(background);
+        imageView.setFitWidth(500);
+        imageView.setFitHeight(500);
 
-    public CombatView(){
-        root = new StackPane();
-        root.setPrefWidth(275);
-        root.setPrefHeight(300);
+        // XP and Health Bars
+        playerXPBar = new ProgressBar(1);
+        playerHealthBar = new ProgressBar(1);
+        playerHealthBar.setStyle("-fx-accent: RED");
+        //enemyXPBar = new ProgressBar();
+        enemyHealthBar = new ProgressBar(1);
+        enemyHealthBar.setStyle("-fx-accent: RED");
 
-        phaseText = new Text("MORTAL KOMBAT!!! Fight!");
-        phaseText.setFill(Color.BLACK);
+        Enemy = new Label("Enemy");
+        Enemy.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 15));
+        Player = new Label("Player");
+        Player.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 15));
+        VBox enemy = new VBox();
+        VBox player = new VBox();
+        enemy.getChildren().addAll(Enemy, enemyHealthBar);
+        player.getChildren().addAll(Player, playerHealthBar, playerXPBar);
+
+        // All Buttons
+        Font font = Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 15);
 
         attack = new Button("Attack");
-        attack.setDisable(true);
-        attack.setAlignment(Pos.CENTER);
+        attack.setFont(font);
+        attack.setStyle("-fx-background-color: WHITE");
 
-        VBox stack = new VBox();
-        dialogueBox = new HBox();
+        run = new Button("Run");
+        run.setFont(font);
+        run.setStyle("-fx-background-color: WHITE");
 
-        stack.getChildren().addAll(phaseText, dialogueBox);
-        dialogueBox.getChildren().addAll(attack);
-        dialogueBox.setPadding(new Insets(100,100,100,100));
-        dialogueBox.setMaxHeight(250);
-        dialogueBox.setMaxWidth(800);
+        magic = new Button("Magic");
+        magic.setFont(font);
+        magic.setStyle("-fx-background-color: WHITE");
 
-        root.getChildren().addAll(stack);
+        retryYes = new Button("Yes");
+        retryNo = new Button("No");
+        attackOne = new Button("Attack One");
+        attackTwo = new Button("Attack Two");
+        attackThree = new Button("Attack Three");
+        attackFour = new Button("Attack Four");
 
-        this.getChildren().add(root);
+        VBox buttons = new VBox();
+        HBox bottom = new HBox();
+        buttons.getChildren().addAll(attack, magic);
+        buttons.setSpacing(25);
+        bottom.getChildren().addAll(buttons, run);
+        bottom.setAlignment(Pos.CENTER);
+        bottom.setSpacing(350);
+
+
+        HBox top = new HBox();
+        top.getChildren().addAll(enemy,player);
+        top.setSpacing(350);
+
+        VBox main = new VBox();
+        main.getChildren().addAll(top, bottom);
+        main.setSpacing(350);
+        main.setPrefSize(500,500);
+
+        this.getChildren().addAll(imageView, main);
+        this.setPrefHeight(500);
+        this.setPrefWidth(500);
     }
 
-    //sets the combat model
-    public void setModel(CombatModel cm){
-        combatModel = cm;
-    }
+    public void setModel(CombatModel model){}
 
-    //sets widget listeners and links with controller
-    public void setController(Controller controller){
-        root.setOnMousePressed(controller::nextPhase);
-        attack.setOnAction(controller::handleAttack);
-        controller.combatText = phaseText;
-    }
+    public void setController(Controller controller){}
 
-    public void modelChanged(){
-        phaseText.setText(combatModel.combatDialogue.get(combatModel.phase));
-        if(combatModel.playerTurn){
-            attack.setDisable(false);
-        }else{
-            attack.setDisable(true);
-        }
-    }
+    @Override
+    public void modelChanged() {
 
+    }
 }

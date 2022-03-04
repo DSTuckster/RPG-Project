@@ -1,9 +1,7 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -18,15 +16,22 @@ public class Main extends Application {
     protected gameModel g;
     protected gameView gView;
 
+    protected int canHeight;
+    protected int canWidth;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
+        canHeight=800;
+        canWidth=800;
         controller = new Controller();
         combatModel = new CombatModel();
         combatView = new CombatView();
         g = new gameModel();
-        gView = new gameView();
+        gView = new gameView(canHeight,canWidth);
 
+        //enable this line if you are running the traversal mechanic
         g.startThread();
+        g.addSubscriber(gView);
 
         gView.setController(controller);
 
@@ -37,36 +42,18 @@ public class Main extends Application {
 
         combatModel.addSubscriber(combatView);
 
-        //NOTE: This is for testing the view, delete it later
+        //NOTE: This is for testing the combatView, delete it later
         combatModel.setCombatScenario(new CombatScenario(new Character(), new Character()));
 
 
         HBox root = new HBox();
+
+        //Change gView to combatView (or vice versa). If you want to see combat
+            //we will have to find a way to do scene transitions
         Scene scene = new Scene(gView, 800, 800);
         scene.setFill(Color.BLACK);
+        scene.setOnKeyPressed(controller::handleKeys);
 
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent event) {
-                switch (event.getCode()) {
-                    case UP:
-                        controller.moveUp();
-                        break;
-                    case DOWN:
-                        controller.moveDown();
-                        break;
-                    case LEFT:
-                        controller.moveLeft();
-                        break;
-                    case RIGHT:
-                        controller.moveRight();
-                        break;
-                    default:
-                        break;
-
-                }
-
-            }
-        });
 
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(scene);

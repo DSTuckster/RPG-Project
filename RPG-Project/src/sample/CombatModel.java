@@ -38,7 +38,7 @@ public class CombatModel {
         enemy = scenario.enemy;
 
         combatDialogue.put(0 ,"A wild Charizard has appeared!");
-        setCombatDialogue();
+        whoGoesFirst();
     }
 
     /**
@@ -71,11 +71,33 @@ public class CombatModel {
     }
 
     /**
+     * go to next phase of battle
+     * NOTE: this method is likely to change
+     */
+    public void nextPhase() throws InterruptedException {
+        System.out.println("yes");
+        if(phase >= 4){
+            phase = 0;
+        }
+        if(phase == playerTurnPhase-1){
+            playerTurn = true;
+            playerPhase();
+        }else{
+            playerTurn = false;
+        }
+        phase += 1;
+        notifySubscribers();
+    }
+
+    /**
      * NOTE: something is wrong with this method, not sure what - Dylan
      * use dexterity stat to find who goes first
      * calls playerPhase() if player dex is higher, enemyPhase() if not
      */
     public void whoGoesFirst(){
+        System.out.println("Player: " + player.characterStats.getDex());
+        System.out.println("Enemy: " + enemy.characterStats.getDex());
+
         if(player.characterStats.getDex() > enemy.characterStats.getDex()){   //player's turn
             playerTurn = true;
             enemyTurn = false;
@@ -93,6 +115,8 @@ public class CombatModel {
                 playerTurn = false;
             }
         }
+        System.out.println(enemyTurn);
+        System.out.println(playerTurn);
         setCombatDialogue();
     }
 
@@ -104,7 +128,7 @@ public class CombatModel {
             combatDialogue.put(3, "It is the enemies turn!");
             combatDialogue.put(4, "The enemy did x damage");
         }else{
-            playerTurnPhase = 2;
+            playerTurnPhase = 3;
             combatDialogue.put(1, "It is the enemies turn!");
             combatDialogue.put(2, "The enemy did x damage");
             combatDialogue.put(3, "It is the players turn!");
@@ -166,24 +190,6 @@ public class CombatModel {
      */
     public void playerPhase(){
         return;
-    }
-
-    /**
-     * go to next phase of battle
-     * NOTE: this method is likely to change
-     */
-    public void nextPhase() throws InterruptedException {
-        if(phase >= 4){
-            phase = 0;
-        }
-        if(phase == playerTurnPhase){
-            playerTurn = true;
-            playerPhase();
-        }else{
-            playerTurn = false;
-        }
-        phase += 1;
-        notifySubscribers();
     }
 
     //end combat if random number coin toss is in players favor
