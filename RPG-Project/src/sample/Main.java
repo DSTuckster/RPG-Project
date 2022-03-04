@@ -52,7 +52,7 @@ public class Main extends Application {
             //we will have to find a way to do scene transitions
         Scene scene = new Scene(gView, 800, 800);
         scene.setFill(Color.BLACK);
-        scene.setOnKeyPressed(controller::handle);
+        scene.setOnKeyPressed(controller::handleKeys);
 
 
         primaryStage.setTitle("Hello World");

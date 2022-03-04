@@ -44,7 +44,7 @@ public class Controller {
             }
         }
     }
-    public void handle(KeyEvent event) {
+    public void handleKeys(KeyEvent event) {
         switch (event.getCode()) {
             case UP:
                 moveUp();
