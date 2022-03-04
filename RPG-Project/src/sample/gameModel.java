@@ -3,7 +3,7 @@ package sample;
 import java.util.ArrayList;
 
 public class gameModel implements Runnable{
-
+    protected gameView view;
     Thread thread;
     int playerX=100,playerY=100,playerSpeed=4;
     protected final int FPS = 60;
@@ -60,15 +60,20 @@ public class gameModel implements Runnable{
     }
 
     public void update() {
-        System.out.println(getPlayerX()+ " " +getPlayerY());
+        notifySubscribers();
 
     }
 
-    public void addSubscriber(){
+    public void addSubscriber(GameSubscriber g){
+        subs.add(g);
 
     }
 
     public void notifySubscribers(){
+        for(int i=0;i<subs.size();i++) {
+            GameSubscriber g = subs.get(i);
+            g.modelChanged(getPlayerX(),getPlayerY());
+        }
 
     }
 }

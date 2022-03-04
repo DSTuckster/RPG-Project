@@ -2,6 +2,7 @@ package sample;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
@@ -42,6 +43,26 @@ public class Controller {
                 Thread.currentThread().interrupt();
             }
         }
+    }
+    public void handle(KeyEvent event) {
+        switch (event.getCode()) {
+            case UP:
+                moveUp();
+                break;
+            case DOWN:
+                moveDown();
+                break;
+            case LEFT:
+                moveLeft();
+                break;
+            case RIGHT:
+                moveRight();
+                break;
+            default:
+                break;
+
+        }
+
     }
 
     public void handleAttack(ActionEvent event){
