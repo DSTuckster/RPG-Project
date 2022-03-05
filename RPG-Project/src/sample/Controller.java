@@ -19,8 +19,6 @@ public class Controller {
         g = gM;
     }
 
-
-
     public void moveUp(){
         g.setPlayerY(g.getPlayerY()-g.getPlayerSpeed());
     }

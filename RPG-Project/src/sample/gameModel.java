@@ -13,8 +13,6 @@ public class gameModel implements Runnable{
 
     ArrayList<GameSubscriber> subs = new ArrayList<>();
 
-
-
     public void startThread() {
         thread = new Thread(this);
         thread.setDaemon(true);

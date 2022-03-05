@@ -37,7 +37,8 @@ public class CombatModel {
         player = scenario.player;
         enemy = scenario.enemy;
 
-        combatDialogue.put(0 ,"A wild Charizard has appeared!");
+        //NOTE: The middle portion of this string should not be in double quotes. remove when name generation is implemented
+        combatDialogue.put(0 ,"A wild" + "enemy.characterStats.getName()" + " has appeared!");
         whoGoesFirst();
     }
 
@@ -62,12 +63,35 @@ public class CombatModel {
     }
 
     /**
+     * when player or enemy uses magic,
+     * then subtract cost of spell from magic points stat
+     */
+    public void usedMagic(){
+        if(playerTurn){
+            int newHealth = enemy.characterStats.getHealth() - player.characterStats.getWis();
+            enemy.characterStats.setHealth(newHealth);
+            // subtract magic points from player
+
+        }else{
+            int newHealth = player.characterStats.getHealth() - enemy.characterStats.getWis();
+            player.characterStats.setHealth(newHealth);
+            // subtract magic points from enemy
+
+        }
+    }
+
+    /**
      * called when player wins
      * adds to player exp and levels up player (adds to player stats)
      * formula = ?
      */
     public void expGain(){
-
+        //add exp to player, and if player has enough to level up, then increment player level
+        player.characterStats.addExp(enemy.characterStats.getExp());
+        if (player.characterStats.getExp() > 100){
+            player.characterStats.levelUp();
+            player.characterStats.addExp(-100);
+        }
     }
 
     /**
@@ -75,7 +99,6 @@ public class CombatModel {
      * NOTE: this method is likely to change
      */
     public void nextPhase() throws InterruptedException {
-        System.out.println("yes");
         if(phase >= 4){
             phase = 0;
         }
@@ -95,9 +118,6 @@ public class CombatModel {
      * calls playerPhase() if player dex is higher, enemyPhase() if not
      */
     public void whoGoesFirst(){
-        System.out.println("Player: " + player.characterStats.getDex());
-        System.out.println("Enemy: " + enemy.characterStats.getDex());
-
         if(player.characterStats.getDex() > enemy.characterStats.getDex()){   //player's turn
             playerTurn = true;
             enemyTurn = false;
@@ -115,8 +135,6 @@ public class CombatModel {
                 playerTurn = false;
             }
         }
-        System.out.println(enemyTurn);
-        System.out.println(playerTurn);
         setCombatDialogue();
     }
 
@@ -158,24 +176,11 @@ public class CombatModel {
     }
 
     /**
-     * when player or enemy uses magic,
-     * then subtract cost of spell from magic points stat
-     */
-    public void usedMagic(){
-        if(playerTurn){
-            // subtract magic points from player
-
-        }else{
-            // subtract magic points from enemy
-
-        }
-    }
-
-    /**
      * use character generator to create an enemy for battle
      */
-    public void createEnemy(){
-
+    public Character createEnemy(){
+        Character c = new Character();
+        return c;
     }
 
     /**
@@ -228,22 +233,21 @@ public class CombatModel {
 
 
         //nextPhase() test #1
-        model.nextPhase();
-        int expected = 1;
+        int expected = 0;
         int result = model.phase;
         if(expected != result){
             System.out.println("nextPhase() test #1 failed! expected = " + expected + ", result = " + result);
         }
 
         //nextPhase() test #2
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < 5; i++){
             model.nextPhase();
         }
 
         expected = 1;
         result = model.phase;
         if(expected != result){
-            System.out.println("nextPhase() test #1 failed! expected = " + expected + ", result = " + result);
+            System.out.println("nextPhase() test #2 failed! expected = " + expected + ", result = " + result);
         }
 
         //whoGoesFirst() test #1
@@ -265,27 +269,53 @@ public class CombatModel {
             System.out.println("whoGoesFirst() test #1 failed! expected = playerTurn, result = nobodies turn");
         }
 
+        //expGain() test #1
+        model.enemy.characterStats.addExp(50);
+        model.expGain();
+        expected = 50;
+        result = model.player.characterStats.getExp();
+        if(expected != result){
+            System.out.println("expGain() test #1 failed! expected = " + expected + " result = " + result);
+        }
+
+        //expGain() test #2
+        model.enemy.characterStats.addExp(1);
+        model.expGain();
+        expected = 1;
+        result = model.player.characterStats.getExp();
+        if(expected != result){
+            System.out.println("expGain() test #2 failed! expected = " + expected + " result = " + result);
+        }
+
+        // player level up test #1, expected = 2
+        if(model.player.characterStats.getCharacterLevel() != 2){
+            System.out.println("Player level up test #1 failed! expected = 2 result = " + model.player.characterStats.getCharacterLevel());
+        }
+
+
         //typeOutDialogue() test #1
         //model.typeOutDialogue(model.phase);
 
         //the following tests should be uncommented once character generator is implemented
-        /**
-         //create enemy test #1
-         model.createEnemy();
-         Character characterResult = model.enemy;
-         if(characterResult == null){
-         System.out.println("createEnemy() test #1 failed! result = " + result);
-         }
+
+        //create enemy test #1
+        model.createEnemy();
+        Character characterResult = model.enemy;
+        if(characterResult == null){
+        System.out.println("createEnemy() test #1 failed! result = " + result);
+        }
 
 
-         //attack() test #1
-         model.attack(true);
+        //attack() test #1
+        model.playerTurn = true;
+        model.attack();
 
-         expected = 50;
-         result = model.enemy.health;
-         if(expected != result){
-         System.out.println("test #1 failed! expected = " + expected + ", result = " + result);
-         }
-         */
+        int expectedCalculation = model.enemy.characterStats.getHealth() - model.player.characterStats.getStr();
+        model.enemy.characterStats.setHealth(expectedCalculation);
+        expected = model.enemy.characterStats.getHealth();
+        result = model.enemy.characterStats.getHealth();
+        if(expected != result){
+        System.out.println("attack test #1 failed! expected = " + expected + ", result = " + result);
+        }
     }
 }
