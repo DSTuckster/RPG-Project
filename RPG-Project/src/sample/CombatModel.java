@@ -17,10 +17,17 @@ public class CombatModel {
 
     public int phase;
     public int playerTurnPhase;
+    public int enemyTurnPhase;
     public boolean playerTurn;
     public boolean enemyTurn;
 
+    protected int playerTotalWisdom;
+    protected int playerTotalHealth;
+
+    protected boolean runAway;
+
     public Hashtable<Integer, String> combatDialogue;
+    public String currentDialogue;
 
     public CombatModel(){
         combatDialogue = new Hashtable<>();
@@ -36,6 +43,9 @@ public class CombatModel {
 
         player = scenario.player;
         enemy = scenario.enemy;
+
+        playerTotalWisdom = player.characterStats.getWis();
+        playerTotalHealth = player.characterStats.getHealth();
 
         //NOTE: The middle portion of this string should not be in double quotes. remove when name generation is implemented
         combatDialogue.put(0 ,"A wild" + "enemy.characterStats.getName()" + " has appeared!");
@@ -72,15 +82,18 @@ public class CombatModel {
      */
     public void usedMagic(){
         if(playerTurn){
-            int newHealth = enemy.characterStats.getHealth() - player.characterStats.getWis();
+            int newHealth = enemy.characterStats.getHealth() - player.characterStats.getInt();
             enemy.characterStats.setHealth(newHealth);
             // subtract magic points from player
+            player.characterStats.setWis(player.characterStats.getWis()-2);
+            combatDialogue.put(phase+1, "The player used a spell and did " + player.characterStats.getInt() + " damage");
 
         }else{
-            int newHealth = player.characterStats.getHealth() - enemy.characterStats.getWis();
+            int newHealth = player.characterStats.getHealth() - enemy.characterStats.getInt();
             player.characterStats.setHealth(newHealth);
             // subtract magic points from enemy
-
+            enemy.characterStats.setWis(enemy.characterStats.getWis()-2);
+            combatDialogue.put(phase+1, "The enemy used a spell and did " + enemy.characterStats.getInt() + " damage");
         }
         notifySubscribers();
     }
@@ -105,16 +118,29 @@ public class CombatModel {
      * NOTE: this method is likely to change
      */
     public void nextPhase() throws InterruptedException {
+        if(endCombatChecks()){
+            return;
+        }
+        if(phase == 6){
+            endCombat();
+        }
         if(phase >= 4){
             phase = 0;
         }
         if(phase == playerTurnPhase-1){
             playerTurn = true;
+            enemyTurn = false;
             playerPhase();
+        }else if(phase == enemyTurnPhase-1){
+            enemyTurn = true;
+            playerTurn = false;
+            enemyPhase();
         }else{
             playerTurn = false;
+            enemyTurn = false;
         }
         phase += 1;
+        currentDialogue = combatDialogue.get(phase);
         notifySubscribers();
     }
 
@@ -148,12 +174,14 @@ public class CombatModel {
     public void setCombatDialogue(){
         if(playerTurn){
             playerTurnPhase = 1;
+            enemyTurnPhase = 3;
             combatDialogue.put(1, "It is the players turn!");
             combatDialogue.put(2, "The player did " + player.characterStats.getStr() + " damage");
             combatDialogue.put(3, "It is the enemies turn!");
             combatDialogue.put(4, "The enemy did " + enemy.characterStats.getStr() + " damage");
         }else{
             playerTurnPhase = 3;
+            enemyTurnPhase = 1;
             combatDialogue.put(1, "It is the enemies turn!");
             combatDialogue.put(2, "The enemy did " + enemy.characterStats.getStr() + " damage");
             combatDialogue.put(3, "It is the players turn!");
@@ -194,7 +222,12 @@ public class CombatModel {
      * enemies turn
      */
     public void enemyPhase(){
-        return;
+        if(enemy.characterStats.getInt() >= enemy.characterStats.getStr()){
+            usedMagic();
+        }else{
+            attack();
+        }
+
     }
 
     /**
@@ -206,11 +239,46 @@ public class CombatModel {
 
     //end combat if random number coin toss is in players favor
     public void runAway(){
+        int check = (int) (Math.random() * 101 + 1);
+        if(check > 51){
+            runAway = true;
+            combatDialogue.put(6, "The player escaped");
+            endCombat();
+        }else{
+            combatDialogue.put(phase+1, "The player tried to run away but could not escape.");
+        }
+        notifySubscribers();
+    }
 
+    /**
+     * check for end combat conditions, if conditions are true, then end combat
+     * conditions:
+     * run away
+     * player health below zero
+     * enemy Health below zero
+     */
+    public boolean endCombatChecks(){
+        boolean end = false;
+        if(player.characterStats.getHealth() <= 0){
+            combatDialogue.put(6, "The player wins!");
+            end = true;
+        }else if(enemy.characterStats.getHealth() <= 0){
+            combatDialogue.put(6, "The player lost!");
+            end = true;
+        }else if(runAway){
+            end = true;
+        }
+        phase = 6;
+        currentDialogue = combatDialogue.get(phase);
+
+        return end;
     }
 
     //end combat
     public void endCombat(){
+
+        player.characterStats.setWis(playerTotalWisdom);
+        player.characterStats.setHealth(playerTotalHealth);
         combatDialogue.clear();
     }
 
@@ -240,13 +308,15 @@ public class CombatModel {
 
 
         //nextPhase() test #1
-        int expected = 0;
+        model.nextPhase();
+        int expected = 1;
         int result = model.phase;
         if(expected != result){
             System.out.println("nextPhase() test #1 failed! expected = " + expected + ", result = " + result);
         }
 
         //nextPhase() test #2
+        /**
         for (int i = 0; i < 5; i++){
             model.nextPhase();
         }
@@ -256,6 +326,7 @@ public class CombatModel {
         if(expected != result){
             System.out.println("nextPhase() test #2 failed! expected = " + expected + ", result = " + result);
         }
+         */
 
         //whoGoesFirst() test #1
         model.whoGoesFirst();
@@ -283,6 +354,27 @@ public class CombatModel {
         result = model.player.characterStats.getExp();
         if(expected != result){
             System.out.println("expGain() test #1 failed! expected = " + expected + " result = " + result);
+        }
+
+        //test each combat phase
+        for(int i = 0; i < 20; i++){
+            if(model.playerTurn){
+                int enemyTotalHealth = model.enemy.characterStats.getHealth();
+                model.attack();
+                model.nextPhase();
+                int enemyHealth = model.enemy.characterStats.getHealth();
+                int playerDamage = enemyTotalHealth - enemyHealth;
+                System.out.println("It is the player's turn. The enemies total health was " + enemyTotalHealth + ". The enemies health is now " + enemyHealth);
+                System.out.println("total damage was " + playerDamage);
+            }else if(model.enemyTurn){
+                model.nextPhase();
+                int playerHealth = model.player.characterStats.getHealth();
+                int playerTotalHealth = model.playerTotalHealth;
+                int enemyDamage = playerTotalHealth - playerHealth;
+                System.out.println("It is the enemies turn. The player's total health was " + playerTotalHealth + ". The player's health is now " + playerHealth);
+                System.out.println("total damage was " + enemyDamage);
+            }
+            model.nextPhase();
         }
 
         //expGain() test #2
