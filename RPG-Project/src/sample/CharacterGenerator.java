@@ -7,6 +7,8 @@ public class CharacterGenerator {
 
     public CharacterGenerator() {
 
+        Character character = new Character();
+
     }
 
 

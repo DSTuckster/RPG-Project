@@ -6,6 +6,9 @@ import java.util.Random;
 public class Stats {
     protected int CharacterLevel;
     protected int Health;
+    protected int Mana;
+
+    // TODO - add Mana get/set and levelup methods
 
     protected int Strength;
     protected int Dexterity;
@@ -37,6 +40,7 @@ public class Stats {
         //      * For now, only adds max value, 12 *
         //
         Health = CharacterLevel * 12;
+        Mana = CharacterLevel * (Intelligence/Wisdom) * 2;
 
     }
 
