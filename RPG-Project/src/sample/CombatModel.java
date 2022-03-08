@@ -46,15 +46,20 @@ public class CombatModel {
      * subtract damage from character health
      */
     public void attack(){
+        int extraDamage = (int) (Math.random() * 5 + 1);
         if(playerTurn){
             //player attacks
-            int newHealth = enemy.characterStats.getHealth() - player.characterStats.getStr();
+            int damage = player.characterStats.getStr() + extraDamage;
+            int newHealth = enemy.characterStats.getHealth() - damage;
             enemy.characterStats.setHealth(newHealth);
+            combatDialogue.put(phase+1, "The player did " + damage + " damage");
             playerTurn = false;
         }else{
             //enemy attacks
-            int newHealth = player.characterStats.getHealth() - enemy.characterStats.getStr();
+            int damage = enemy.characterStats.getStr() + extraDamage;
+            int newHealth = player.characterStats.getHealth() - damage;
             player.characterStats.setHealth(newHealth);
+            combatDialogue.put(phase+1, "The enemy did " + damage + " damage");
             enemyTurn = false;
         }
 
@@ -78,6 +83,7 @@ public class CombatModel {
             // subtract magic points from enemy
 
         }
+        notifySubscribers();
     }
 
     /**
@@ -92,6 +98,7 @@ public class CombatModel {
             player.characterStats.levelUp();
             player.characterStats.addExp(-100);
         }
+        notifySubscribers();
     }
 
     /**
@@ -136,21 +143,22 @@ public class CombatModel {
             }
         }
         setCombatDialogue();
+        notifySubscribers();
     }
 
     public void setCombatDialogue(){
         if(playerTurn){
             playerTurnPhase = 1;
             combatDialogue.put(1, "It is the players turn!");
-            combatDialogue.put(2, "The player did x damage");
+            combatDialogue.put(2, "The player did " + player.characterStats.getStr() + " damage");
             combatDialogue.put(3, "It is the enemies turn!");
-            combatDialogue.put(4, "The enemy did x damage");
+            combatDialogue.put(4, "The enemy did " + enemy.characterStats.getStr() + " damage");
         }else{
             playerTurnPhase = 3;
             combatDialogue.put(1, "It is the enemies turn!");
-            combatDialogue.put(2, "The enemy did x damage");
+            combatDialogue.put(2, "The enemy did " + enemy.characterStats.getStr() + " damage");
             combatDialogue.put(3, "It is the players turn!");
-            combatDialogue.put(4, "The player did x damage");
+            combatDialogue.put(4, "The player did " + player.characterStats.getStr() + " damage");
         }
     }
 
@@ -309,13 +317,5 @@ public class CombatModel {
         //attack() test #1
         model.playerTurn = true;
         model.attack();
-
-        int expectedCalculation = model.enemy.characterStats.getHealth() - model.player.characterStats.getStr();
-        model.enemy.characterStats.setHealth(expectedCalculation);
-        expected = model.enemy.characterStats.getHealth();
-        result = model.enemy.characterStats.getHealth();
-        if(expected != result){
-        System.out.println("attack test #1 failed! expected = " + expected + ", result = " + result);
-        }
     }
 }
