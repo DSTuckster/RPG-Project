@@ -3,11 +3,11 @@ package sample;
 import javafx.event.ActionEvent;
 
 public class CharacterGenerator {
-    java.lang.Character character;
+    Character character;
 
     public CharacterGenerator() {
 
-        Character character = new Character();
+        character = new Character();
 
     }
 

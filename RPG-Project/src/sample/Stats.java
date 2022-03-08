@@ -143,9 +143,9 @@ public class Stats {
         System.out.println("This is the Stats Test Suite\n");
 
         Stats stats = new Stats();
-        Boolean Expected;
-        Boolean Result;
-        Boolean ErrorDetected = false;
+        boolean Expected;
+        boolean Result;
+        boolean ErrorDetected = false;
 
 
         // Test 1
