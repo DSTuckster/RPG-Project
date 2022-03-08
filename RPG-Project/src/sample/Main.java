@@ -1,6 +1,7 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -50,7 +51,7 @@ public class Main extends Application {
 
         //Change gView to combatView (or vice versa). If you want to see combat
             //we will have to find a way to do scene transitions
-        Scene scene = new Scene(gView, 800, 800);
+        Scene scene = new Scene(combatView, 800, 800);
         scene.setFill(Color.BLACK);
         scene.setOnKeyPressed(controller::handleKeys);
 
@@ -58,6 +59,11 @@ public class Main extends Application {
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(scene);
         primaryStage.show();
+        primaryStage.setOnCloseRequest(windowEvent -> {
+            controller.dispose(); // close thread
+            Platform.exit(); // close gui thread
+            System.exit(0); //kill JVM
+        });
 
 
     }

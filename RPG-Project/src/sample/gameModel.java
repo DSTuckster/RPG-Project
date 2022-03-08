@@ -3,24 +3,26 @@ package sample;
 import java.util.ArrayList;
 
 public class gameModel implements Runnable{
-    protected gameView view;
-    Thread thread;
-    int playerX=100,playerY=100,playerSpeed=4;
+    protected Thread thread;
+    private boolean running;
+    protected final int playerSpeed=4;
     protected final int FPS = 60;
-    double drawInterval = 1000000000/FPS;
+    
+    private int playerX=100,playerY=100;
+    double drawInterval = (double)1000000000/FPS;
 
     ArrayList<GameSubscriber> subs = new ArrayList<>();
 
-
-
     public void startThread() {
         thread = new Thread(this);
+        thread.setDaemon(true);
         thread.start();
+        running = true;
     }
     @Override
     public void run() {
         double nextDrawTime = System.nanoTime() + drawInterval;
-        while (thread!=null) {
+        while (running) {
             update();
 
 
@@ -70,10 +72,12 @@ public class gameModel implements Runnable{
     }
 
     public void notifySubscribers(){
-        for(int i=0;i<subs.size();i++) {
-            GameSubscriber g = subs.get(i);
-            g.modelChanged(getPlayerX(),getPlayerY());
+        for (GameSubscriber g : subs) {
+            g.modelChanged(getPlayerX(), getPlayerY());
         }
 
+    }
+    public void closeThread(){
+        running=false;
     }
 }

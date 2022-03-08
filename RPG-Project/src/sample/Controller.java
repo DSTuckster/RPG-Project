@@ -19,8 +19,6 @@ public class Controller {
         g = gM;
     }
 
-
-
     public void moveUp(){
         g.setPlayerY(g.getPlayerY()-g.getPlayerSpeed());
     }
@@ -32,6 +30,9 @@ public class Controller {
     }
     public void moveRight() {
         g.setPlayerX(g.getPlayerX() + g.getPlayerSpeed());
+    }
+    public void dispose(){
+        g.closeThread();
     }
 
     public void nextPhase(MouseEvent e) {

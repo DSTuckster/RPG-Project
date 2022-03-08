@@ -1,0 +1,115 @@
+package sample;
+
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
+public class transData{
+    /**
+     * translate the data class to a list
+     * @param character the data type from class
+     */
+    public ArrayList<String> keylist= new ArrayList<>();
+    public ArrayList<String> valuelist= new ArrayList<>();
+    public Stats stats = new Stats();
+    public Features features = new Features();
+
+    public ArrayList<String> CreateKeyList(){
+        keylist.add("name");
+        keylist.add("Stats");
+        keylist.add("Features");
+        keylist.add("Story");
+        keylist.add("CharacterLevel");
+        keylist.add("Health");
+        keylist.add("Strength");
+        keylist.add("Dexterity");
+        keylist.add("Constitution");
+        keylist.add("Wisdom");
+        keylist.add("Intelligence");
+        keylist.add("Charisma");
+        keylist.add("race");
+        keylist.add("hairColor");
+        keylist.add("hairType");
+        keylist.add("eyeColor");
+        keylist.add("bodyType");
+        return keylist;
+
+    }
+
+    /**
+     * translate the data class to a list
+     * @return
+     */
+    public ArrayList<String> CreateValueList(){
+        valuelist.add(Integer.toString(stats.getCharacterLevel()));
+        valuelist.add(Integer.toString(stats.getHealth()));
+        valuelist.add(Integer.toString(stats.getStr()));
+        valuelist.add(Integer.toString(stats.getDex()));
+        valuelist.add(Integer.toString(stats.getCon()));
+        valuelist.add(Integer.toString(stats.getWis()));
+        valuelist.add(Integer.toString(stats.getInt()));
+        valuelist.add(Integer.toString(stats.getCha()));
+        valuelist.add(features.getRace());
+        valuelist.add(features.getHairColor());
+        valuelist.add(features.getHairType());
+        valuelist.add(features.getEyeColor());
+        valuelist.add(features.getBodyType());
+        return valuelist;
+    }
+
+    /**
+     * set the values of stats and features
+     * @param list the values of stats and features you want to set
+     */
+    public void SetValueFromList(ArrayList<String> list){
+        stats.setCharacterLevel(Integer.parseInt((list.get(0))));
+        stats.setHealth(Integer.parseInt(list.get(1)));
+        stats.setStr(Integer.parseInt(list.get(2)));
+        stats.setDex(Integer.parseInt(list.get(3)));
+        stats.setCon(Integer.parseInt(list.get(4)));
+        stats.setWis(Integer.parseInt(list.get(5)));
+        stats.setInt(Integer.parseInt(list.get(6)));
+        stats.setCha(Integer.parseInt(list.get(7)));
+        features.setRace(list.get(8));
+        features.setHairColor(list.get(9));
+        features.setHairType(list.get(10));
+        features.setEyeColor(list.get(11));
+        features.setBodyType(list.get(12));
+    }
+
+    /**
+     * contain a simple test of save and load
+     * @param args
+     * @throws FileNotFoundException
+     */
+    public static void main(String[] args) throws FileNotFoundException {
+        transData data=new transData();
+        System.out.println("This is the initial stats: "+data.stats);
+        System.out.println("This is the initial features:"+ data.features);
+        System.out.println("Now test data");
+
+        ArrayList<String> valueList= data.CreateValueList();
+        ArrayList<String> keyList= data.CreateKeyList();
+        System.out.println("Start key:"+keyList);
+        System.out.println("Start value:"+valueList);
+        SaveSystem.SaveToFile("savetest.txt",keyList,valueList);
+
+        System.out.println("health before "+data.stats.getHealth());
+        System.out.println("health before "+data.stats.getHealth());
+
+        data.SetValueFromList(valueList);
+        data.stats.setHealth(10000);
+        System.out.println("Set health 10000");
+        System.out.println("health after "+data.stats.getHealth());
+        System.out.println("after: stats:"+data.stats);
+        System.out.println("after feature:"+data.features);
+        System.out.println("Before load");
+        System.out.println("value: "+valueList);
+
+        SaveSystem.LoadFile("datatest",valueList );
+
+        System.out.println("after load");
+        System.out.println("value: "+valueList);
+    }
+
+
+}

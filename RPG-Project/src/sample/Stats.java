@@ -5,6 +5,7 @@ import java.util.Random;
 
 public class Stats {
     protected int CharacterLevel;
+    protected int exp;
     protected int Health;
     protected int Mana;
 
@@ -23,6 +24,7 @@ public class Stats {
         r = new Random();
 
         CharacterLevel = 1;
+        exp = 0;
 
         // In 'Dungeons & Dragons 5e', the standard method of rolling stats is "Roll 4d6, drop the lowest"
         // The sum of those values is then assigned as the stat value
@@ -46,9 +48,22 @@ public class Stats {
 
     // Character Level get & set methods
     public int getCharacterLevel(){ return CharacterLevel; }
+    public void setCharacterLevel(int level){ CharacterLevel = level; }
     public void levelUp(){
         CharacterLevel++;
         Health = getHealth() + 12;
+    }
+
+    /**get players current experience points
+     * when player gets enough exp they will level up
+     */
+    public int getExp(){
+        return exp;
+    }
+
+    //add points to exp
+    public void addExp(int expToAdd){
+        exp += expToAdd;
     }
 
     // Health get & set methods
