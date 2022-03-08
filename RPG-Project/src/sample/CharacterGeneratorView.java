@@ -28,13 +28,35 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
     HBox bottom,above,mid, textField;
     VBox top,combo,vboxChoice,labels,choiceLabels;
     CharacterGenerator model;
+    Features features;
     ObservableList<String> stats;
+    ObservableList<String> races;
+    ObservableList<String> hairColor;
+    ObservableList<String> hairTypes;
+    ObservableList<String> eyeColor;
+    ObservableList<String> bodyTypes;
+
+
 
 
     public CharacterGeneratorView() throws FileNotFoundException {
-        // Stats to add to some choices
+        // Stats to add to some boxes
         stats = FXCollections.observableArrayList();
         stats.addAll("3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18");
+
+        // Features to add to some boxes
+        features = new Features();
+
+        races = FXCollections.observableArrayList();
+        races.addAll(features.racePresets);
+        hairColor = FXCollections.observableArrayList();
+        hairColor.addAll(features.colorPresets);
+        hairTypes = FXCollections.observableArrayList();
+        hairTypes.addAll(features.hairTypePresets);
+        eyeColor = FXCollections.observableArrayList();
+        eyeColor.addAll(features.eyeColorPresets);
+        bodyTypes = FXCollections.observableArrayList();
+        bodyTypes.addAll(features.bodyTypePresets);
 
         // All Boxes for structure
         top = new VBox();
@@ -90,7 +112,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         // All comboboxes (far left)
         classList = new ComboBox<>();
         backgroundList = new ComboBox<>();
-        raceList = new ComboBox<>();
+        raceList = new ComboBox<>(races);
         goalsList = new ComboBox<>();
         traitsList = new ComboBox<>();
         genderList = new ComboBox<>();
@@ -113,7 +135,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         ImageView imageView = new ImageView();
         imageView.setImage(character);
         imageView.setFitHeight(600);
-        imageView.setFitWidth(350);
+        imageView.setFitWidth(300);
 
         // Labels for choice boxes (far right)
         hairC = new Label("Hair Colour: ");
@@ -126,12 +148,12 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         choiceLabels.setSpacing(20);
 
         // Choice boxes (far right)
-        hairColour = new ChoiceBox<>();
+        hairColour = new ChoiceBox<>(hairColor);
         armour = new ChoiceBox<>();
         weapon = new ChoiceBox<>();
-        eyeColour = new ChoiceBox<>();
-        hairType = new ChoiceBox<>();
-        bodyType = new ChoiceBox<>();
+        eyeColour = new ChoiceBox<>(eyeColor);
+        hairType = new ChoiceBox<>(hairTypes);
+        bodyType = new ChoiceBox<>(bodyTypes);
         vboxChoice.getChildren().addAll(hairColour, armour, weapon, eyeColour, hairType, bodyType);
         vboxChoice.setSpacing(12);
 
@@ -165,5 +187,10 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         wisdomList.setValue(Integer.toString(model.character.characterStats.getWis()));
         intelligenceList.setValue(Integer.toString(model.character.characterStats.getInt()));
         charismaList.setValue(Integer.toString(model.character.characterStats.getCha()));
+        raceList.setValue(model.character.characterFeatures.race);
+        hairColour.setValue(model.character.characterFeatures.hairColor);
+        hairType.setValue(model.character.characterFeatures.hairType);
+        eyeColour.setValue(model.character.characterFeatures.eyeColor);
+        bodyType.setValue(model.character.characterFeatures.bodyType);
     }
 }

@@ -130,11 +130,10 @@ public class CombatView extends StackPane implements CombatSubscriber{
     @Override
     public void modelChanged() {
         currentEnemyHealth = model.enemy.characterStats.getHealth();
-        if (currentEnemyHealth==0){
-            System.out.print("You WIN!");
+        if (currentEnemyHealth==0) {
+            System.out.println("YOU WIN");
         }
-        enemyHealthBar.setProgress(currentEnemyHealth/100);
-
+        enemyHealthBar.setProgress(currentEnemyHealth / 100);
 
         currentHealth = model.player.characterStats.getHealth();
         if (currentHealth==0){
