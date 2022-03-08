@@ -1,16 +1,26 @@
 package sample;
 
-import javafx.event.ActionEvent;
+import java.util.ArrayList;
 
-public class CharacterGenerator {
-    java.lang.Character character;
+public class CharacterGenerator{
+    Character character;
+    ArrayList<CharacterSubscribers> subs;
 
     public CharacterGenerator() {
-
+        subs = new ArrayList<>();
     }
 
 
-    public static void generateRandom(ActionEvent actionEvent) {
-        System.out.println("GENERATED");
+    public void generateRandom() {
+        character = new Character();
+        notifySubscribers();
+    }
+
+    public void addSubscriber (CharacterSubscribers sub) {subs.add(sub);}
+
+    public void notifySubscribers(){
+        for (CharacterSubscribers sub : subs){
+            sub.modelChanged();
+        }
     }
 }

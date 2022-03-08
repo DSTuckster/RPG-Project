@@ -56,7 +56,6 @@ public class CombatModel {
             player.characterStats.setHealth(newHealth);
             enemyTurn = false;
         }
-
         phase += 1;
         notifySubscribers();
     }
