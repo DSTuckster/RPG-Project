@@ -22,17 +22,8 @@ public class CombatView extends StackPane implements CombatSubscriber{
     ProgressBar playerXPBar, playerHealthBar, playerManaBar, enemyHealthBar;
     Label Enemy, Player, HP, XP, Mana;
     CombatModel model;
-    double currentHealth;
-    double currentEnemyHealth;
-    double currentMana;
-    double currentXP;
 
     public CombatView() throws FileNotFoundException {
-
-        currentHealth = 100;
-        currentEnemyHealth = 100;
-        currentMana = 100;
-        currentXP = 100;
 
         // Background Picture
         FileInputStream inputStream = new FileInputStream("background.png");
@@ -129,24 +120,28 @@ public class CombatView extends StackPane implements CombatSubscriber{
 
     @Override
     public void modelChanged() {
-        currentEnemyHealth = model.enemy.characterStats.getHealth();
-        if (currentEnemyHealth==0) {
-            System.out.println("YOU WIN");
+        System.out.println(model.player.characterStats.getHealth());
+        System.out.println(model.enemy.characterStats.getHealth());
+
+        playerManaBar.setProgress((float)model.player.characterStats.getWis()/10);
+        playerHealthBar.setProgress((float)model.player.characterStats.getHealth()/10);
+        enemyHealthBar.setProgress((float)model.enemy.characterStats.getHealth()/10);
+
+        if(model.player.characterStats.getHealth() <= 0){
+            System.out.println("YOU LOSE!");
+            playerHealthBar.setProgress(0);
         }
-        enemyHealthBar.setProgress(currentEnemyHealth / 100);
-
-        currentHealth = model.player.characterStats.getHealth();
-        if (currentHealth==0){
-            System.out.print("You LOSE!");
+        else if (model.enemy.characterStats.getHealth() <= 0){
+            System.out.println("YOU WIN!");
+            enemyHealthBar.setProgress(0);
         }
-        playerHealthBar.setProgress(currentHealth/100);
 
-        currentMana = model.player.characterStats.getWis();
-        playerManaBar.setProgress(currentMana/100);
+        if (model.runAway){
+            System.out.println("Ran Away");
+        }
 
-        if (currentMana==0){
+        if (model.player.characterStats.getWis() <= 0){
             magic.setDisable(true);
         }
-
     }
 }

@@ -71,6 +71,7 @@ public class CombatModel {
             player.characterStats.setHealth(newHealth);
             combatDialogue.put(phase+1, "The enemy did " + damage + " damage");
             enemyTurn = false;
+            playerTurn = true;
         }
         phase += 1;
         notifySubscribers();
@@ -87,6 +88,7 @@ public class CombatModel {
             // subtract magic points from player
             player.characterStats.setWis(player.characterStats.getWis()-2);
             combatDialogue.put(phase+1, "The player used a spell and did " + player.characterStats.getInt() + " damage");
+            playerTurn=false;
 
         }else{
             int newHealth = player.characterStats.getHealth() - enemy.characterStats.getInt();
@@ -94,6 +96,7 @@ public class CombatModel {
             // subtract magic points from enemy
             enemy.characterStats.setWis(enemy.characterStats.getWis()-2);
             combatDialogue.put(phase+1, "The enemy used a spell and did " + enemy.characterStats.getInt() + " damage");
+            playerTurn=true;
         }
         notifySubscribers();
     }
