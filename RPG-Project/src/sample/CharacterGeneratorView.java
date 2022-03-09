@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -11,21 +13,51 @@ import javafx.scene.layout.VBox;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-public class CharacterGeneratorView extends Pane {
+public class CharacterGeneratorView extends Pane implements CharacterSubscribers{
     Button generateRandom, save, play;
-    ComboBox<ArrayList<String>> classList, backgroundList, raceList, goalsList, traitsList, genderList, extrasList,
+    ComboBox<String> classList, backgroundList, raceList, goalsList, traitsList, genderList, extrasList,
             heightList, strengthList, dexterityList, constitutionList, wisdomList, intelligenceList, charismaList;
-    ChoiceBox<ArrayList<String>> hairColour, armour, weapon, eyeColour, hairType, bodyType;
+    ChoiceBox<String> hairColour, armour, weapon, eyeColour, hairType, bodyType;
     TextField name;
     Label charName,Class, background, race, goals, traits, gender, extras, height, strength, dexterity, constitution,
             wisdom, intelligence, charisma, hairC, armourChoice, weaponChoice, eyeColourChoice, hairT, body;
     Image character;
     HBox bottom,above,mid, textField;
     VBox top,combo,vboxChoice,labels,choiceLabels;
+    CharacterGenerator model;
+    Features features;
+    ObservableList<String> stats;
+    ObservableList<String> races;
+    ObservableList<String> hairColor;
+    ObservableList<String> hairTypes;
+    ObservableList<String> eyeColor;
+    ObservableList<String> bodyTypes;
+
+
 
 
     public CharacterGeneratorView() throws FileNotFoundException {
+        // Stats to add to some boxes
+        stats = FXCollections.observableArrayList();
+        stats.addAll("3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18");
+
+        // Features to add to some boxes
+        features = new Features();
+
+        races = FXCollections.observableArrayList();
+        races.addAll(features.racePresets);
+        hairColor = FXCollections.observableArrayList();
+        hairColor.addAll(features.colorPresets);
+        hairTypes = FXCollections.observableArrayList();
+        hairTypes.addAll(features.hairTypePresets);
+        eyeColor = FXCollections.observableArrayList();
+        eyeColor.addAll(features.eyeColorPresets);
+        bodyTypes = FXCollections.observableArrayList();
+        bodyTypes.addAll(features.bodyTypePresets);
+
         // All Boxes for structure
         top = new VBox();
         above = new HBox();
@@ -80,18 +112,18 @@ public class CharacterGeneratorView extends Pane {
         // All comboboxes (far left)
         classList = new ComboBox<>();
         backgroundList = new ComboBox<>();
-        raceList = new ComboBox<>();
+        raceList = new ComboBox<>(races);
         goalsList = new ComboBox<>();
         traitsList = new ComboBox<>();
         genderList = new ComboBox<>();
         extrasList = new ComboBox<>();
         heightList = new ComboBox<>();
-        strengthList = new ComboBox<>();
-        dexterityList = new ComboBox<>();
-        constitutionList = new ComboBox<>();
-        wisdomList = new ComboBox<>();
-        intelligenceList = new ComboBox<>();
-        charismaList = new ComboBox<>();
+        strengthList = new ComboBox<>(stats);
+        dexterityList = new ComboBox<>(stats);
+        constitutionList = new ComboBox<>(stats);
+        wisdomList = new ComboBox<>(stats);
+        intelligenceList = new ComboBox<>(stats);
+        charismaList = new ComboBox<>(stats);
         combo.getChildren().addAll(classList, backgroundList, raceList, goalsList, traitsList, genderList, extrasList,
                 heightList, strengthList, dexterityList, constitutionList, wisdomList, intelligenceList, charismaList);
         combo.setSpacing(12);
@@ -102,8 +134,8 @@ public class CharacterGeneratorView extends Pane {
         character = new Image(inputStream);
         ImageView imageView = new ImageView();
         imageView.setImage(character);
-        imageView.setFitHeight(400);
-        imageView.setFitWidth(250);
+        imageView.setFitHeight(600);
+        imageView.setFitWidth(300);
 
         // Labels for choice boxes (far right)
         hairC = new Label("Hair Colour: ");
@@ -116,12 +148,12 @@ public class CharacterGeneratorView extends Pane {
         choiceLabels.setSpacing(20);
 
         // Choice boxes (far right)
-        hairColour = new ChoiceBox<>();
+        hairColour = new ChoiceBox<>(hairColor);
         armour = new ChoiceBox<>();
         weapon = new ChoiceBox<>();
-        eyeColour = new ChoiceBox<>();
-        hairType = new ChoiceBox<>();
-        bodyType = new ChoiceBox<>();
+        eyeColour = new ChoiceBox<>(eyeColor);
+        hairType = new ChoiceBox<>(hairTypes);
+        bodyType = new ChoiceBox<>(bodyTypes);
         vboxChoice.getChildren().addAll(hairColour, armour, weapon, eyeColour, hairType, bodyType);
         vboxChoice.setSpacing(12);
 
@@ -139,6 +171,26 @@ public class CharacterGeneratorView extends Pane {
     /**
      * Deals with what to send to controller when buttons in view are pushed
      */
-    private void setController(){}
+    public void setController(Controller controller){
+        generateRandom.setOnAction(e -> controller.handleGenerateRandom());
+    }
 
+    public void setModel(CharacterGenerator mod){
+        model = mod;
+    }
+
+    @Override
+    public void modelChanged() {
+        strengthList.setValue(Integer.toString(model.character.characterStats.getStr()));
+        dexterityList.setValue(Integer.toString(model.character.characterStats.getDex()));
+        constitutionList.setValue(Integer.toString(model.character.characterStats.getCon()));
+        wisdomList.setValue(Integer.toString(model.character.characterStats.getWis()));
+        intelligenceList.setValue(Integer.toString(model.character.characterStats.getInt()));
+        charismaList.setValue(Integer.toString(model.character.characterStats.getCha()));
+        raceList.setValue(model.character.characterFeatures.race);
+        hairColour.setValue(model.character.characterFeatures.hairColor);
+        hairType.setValue(model.character.characterFeatures.hairType);
+        eyeColour.setValue(model.character.characterFeatures.eyeColor);
+        bodyType.setValue(model.character.characterFeatures.bodyType);
+    }
 }

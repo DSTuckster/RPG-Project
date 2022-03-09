@@ -55,7 +55,6 @@ public class Features {
         hairColor = hairColors.get(r.nextInt(colorPresets.length));
         hairType = hairTypes.get(r.nextInt(hairTypePresets.length));
         eyeColor = eyeColors.get(r.nextInt(eyeColorPresets.length));
-        ;
         bodyType = bodyTypes.get(r.nextInt(bodyTypePresets.length));
 
         //height = ;

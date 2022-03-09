@@ -10,16 +10,15 @@ public class Controller {
 
     protected CombatModel combatModel;
     protected Text combatText;
-
+    protected CharacterGenerator charModel;
     protected gameModel g;
 
-    //sets the combat model
-    public void setModels(CombatModel cm, gameModel gM){
+    //sets the combat model and characterGen model
+    public void setModels(CombatModel cm, gameModel gM, CharacterGenerator characterModel){
         combatModel = cm;
         g = gM;
+        charModel = characterModel;
     }
-
-
 
     public void moveUp(){
         g.setPlayerY(g.getPlayerY()-g.getPlayerSpeed());
@@ -49,26 +48,21 @@ public class Controller {
     }
     public void handleKeys(KeyEvent event) {
         switch (event.getCode()) {
-            case UP:
-                moveUp();
-                break;
-            case DOWN:
-                moveDown();
-                break;
-            case LEFT:
-                moveLeft();
-                break;
-            case RIGHT:
-                moveRight();
-                break;
-            default:
-                break;
-
+            case UP -> moveUp();
+            case DOWN -> moveDown();
+            case LEFT -> moveLeft();
+            case RIGHT -> moveRight();
+            default -> {
+            }
         }
-
     }
 
-    public void handleAttack(ActionEvent event){
+    public void handleGenerateRandom(){
+        charModel.generateRandom();
+    }
+
+
+    public void handleAttack(){
         combatModel.attack();
     }
 
@@ -79,4 +73,5 @@ public class Controller {
     public void handleMagic(){
         combatModel.usedMagic();
     }
+
 }

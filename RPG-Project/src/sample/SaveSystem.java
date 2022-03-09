@@ -15,16 +15,36 @@ public class SaveSystem {
      * @param value list contains the content you want to save
      * @throws FileNotFoundException
      */
+    Character character;
+    transData transData;
 
-    public void SaveToFile(String path, List<String> key, List<String> value) throws FileNotFoundException {
+    public void SaveToFile(String path, ArrayList<String> key, ArrayList<String> value) throws FileNotFoundException {
         String savepath;
-        int length = key.size();
+        int length = 0;
         File savefile = new File(path);
         PrintWriter filenName = new PrintWriter(savefile);
-        while (length>=0){
-            length--;
-            filenName.println(key.get(length-1)+ " : ");
+
+        while (length<=4){
+
+            filenName.println(key.get(length)+ " : ");
             filenName.println("  " + value.get(length-1));
+            if(length ==1){
+                int i=0;
+                while (i<=7){
+                    filenName.println(key.get(i+4));
+                    filenName.println(value.get(i));
+                    i++;
+                }
+            }
+            if(length ==2){
+                int o =0;
+                while (o<=4){
+                    filenName.println(key.get(o+12));
+                    filenName.println(value.get(o+8));
+                    o++;
+                }
+            }
+            length++;
 
         }
         filenName.close();
@@ -37,17 +57,31 @@ public class SaveSystem {
      * @param value list that would contain the data from file
      * @throws FileNotFoundException
      */
-    public void LoadFile(String filename, List<String> key, List<String> value) throws FileNotFoundException {
+    public void LoadFile(String filename, ArrayList<String> key, ArrayList<String> value) throws FileNotFoundException {
         File thefile = new File(filename);
         Scanner scan = new Scanner(thefile);
-        int length = key.size();
+        int length = 0;
         int i=0;
         while(length>=0){
             key.set(i,scan.nextLine());
+            if(length==1){
+                while(i<=7){
+                    value.set(i,scan.nextLine());
+                    i++;
+                }
+            }
+            if(length ==2){
+                while(i<=12){
+                    value.set(i,scan.nextLine());
+                    i++;
+                }
+            }
             value.set(i,scan.nextLine());
-            length--;
-            i++;
+            length++;
+
         }
+        transData.SetValueFromList(value);
+
     }
 }
 

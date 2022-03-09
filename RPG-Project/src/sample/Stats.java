@@ -5,7 +5,11 @@ import java.util.Random;
 
 public class Stats {
     protected int CharacterLevel;
+    protected int exp;
     protected int Health;
+    protected int Mana;
+
+    // TODO - add Mana get/set and levelup methods
 
     protected int Strength;
     protected int Dexterity;
@@ -20,6 +24,7 @@ public class Stats {
         r = new Random();
 
         CharacterLevel = 1;
+        exp = 0;
 
         // In 'Dungeons & Dragons 5e', the standard method of rolling stats is "Roll 4d6, drop the lowest"
         // The sum of those values is then assigned as the stat value
@@ -37,14 +42,28 @@ public class Stats {
         //      * For now, only adds max value, 12 *
         //
         Health = CharacterLevel * 12;
+        Mana = CharacterLevel * (Intelligence/Wisdom) * 2;
 
     }
 
     // Character Level get & set methods
     public int getCharacterLevel(){ return CharacterLevel; }
+    public void setCharacterLevel(int level){ CharacterLevel = level; }
     public void levelUp(){
         CharacterLevel++;
         Health = getHealth() + 12;
+    }
+
+    /**get players current experience points
+     * when player gets enough exp they will level up
+     */
+    public int getExp(){
+        return exp;
+    }
+
+    //add points to exp
+    public void addExp(int expToAdd){
+        exp += expToAdd;
     }
 
     // Health get & set methods
@@ -124,9 +143,9 @@ public class Stats {
         System.out.println("This is the Stats Test Suite\n");
 
         Stats stats = new Stats();
-        Boolean Expected;
-        Boolean Result;
-        Boolean ErrorDetected = false;
+        boolean Expected;
+        boolean Result;
+        boolean ErrorDetected = false;
 
 
         // Test 1

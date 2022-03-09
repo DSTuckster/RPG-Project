@@ -65,5 +65,4 @@ public class WelcomeView extends Pane {
         this.getChildren().addAll(main);
     }
 
-    private void setController(){}
 }
