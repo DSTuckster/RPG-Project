@@ -19,7 +19,6 @@ public class SaveSystem {
     transData transData;
 
     public void SaveToFile(String path, ArrayList<String> key, ArrayList<String> value) throws FileNotFoundException {
-        String savepath;
         int length = 0;
         File savefile = new File(path);
         PrintWriter filenName = new PrintWriter(savefile);

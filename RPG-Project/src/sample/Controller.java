@@ -1,12 +1,11 @@
 package sample;
 
-import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 public class Controller {
 
@@ -63,7 +62,12 @@ public class Controller {
         charModel.generateRandom();
     }
 
-    public void handleSave() throws FileNotFoundException {transData newSave = new transData(charModel.character);}
+    public void handleSave(ArrayList<String> custom) throws FileNotFoundException {
+        if (charModel.character==null){
+            charModel.generateCustom(custom);
+        }
+        transData newSave = new transData(charModel.character);
+    }
 
 
     public void handleAttack(){
