@@ -173,6 +173,13 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
      */
     public void setController(Controller controller){
         generateRandom.setOnAction(e -> controller.handleGenerateRandom());
+        save.setOnAction(e -> {
+            try {
+                controller.handleSave();
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     public void setModel(CharacterGenerator mod){
@@ -192,5 +199,6 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         hairType.setValue(model.character.characterFeatures.hairType);
         eyeColour.setValue(model.character.characterFeatures.eyeColor);
         bodyType.setValue(model.character.characterFeatures.bodyType);
+        name.setText("RANDOM NAME");
     }
 }

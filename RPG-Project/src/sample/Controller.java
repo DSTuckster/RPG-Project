@@ -6,6 +6,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
+import java.io.FileNotFoundException;
+
 public class Controller {
 
     protected CombatModel combatModel;
@@ -60,6 +62,8 @@ public class Controller {
     public void handleGenerateRandom(){
         charModel.generateRandom();
     }
+
+    public void handleSave() throws FileNotFoundException {transData newSave = new transData(charModel.character);}
 
 
     public void handleAttack(){

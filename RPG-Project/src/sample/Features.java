@@ -29,7 +29,7 @@ public class Features {
     protected String[] eyeColorPresets = {"Brown", "Blue", "Green", "Gold", "Hazel", "Gray", "Red", "Indigo", "Black", "Faded", "White"};
 
     protected ArrayList<String> bodyTypes;
-    protected String[] bodyTypePresets = {"Tiny", "Petite", "Stout", "Thin", "Sturdy", "Average", "Tall", "Rotund", "Girthy", "Gargantuan"};
+    protected String[] bodyTypePresets = {"Tiny", "Petite", "Stout", "Thin", "Sturdy", "Average", "Tall", "Round", "Girthy", "Gargantuan"};
 
     public Features() {
         // TODO: Write methods to add user inputs to the presets!
