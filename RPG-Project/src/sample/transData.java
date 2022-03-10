@@ -2,34 +2,17 @@ package sample;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.List;
 
-public class transData extends SaveSystem{
+public class transData {
     /**
-     * create a list contains the data name
+     * translate the data class to a list
+     * @param character the data type from class
      */
+    public ArrayList<String> keylist= new ArrayList<>();
+    public ArrayList<String> valuelist= new ArrayList<>();
 
-    ArrayList<String> keylist;
-    ArrayList<String> valuelist;
-    public Stats stats= new Stats();
-    public Features features= new Features();
-    Character character;
-
-    public transData(Character c) throws FileNotFoundException {
-        character = c;
-
-        keylist = new ArrayList<>();
-        this.CreateKeyList();
-
-        valuelist = new ArrayList<>();
-        this.CreateValueList();
-
-        this.SaveToFile("save.txt", keylist, valuelist);
-    }
-
-    public void CreateKeyList(){
-
-        keylist.add("Name");
+    public ArrayList<String> CreateKeyList(){
+        keylist.add("name");
         keylist.add("Stats");
         keylist.add("Features");
         keylist.add("Story");
@@ -41,21 +24,20 @@ public class transData extends SaveSystem{
         keylist.add("Wisdom");
         keylist.add("Intelligence");
         keylist.add("Charisma");
-        keylist.add("Race");
-        keylist.add("Hair Color");
-        keylist.add("Hair Type");
-        keylist.add("Eye Color");
-        keylist.add("Body Type");
+        keylist.add("race");
+        keylist.add("hairColor");
+        keylist.add("hairType");
+        keylist.add("eyeColor");
+        keylist.add("bodyType");
+        return keylist;
 
     }
 
     /**
      * translate the data class to a list
+     * @return
      */
-
-
-    public void CreateValueList(){
-        valuelist.add(character.name);
+    public ArrayList<String> CreateValueList(Character character){
         valuelist.add(Integer.toString(character.characterStats.getCharacterLevel()));
         valuelist.add(Integer.toString(character.characterStats.getHealth()));
         valuelist.add(Integer.toString(character.characterStats.getStr()));
@@ -69,66 +51,54 @@ public class transData extends SaveSystem{
         valuelist.add(character.characterFeatures.getHairType());
         valuelist.add(character.characterFeatures.getEyeColor());
         valuelist.add(character.characterFeatures.getBodyType());
+        return valuelist;
     }
 
     /**
-     * set the character data by the file data
-     * @param list contain file data
+     * set the values of stats and features
+     * @param list the values of stats and features you want to set
      */
-    public void SetValueFromList(ArrayList<String> list){
-        stats.setCharacterLevel(Integer.parseInt((list.get(0))));
-        stats.setHealth(Integer.parseInt(list.get(1)));
-        stats.setStr(Integer.parseInt(list.get(2)));
-        stats.setDex(Integer.parseInt(list.get(3)));
-        stats.setCon(Integer.parseInt(list.get(4)));
-        stats.setWis(Integer.parseInt(list.get(5)));
-        stats.setInt(Integer.parseInt(list.get(6)));
-        stats.setCha(Integer.parseInt(list.get(7)));
-        features.setRace(list.get(8));
-        features.setHairColor(list.get(9));
-        features.setHairType(list.get(10));
-        features.setEyeColor(list.get(11));
-        features.setBodyType(list.get(12));
+    public void SetValueFromList(ArrayList<String> list, Character character){
+        character.characterStats.setCharacterLevel(Integer.parseInt((list.get(0))));
+        character.characterStats.setHealth(Integer.parseInt(list.get(1)));
+        character.characterStats.setStr(Integer.parseInt(list.get(2)));
+        character.characterStats.setDex(Integer.parseInt(list.get(3)));
+        character.characterStats.setCon(Integer.parseInt(list.get(4)));
+        character.characterStats.setWis(Integer.parseInt(list.get(5)));
+        character.characterStats.setInt(Integer.parseInt(list.get(6)));
+        character.characterStats.setCha(Integer.parseInt(list.get(7)));
+        character.characterFeatures.setRace(list.get(8));
+        character.characterFeatures.setHairColor(list.get(9));
+        character.characterFeatures.setHairType(list.get(10));
+        character.characterFeatures.setEyeColor(list.get(11));
+        character.characterFeatures.setBodyType(list.get(12));
     }
-
-        //set character a new name
     public void setName(Character character, String name){
-        character.name = name;
+        character.setName(name);
     }
-    //set character a new race
     public void setRace(Character character, String race){
         character.characterFeatures.setRace(race);
     }
-    //set character a new hair color
     public void setHairColor(Character character, String hairColor){character.characterFeatures.setHairColor(hairColor);}
-    //set character a new hair type
     public void setHairType(Character character, String hairType){
         character.characterFeatures.setHairType(hairType);
     }
-    //set character a new eye color
     public void setEyeColor(Character character, String eyeColor){
         character.characterFeatures.setEyeColor(eyeColor);
     }
-    //set character a new body type
     public void setBodyType(Character character, String bodyType){
         character.characterFeatures.setBodyType(bodyType);
     }
-    //set character a new level
     public void setCharacterLevel(Character character, Integer level){ character.characterStats.setCharacterLevel(level);}
-    //set character a new health
     public void setHealth(Character character, Integer health){ character.characterStats.setHealth(health);}
-    //set character a new strength
     public void setStr(Character character, Integer str){ character.characterStats.setStr(str);}
-    //set character a new dexterity
     public void setDex(Character character, Integer dex){ character.characterStats.setDex(dex);}
-    //set character a new constitution
     public void setCon(Character character, Integer con){ character.characterStats.setCon(con);}
-    //set character a new wisdom
     public void setWis(Character character, Integer wis){ character.characterStats.setWis(wis);}
-    //set character a new intelligence
-    public void setInt(Character character, Integer intelligence){ character.characterStats.setInt(intelligence);}
-    //set character a new charisma
-    public void setCha(Character character, Integer cha){ character.characterStats.setCha(cha);}
+    public void setInt(Character character, Integer intelligent){ character.characterStats.setInt(intelligent);}
+    public void setCha(Character character, Integer cha){ character.characterStats.setCha(cha);}/**
+     * just a little try of pushing from the comand line
+     */
 
 
 }
