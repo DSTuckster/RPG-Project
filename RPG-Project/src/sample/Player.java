@@ -11,7 +11,7 @@ import java.io.InputStream;
 
 public class Player{
     private int x, y, speed;
-    private Image image;
+    private Image up, down, left, right,current;
 
     public Player(){
         setDefaultValues();
@@ -24,7 +24,14 @@ public class Player{
         this.speed = 5;
         try {
             FileInputStream inputStream = new FileInputStream("boy_down_1.png");
-            this.image = new Image(inputStream);
+            this.down = new Image(inputStream);
+            inputStream = new FileInputStream("boy_up_1.png");
+            this.up = new Image(inputStream);
+            inputStream = new FileInputStream("boy_left_1.png");
+            this.left = new Image(inputStream);
+            inputStream = new FileInputStream("boy_right_1.png");
+            this.right= new Image(inputStream);
+            this.current = down;
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -43,16 +50,17 @@ public class Player{
 
     public void setY(int y) { this.y = y; }
 
-    public void setPlayerImage(String path) {
-        try {
-            FileInputStream inputStream = new FileInputStream(path);
-            this.image = new Image(inputStream);
-        } catch (Exception  e) {
-            e.printStackTrace();
+    public void setPlayerImage(String direction) {
+        switch(direction){
+            case "up" -> this.current = up;
+            case "down" -> this.current = down;
+            case "left" -> this.current =left;
+            case "right" ->this.current=right;
+            default -> this.current=down;
         }
     }
 
     public Image getPlayerImage() {
-        return image;
+        return this.current;
     }
 }
