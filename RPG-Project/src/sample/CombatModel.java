@@ -19,7 +19,6 @@ public class CombatModel {
     public int playerTurnPhase;
     public int enemyTurnPhase;
     public boolean playerTurn;
-    public boolean enemyTurn;
 
     protected int playerTotalWisdom;
     protected int playerTotalHealth;
@@ -58,7 +57,6 @@ public class CombatModel {
      */
     public void attack(){
         int extraDamage = (int) (Math.random() * 5 + 1);
-        System.out.println(playerTurn);
         if(playerTurn){
             //player attacks
             int damage = player.characterStats.getStr() + extraDamage;
@@ -72,7 +70,6 @@ public class CombatModel {
             int newHealth = player.characterStats.getHealth() - damage;
             player.characterStats.setHealth(newHealth);
             combatDialogue.replace(phase+1, "The enemy did " + damage + " damage");
-            enemyTurn = false;
             playerTurn = true;
         }
         phase += 1;
@@ -84,21 +81,21 @@ public class CombatModel {
      * then subtract cost of spell from magic points stat
      */
     public void usedMagic(){
-        if(playerTurn){
+        if(playerTurn && player.characterStats.getMana() >= 10){
             int newHealth = enemy.characterStats.getHealth() - player.characterStats.getInt();
             enemy.characterStats.setHealth(newHealth);
 
             // subtract magic points from player
-            player.characterStats.setMana(player.characterStats.getMana()-1);
+            player.characterStats.setMana(player.characterStats.getMana()-10);
             combatDialogue.replace(phase+1, "The player used a spell and did " + player.characterStats.getInt() + " damage");
             playerTurn=false;
 
-        }else{
+        }else if(enemy.characterStats.getMana() >= 10){
             int newHealth = player.characterStats.getHealth() - enemy.characterStats.getInt();
             player.characterStats.setHealth(newHealth);
 
             // subtract magic points from enemy
-            enemy.characterStats.setMana(enemy.characterStats.getMana()-1);
+            enemy.characterStats.setMana(enemy.characterStats.getMana()-10);
             combatDialogue.replace(phase+1, "The enemy used a spell and did " + enemy.characterStats.getInt() + " damage");
             playerTurn=true;
         }
@@ -133,15 +130,12 @@ public class CombatModel {
         }
         if(phase == playerTurnPhase-1){
             playerTurn = true;
-            enemyTurn = false;
             playerPhase();
         }else if(phase == enemyTurnPhase-1){
-            enemyTurn = true;
             playerTurn = false;
             enemyPhase();
         }else{
             playerTurn = false;
-            enemyTurn = false;
         }
         phase += 1;
         currentDialogue = combatDialogue.get(phase);
@@ -156,18 +150,14 @@ public class CombatModel {
     public void whoGoesFirst(){
         if(player.characterStats.getDex() > enemy.characterStats.getDex()){   //player's turn
             playerTurn = true;
-            enemyTurn = false;
         }else if (player.characterStats.getDex() < enemy.characterStats.getDex()){    //enemies turn
-            enemyTurn = true;
             playerTurn = false;
         }else{  // playerDex == enemyDex, so roll dice
             int decision = (int) (Math.random() * 101 + 1);
 
             if(decision >= 50){
                 playerTurn = true;
-                enemyTurn = false;
             }else{
-                enemyTurn = true;
                 playerTurn = false;
             }
         }
@@ -264,11 +254,25 @@ public class CombatModel {
         combatDialogue.clear();
     }
 
+    /**
+     * if the user selects yes, to retry combat
+     * this method will completely restart the same combat scenario combat
+     */
     public void restCombat(){
-        player.characterStats.setMana(playerTotalWisdom);
-        player.characterStats.setHealth(playerTotalHealth);
-        //enemy.characterStats.setMana();
+        player.characterStats.setMana(player.characterStats.getMaxMana());
+        player.characterStats.setHealth(player.characterStats.getMaxHealth());
+        enemy.characterStats.setMana(enemy.characterStats.getMaxMana());
+        enemy.characterStats.setHealth(enemy.characterStats.getMaxHealth());
         combatDialogue.clear();
+        playerTurn = false;
+        runAway = false;
+        playerTurnPhase = 0;
+        enemyTurnPhase = 0;
+        currentDialogue = "";
+
+        CombatScenario newCombatScenario = new CombatScenario(player, enemy);
+        setCombatScenario(newCombatScenario);
+        notifySubscribers();
     }
 
     /**
@@ -303,8 +307,6 @@ public class CombatModel {
             System.out.println("nextPhase() test #1 failed! expected = " + expected + ", result = " + result);
         }
 
-
-
         //whoGoesFirst() test #1
         model.whoGoesFirst();
 
@@ -317,7 +319,7 @@ public class CombatModel {
         }
         if(result == 0 && model.playerTurn){
             System.out.println("whoGoesFirst() test #1 failed! expected = playerTurn, result = enemyTurn");
-        }else if(result == 1 && model.enemyTurn){
+        }else if(result == 1 && !model.playerTurn){
             System.out.println("whoGoesFirst() test #1 failed! expected = enemyTurn, result = PlayerTurn");
         }
         else if(result == -1){
@@ -349,7 +351,7 @@ public class CombatModel {
                 int playerDamage = enemyTotalHealth - enemyHealth;
                 System.out.println("It is the player's turn. The enemies total health was " + enemyTotalHealth + ". The enemies health is now " + enemyHealth);
                 System.out.println("total damage was " + playerDamage);
-            }else if(model.enemyTurn){
+            }else if(model.enemyTurnPhase-1 == model.phase){
                 model.nextPhase();
                 //model.attack();
                 int playerHealth = model.player.characterStats.getHealth();
