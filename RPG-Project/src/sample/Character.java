@@ -30,6 +30,10 @@ public class Character {
         return namePool.fetchName();
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     /**
      * generateStory()
      *  The 'Story' of a character is just a description of their appearance.
