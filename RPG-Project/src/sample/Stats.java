@@ -142,6 +142,22 @@ public class Stats {
         // return sum of the first 3 items (the highest values)
         return list.get(0)+list.get(1)+list.get(2);
     }
+    
+    @Override
+    public String toString() {
+        return "Stats{" +
+                "CharacterLevel=" + CharacterLevel +
+                ", exp=" + exp +
+                ", Health=" + Health +
+                ", Mana=" + Mana +
+                ", Strength=" + Strength +
+                ", Dexterity=" + Dexterity +
+                ", Constitution=" + Constitution +
+                ", Wisdom=" + Wisdom +
+                ", Intelligence=" + Intelligence +
+                ", Charisma=" + Charisma +
+                '}';
+    }
 
     // TEST METHODS
     private boolean TestRollsAccuracy() {
