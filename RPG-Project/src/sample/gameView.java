@@ -31,6 +31,8 @@ public class gameView extends StackPane implements GameSubscriber {
             gc.drawImage(image, x, y,image.getHeight()*2.5,image.getWidth()*2.5);
 
     }
+
+
 }
 
 

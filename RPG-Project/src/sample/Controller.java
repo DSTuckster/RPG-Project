@@ -1,9 +1,11 @@
 package sample;
 
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -41,6 +43,15 @@ public class Controller {
         g.closeThread();
     }
 
+    public void switchScene(KeyEvent event) {
+        Scene node =  (Scene)event.getSource();
+        Stage thisStage = (Stage) node.getWindow();
+        CombatView c = (CombatView) combatModel.subs.get(0);
+        Scene sceneCombat =c.getScene();
+        thisStage.setScene(sceneCombat);
+        thisStage.show();
+    }
+
     public void nextPhase(MouseEvent e) {
         if(combatModel.phase != combatModel.playerTurnPhase){
             try {
@@ -56,6 +67,7 @@ public class Controller {
             case DOWN -> moveDown();
             case LEFT -> moveLeft();
             case RIGHT -> moveRight();
+            case A -> switchScene(event);
             default -> {
             }
         }
