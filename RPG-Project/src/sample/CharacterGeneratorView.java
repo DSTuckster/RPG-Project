@@ -117,7 +117,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         imageView.setFitHeight(600);
         imageView.setFitWidth(300);
 
-        // Labels for choice boxes (far right)
+
         hairC = new Label("Hair Colour: ");
         eyeColourChoice = new Label("Eye Colour: ");
         hairT = new Label("Hair Type: ");
