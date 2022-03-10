@@ -49,6 +49,7 @@ public class CombatModel {
 
         //NOTE: The middle portion of this string should not be in double quotes. remove when name generation is implemented
         combatDialogue.put(0 ,"A wild" + "enemy.characterStats.getName()" + " has appeared!");
+        currentDialogue = combatDialogue.get(0);
         whoGoesFirst();
     }
 
@@ -85,6 +86,7 @@ public class CombatModel {
         if(playerTurn){
             int newHealth = enemy.characterStats.getHealth() - player.characterStats.getInt();
             enemy.characterStats.setHealth(newHealth);
+
             // subtract magic points from player
             player.characterStats.setWis(player.characterStats.getWis()-2);
             combatDialogue.put(phase+1, "The player used a spell and did " + player.characterStats.getInt() + " damage");
@@ -93,6 +95,7 @@ public class CombatModel {
         }else{
             int newHealth = player.characterStats.getHealth() - enemy.characterStats.getInt();
             player.characterStats.setHealth(newHealth);
+
             // subtract magic points from enemy
             enemy.characterStats.setWis(enemy.characterStats.getWis()-2);
             combatDialogue.put(phase+1, "The enemy used a spell and did " + enemy.characterStats.getInt() + " damage");
@@ -121,13 +124,10 @@ public class CombatModel {
      * NOTE: this method is likely to change
      */
     public void nextPhase() throws InterruptedException {
-        if(endCombatChecks()){
-            return;
-        }
-        if(phase == 6){
+        if(phase == 7){
             endCombat();
         }
-        if(phase >= 4){
+        if(!endCombatChecks() && phase >= 4){
             phase = 0;
         }
         if(phase == playerTurnPhase-1){
@@ -230,7 +230,6 @@ public class CombatModel {
         }else{
             attack();
         }
-
     }
 
     /**
@@ -246,7 +245,8 @@ public class CombatModel {
         if(check > 51){
             runAway = true;
             combatDialogue.put(6, "The player escaped");
-            endCombat();
+            currentDialogue = combatDialogue.get(6);
+            phase = 6;
         }else{
             combatDialogue.put(phase+1, "The player tried to run away but could not escape.");
         }
@@ -263,15 +263,15 @@ public class CombatModel {
     public boolean endCombatChecks(){
         boolean end = false;
         if(player.characterStats.getHealth() <= 0){
-            combatDialogue.put(6, "The player wins!");
+            combatDialogue.put(5, "The player wins!");
             end = true;
         }else if(enemy.characterStats.getHealth() <= 0){
-            combatDialogue.put(6, "The player lost!");
+            combatDialogue.put(5, "The player lost!");
             end = true;
         }else if(runAway){
             end = true;
         }
-        phase = 6;
+        phase = 5;
         currentDialogue = combatDialogue.get(phase);
 
         return end;
@@ -279,7 +279,6 @@ public class CombatModel {
 
     //end combat
     public void endCombat(){
-
         player.characterStats.setWis(playerTotalWisdom);
         player.characterStats.setHealth(playerTotalHealth);
         combatDialogue.clear();
@@ -311,7 +310,7 @@ public class CombatModel {
 
 
         //nextPhase() test #1
-        model.nextPhase();
+        //model.nextPhase();
         int expected = 1;
         int result = model.phase;
         if(expected != result){
@@ -334,9 +333,9 @@ public class CombatModel {
         //whoGoesFirst() test #1
         model.whoGoesFirst();
 
-        if(model.player.characterStats.getDex() > model.enemy.characterStats.getDex() && model.playerTurn){
+        if(model.player.characterStats.getDex() > model.enemy.characterStats.getDex()){
             result = 1;
-        }else if(model.player.characterStats.getDex() < model.enemy.characterStats.getDex() && model.enemyTurn){
+        }else if(model.player.characterStats.getDex() < model.enemy.characterStats.getDex()){
             result = 0;
         }else{
             result = -1;
@@ -360,7 +359,13 @@ public class CombatModel {
         }
 
         //test each combat phase
-        for(int i = 0; i < 20; i++){
+        //This variable is a safety net, I would occasionally get an infinite loop. I think I fixed it, but just in case...
+        int count = 0;
+        while(!model.endCombatChecks()){
+            if(count == 5){
+                System.out.println("break!!!!!!!!!!!!!!!!!!!!");
+                break;
+            }
             if(model.playerTurn){
                 int enemyTotalHealth = model.enemy.characterStats.getHealth();
                 model.attack();
@@ -371,14 +376,18 @@ public class CombatModel {
                 System.out.println("total damage was " + playerDamage);
             }else if(model.enemyTurn){
                 model.nextPhase();
+                model.attack();
                 int playerHealth = model.player.characterStats.getHealth();
                 int playerTotalHealth = model.playerTotalHealth;
                 int enemyDamage = playerTotalHealth - playerHealth;
                 System.out.println("It is the enemies turn. The player's total health was " + playerTotalHealth + ". The player's health is now " + playerHealth);
                 System.out.println("total damage was " + enemyDamage);
+            }else{
+                model.nextPhase();
             }
-            model.nextPhase();
+            count ++;
         }
+
 
         //expGain() test #2
         model.enemy.characterStats.addExp(1);
