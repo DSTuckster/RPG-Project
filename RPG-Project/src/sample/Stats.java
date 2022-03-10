@@ -42,16 +42,24 @@ public class Stats {
         //      * For now, only adds max value, 12 *
         //
         Health = CharacterLevel * 12;
-        Mana = CharacterLevel * (Intelligence/Wisdom) * 2;
+        Mana = CharacterLevel * (Intelligence+Wisdom) * 2;
 
     }
 
     // Character Level get & set methods
     public int getCharacterLevel(){ return CharacterLevel; }
     public void setCharacterLevel(int level){ CharacterLevel = level; }
+
+    /**
+     * levelUp()
+     *  Increments the Character Level by 1
+     *  Sets Health to (Current Max Health + 12)
+     *  Sets Mana to (Current Max Mana + Int+Wis * 2)
+     */
     public void levelUp(){
         CharacterLevel++;
-        Health = getHealth() + 12;
+        Health = getMaxHealth() + 12;
+        Mana = getMaxMana() + (Intelligence+Wisdom) * 2;
     }
 
     /**get players current experience points
@@ -68,7 +76,13 @@ public class Stats {
 
     // Health get & set methods
     public int getHealth(){ return Health; }
+    public int getMaxHealth() { return getCharacterLevel() * 12; }
     public void setHealth(int newHealth){ Health = newHealth; }
+
+    // Mana get & set methods
+    public int getMana() { return Mana; }
+    public int getMaxMana() { return getCharacterLevel() + (Intelligence+Wisdom) * 2; }
+    public void setMana(int newMana) { Mana = newMana; }
 
     // Strength get & set methods
     public int getStr() { return Strength; }
