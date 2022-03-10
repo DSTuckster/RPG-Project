@@ -19,7 +19,7 @@ public class NamePool {
     }
 
     protected String fetchName() {
-        return names[r.nextInt(58)];
+        return names[r.nextInt(names.length)];
     }
 
     public static void main(String[] args) {

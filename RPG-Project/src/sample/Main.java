@@ -75,14 +75,12 @@ public class Main extends Application {
         // different scenes created above ^^^^^
 
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(sceneTraversal);
+        primaryStage.setScene(sceneCombat);
         primaryStage.show();
 
 
     }
 
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) { launch(args); }
 }

@@ -15,29 +15,26 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class CharacterGeneratorView extends Pane implements CharacterSubscribers{
-    Button generateRandom, save, play;
-    ComboBox<String> classList, backgroundList, raceList, goalsList, traitsList, genderList, extrasList,
-            heightList, strengthList, dexterityList, constitutionList, wisdomList, intelligenceList, charismaList;
-    ChoiceBox<String> hairColour, armour, weapon, eyeColour, hairType, bodyType;
-    TextField name;
-    Label charName,Class, background, race, goals, traits, gender, extras, height, strength, dexterity, constitution,
-            wisdom, intelligence, charisma, hairC, armourChoice, weaponChoice, eyeColourChoice, hairT, body;
-    Image character;
-    HBox bottom,above,mid, textField;
-    VBox top,combo,vboxChoice,labels,choiceLabels;
-    CharacterGenerator model;
-    Features features;
-    ObservableList<String> stats;
-    ObservableList<String> races;
-    ObservableList<String> hairColor;
-    ObservableList<String> hairTypes;
-    ObservableList<String> eyeColor;
-    ObservableList<String> bodyTypes;
+    protected Button generateRandom, save, play;
+    protected ComboBox<String> raceList, strengthList, dexterityList, constitutionList, wisdomList,
+            intelligenceList, charismaList;
+    protected ChoiceBox<String> hairColour, eyeColour, hairType, bodyType;
+    protected TextField name;
+    protected Label race, charName, strength, dexterity, constitution, wisdom, intelligence, charisma, hairC,
+            eyeColourChoice, hairT, body;
+    protected Image character;
+    protected HBox bottom,above,mid, textField;
+    protected VBox top,combo,vboxChoice,labels,choiceLabels;
+    protected CharacterGenerator model;
+    protected Features features;
+    protected ObservableList<String> stats, races, hairColor, hairTypes, eyeColor, bodyTypes;
 
 
-
-
-    public CharacterGeneratorView() throws FileNotFoundException {
+    /**
+     * Constructor for character generator view
+     * @throws FileNotFoundException for image of stickman in view
+     */
+    protected CharacterGeneratorView() throws FileNotFoundException {
         // Stats to add to some boxes
         stats = FXCollections.observableArrayList();
         stats.addAll("3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18");
@@ -136,7 +133,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         vboxChoice.getChildren().addAll(hairColour, eyeColour, hairType, bodyType);
         vboxChoice.setSpacing(12);
 
-        // Mid section (label -> combobox -> stickman -> label -> choicebox)
+        // Mid section grouping (label -> combobox -> stickman -> label -> choicebox)
         mid.getChildren().addAll(labels,combo,imageView, choiceLabels, vboxChoice);
         mid.setSpacing(40);
 
@@ -148,7 +145,8 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
     }
 
     /**
-     * Deals with what to send to controller when buttons in view are pushed
+     * Lets controller know a button was pushed, and which button
+     * @param controller The views controller to handle all user interaction
      */
     public void setController(Controller controller){
         generateRandom.setOnAction(e -> controller.handleGenerateRandom());
@@ -161,12 +159,27 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         });
     }
 
+    /**
+     * Sets the model for the view to subscribe too
+     * @param mod The model to set to the view
+     */
     public void setModel(CharacterGenerator mod){
         model = mod;
     }
 
+    /**
+     * Gets accurate choices from view (User may have picked or just generated random) and returns
+     * them as an array to send to controller to handle when user presses the save button
+     * @return The array of choices user has made in the view
+     */
     private ArrayList<String> saveChoices(){
         ArrayList<String> custom = new ArrayList<>();
+
+        // If user leaves name field blank or deletes what was put there, generate random name
+        if (name.getText() == null || name.getText().equals("")){
+            name.setText(model.character.generateName());
+        }
+        custom.add(name.getText());
         custom.add(charismaList.getValue());
         custom.add(constitutionList.getValue());
         custom.add(wisdomList.getValue());
@@ -182,6 +195,10 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         return custom;
     }
 
+    /**
+     * Updates view when notified from model
+     * Used when user presses generate random
+     */
     @Override
     public void modelChanged() {
         strengthList.setValue(Integer.toString(model.character.characterStats.getStr()));
@@ -195,6 +212,6 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         hairType.setValue(model.character.characterFeatures.hairType);
         eyeColour.setValue(model.character.characterFeatures.eyeColor);
         bodyType.setValue(model.character.characterFeatures.bodyType);
-        name.setText("RANDOM NAME");
+        name.setText(model.character.name);
     }
 }

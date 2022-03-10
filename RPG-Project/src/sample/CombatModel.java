@@ -19,7 +19,6 @@ public class CombatModel {
     public int playerTurnPhase;
     public int enemyTurnPhase;
     public boolean playerTurn;
-    public boolean enemyTurn;
 
     protected int playerTotalWisdom;
     protected int playerTotalHealth;
@@ -44,11 +43,11 @@ public class CombatModel {
         player = scenario.player;
         enemy = scenario.enemy;
 
-        playerTotalWisdom = player.characterStats.getWis();
+        playerTotalWisdom = player.characterStats.getMana();
         playerTotalHealth = player.characterStats.getHealth();
 
         //NOTE: The middle portion of this string should not be in double quotes. remove when name generation is implemented
-        combatDialogue.put(0 ,"A wild" + "enemy.characterStats.getName()" + " has appeared!");
+        combatDialogue.put(0 ,"A wild " + enemy.name + " has appeared!");
         currentDialogue = combatDialogue.get(0);
         whoGoesFirst();
     }
@@ -63,15 +62,14 @@ public class CombatModel {
             int damage = player.characterStats.getStr() + extraDamage;
             int newHealth = enemy.characterStats.getHealth() - damage;
             enemy.characterStats.setHealth(newHealth);
-            combatDialogue.put(phase+1, "The player did " + damage + " damage");
+            combatDialogue.replace(phase+1, "The player did " + damage + " damage");
             playerTurn = false;
         }else{
             //enemy attacks
             int damage = enemy.characterStats.getStr() + extraDamage;
             int newHealth = player.characterStats.getHealth() - damage;
             player.characterStats.setHealth(newHealth);
-            combatDialogue.put(phase+1, "The enemy did " + damage + " damage");
-            enemyTurn = false;
+            combatDialogue.replace(phase+1, "The enemy did " + damage + " damage");
             playerTurn = true;
         }
         phase += 1;
@@ -83,22 +81,22 @@ public class CombatModel {
      * then subtract cost of spell from magic points stat
      */
     public void usedMagic(){
-        if(playerTurn){
+        if(playerTurn && player.characterStats.getMana() >= 10){
             int newHealth = enemy.characterStats.getHealth() - player.characterStats.getInt();
             enemy.characterStats.setHealth(newHealth);
 
             // subtract magic points from player
-            player.characterStats.setWis(player.characterStats.getWis()-2);
-            combatDialogue.put(phase+1, "The player used a spell and did " + player.characterStats.getInt() + " damage");
+            player.characterStats.setMana(player.characterStats.getMana()-10);
+            combatDialogue.replace(phase+1, "The player used a spell and did " + player.characterStats.getInt() + " damage");
             playerTurn=false;
 
-        }else{
+        }else if(enemy.characterStats.getMana() >= 10){
             int newHealth = player.characterStats.getHealth() - enemy.characterStats.getInt();
             player.characterStats.setHealth(newHealth);
 
             // subtract magic points from enemy
-            enemy.characterStats.setWis(enemy.characterStats.getWis()-2);
-            combatDialogue.put(phase+1, "The enemy used a spell and did " + enemy.characterStats.getInt() + " damage");
+            enemy.characterStats.setMana(enemy.characterStats.getMana()-10);
+            combatDialogue.replace(phase+1, "The enemy used a spell and did " + enemy.characterStats.getInt() + " damage");
             playerTurn=true;
         }
         notifySubscribers();
@@ -132,15 +130,12 @@ public class CombatModel {
         }
         if(phase == playerTurnPhase-1){
             playerTurn = true;
-            enemyTurn = false;
             playerPhase();
         }else if(phase == enemyTurnPhase-1){
-            enemyTurn = true;
             playerTurn = false;
             enemyPhase();
         }else{
             playerTurn = false;
-            enemyTurn = false;
         }
         phase += 1;
         currentDialogue = combatDialogue.get(phase);
@@ -155,18 +150,14 @@ public class CombatModel {
     public void whoGoesFirst(){
         if(player.characterStats.getDex() > enemy.characterStats.getDex()){   //player's turn
             playerTurn = true;
-            enemyTurn = false;
         }else if (player.characterStats.getDex() < enemy.characterStats.getDex()){    //enemies turn
-            enemyTurn = true;
             playerTurn = false;
         }else{  // playerDex == enemyDex, so roll dice
             int decision = (int) (Math.random() * 101 + 1);
 
             if(decision >= 50){
                 playerTurn = true;
-                enemyTurn = false;
             }else{
-                enemyTurn = true;
                 playerTurn = false;
             }
         }
@@ -189,27 +180,6 @@ public class CombatModel {
             combatDialogue.put(2, "The enemy did " + enemy.characterStats.getStr() + " damage");
             combatDialogue.put(3, "It is the players turn!");
             combatDialogue.put(4, "The player did " + player.characterStats.getStr() + " damage");
-        }
-    }
-
-    /**
-     * type out dialogue automatically one letter at a time
-     * (i.e. pokemon/final fantasy)
-     * NOTE: can't get typeOutDialogue to work for some reason, I will come back to it later - Dylan
-     */
-    public void typeOutDialogue(int index, Text text) throws InterruptedException {
-        text.setText("");
-        for(int i = 0; i < combatDialogue.get(phase).length(); i++){
-            /**
-            try{
-                TimeUnit.SECONDS.sleep(1);
-            }catch(InterruptedException ex){
-                Thread.currentThread().interrupt();
-            }
-             */
-
-            // This line will need to be modified when the UI is complete
-            text.setText(text.getText() + combatDialogue.get(phase).charAt(i));
         }
     }
 
@@ -285,6 +255,27 @@ public class CombatModel {
     }
 
     /**
+     * if the user selects yes, to retry combat
+     * this method will completely restart the same combat scenario combat
+     */
+    public void restCombat(){
+        player.characterStats.setMana(player.characterStats.getMaxMana());
+        player.characterStats.setHealth(player.characterStats.getMaxHealth());
+        enemy.characterStats.setMana(enemy.characterStats.getMaxMana());
+        enemy.characterStats.setHealth(enemy.characterStats.getMaxHealth());
+        combatDialogue.clear();
+        playerTurn = false;
+        runAway = false;
+        playerTurnPhase = 0;
+        enemyTurnPhase = 0;
+        currentDialogue = "";
+
+        CombatScenario newCombatScenario = new CombatScenario(player, enemy);
+        setCombatScenario(newCombatScenario);
+        notifySubscribers();
+    }
+
+    /**
      * add a view to implement changes from model
      * @param sub: a view (in this case, combatView)
      */
@@ -308,27 +299,13 @@ public class CombatModel {
         //set combat scenario test #1
         model.setCombatScenario(new CombatScenario(new Character(), new Character()));
 
-
         //nextPhase() test #1
         //model.nextPhase();
-        int expected = 1;
+        int expected = 0;
         int result = model.phase;
         if(expected != result){
             System.out.println("nextPhase() test #1 failed! expected = " + expected + ", result = " + result);
         }
-
-        //nextPhase() test #2
-        /**
-        for (int i = 0; i < 5; i++){
-            model.nextPhase();
-        }
-
-        expected = 1;
-        result = model.phase;
-        if(expected != result){
-            System.out.println("nextPhase() test #2 failed! expected = " + expected + ", result = " + result);
-        }
-         */
 
         //whoGoesFirst() test #1
         model.whoGoesFirst();
@@ -342,7 +319,7 @@ public class CombatModel {
         }
         if(result == 0 && model.playerTurn){
             System.out.println("whoGoesFirst() test #1 failed! expected = playerTurn, result = enemyTurn");
-        }else if(result == 1 && model.enemyTurn){
+        }else if(result == 1 && !model.playerTurn){
             System.out.println("whoGoesFirst() test #1 failed! expected = enemyTurn, result = PlayerTurn");
         }
         else if(result == -1){
@@ -362,7 +339,7 @@ public class CombatModel {
         //This variable is a safety net, I would occasionally get an infinite loop. I think I fixed it, but just in case...
         int count = 0;
         while(!model.endCombatChecks()){
-            if(count == 5){
+            if(count == 10){
                 System.out.println("break!!!!!!!!!!!!!!!!!!!!");
                 break;
             }
@@ -374,9 +351,9 @@ public class CombatModel {
                 int playerDamage = enemyTotalHealth - enemyHealth;
                 System.out.println("It is the player's turn. The enemies total health was " + enemyTotalHealth + ". The enemies health is now " + enemyHealth);
                 System.out.println("total damage was " + playerDamage);
-            }else if(model.enemyTurn){
+            }else if(model.enemyTurnPhase-1 == model.phase){
                 model.nextPhase();
-                model.attack();
+                //model.attack();
                 int playerHealth = model.player.characterStats.getHealth();
                 int playerTotalHealth = model.playerTotalHealth;
                 int enemyDamage = playerTotalHealth - playerHealth;
@@ -387,6 +364,8 @@ public class CombatModel {
             }
             count ++;
         }
+
+        model.setCombatDialogue();
 
 
         //expGain() test #2
@@ -403,12 +382,6 @@ public class CombatModel {
             System.out.println("Player level up test #1 failed! expected = 2 result = " + model.player.characterStats.getCharacterLevel());
         }
 
-
-        //typeOutDialogue() test #1
-        //model.typeOutDialogue(model.phase);
-
-        //the following tests should be uncommented once character generator is implemented
-
         //create enemy test #1
         model.createEnemy();
         Character characterResult = model.enemy;
@@ -418,7 +391,17 @@ public class CombatModel {
 
 
         //attack() test #1
+        expected = model.enemy.characterStats.getHealth();
         model.playerTurn = true;
         model.attack();
+        result = model.enemy.characterStats.getHealth();
+        if(expected <= result){
+            System.out.println("attack() test # 1 failed! expected = " + expected + " result = " + result);
+        }
+
+        //check combatDialogue
+        for(int i =  0; i < model.combatDialogue.size(); i++){
+            System.out.println(model.combatDialogue.get(i));
+        }
     }
 }

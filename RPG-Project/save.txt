@@ -1,0 +1,32 @@
+Name : 
+Olawart
+Stats : 
+CharacterLevel
+1
+Health
+12
+Strength
+9
+Dexterity
+10
+Constitution
+13
+Wisdom
+9
+Intelligence
+10
+Charisma
+12
+Features : 
+Race
+Orc
+Hair Color
+Blonde
+Hair Type
+Long
+Eye Color
+Green
+Body Type
+Girthy
+Story : 
+CharacterLevel : 

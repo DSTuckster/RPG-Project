@@ -1,19 +1,10 @@
 package sample;
 
-import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.scene.shape.Rectangle;
-
 
 
 public class gameView extends StackPane implements GameSubscriber {
@@ -40,8 +31,6 @@ public class gameView extends StackPane implements GameSubscriber {
             gc.drawImage(image, x, y,image.getHeight()*2.5,image.getWidth()*2.5);
 
     }
-
-
 }
 
 

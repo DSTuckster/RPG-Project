@@ -14,6 +14,7 @@ public class Character {
         namePool = new NamePool();
         name = generateName();
         characterStory = generateStory();
+
     }
 
     private Stats generateStats() {
@@ -25,7 +26,7 @@ public class Character {
         return new Features();
     }
 
-    private String generateName() {
+    protected String generateName() {
         return namePool.fetchName();
     }
 
@@ -44,7 +45,6 @@ public class Character {
 
         return characterStory;
     }
-
 
     public static void main(String[] args) {
 

@@ -41,7 +41,7 @@ public class Stats {
         //
         //      * For now, only adds max value, 12 *
         //
-        Health = CharacterLevel * 12;
+        Health = CharacterLevel * 100;
         Mana = CharacterLevel * (Intelligence+Wisdom) * 2;
 
     }
