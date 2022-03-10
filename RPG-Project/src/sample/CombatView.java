@@ -23,6 +23,10 @@ public class CombatView extends StackPane implements CombatSubscriber{
     protected Label Enemy, Player, HP, XP, Mana;
     protected CombatModel model;
 
+    /**
+     * CombatView controller
+     * @throws FileNotFoundException for background image if image is not found
+     */
     public CombatView() throws FileNotFoundException {
 
         // Background Picture
@@ -33,7 +37,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
         imageView.setFitWidth(1000);
         imageView.setFitHeight(1000);
 
-        // XP and Health Bars
+        // XP, Mana, and Health Bars
         playerXPBar = new ProgressBar(1);
         playerXPBar.setStyle("-fx-accent: GREEN");
         playerHealthBar = new ProgressBar(1);
@@ -78,6 +82,9 @@ public class CombatView extends StackPane implements CombatSubscriber{
         magic.setFont(font);
         magic.setStyle("-fx-background-color: WHITE");
 
+        // TODO: Implement buttons when battle is over
+        //      and for a player to have more than one
+        //      attack to choose from
         retryYes = new Button("Yes");
         retryNo = new Button("No");
         attackOne = new Button("Attack One");
@@ -94,6 +101,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
         bottom.setSpacing(650);
 
 
+        // Coordinate all boxes together to fit screen properly
         HBox top = new HBox();
         top.getChildren().addAll(enemy,player);
         top.setSpacing(550);
@@ -108,24 +116,39 @@ public class CombatView extends StackPane implements CombatSubscriber{
         this.setPrefWidth(1000);
     }
 
+    /**
+     * Notifies controller that a button has been pressed
+     * @param controller The views controller to handle user interaction
+     */
     public void setController(Controller controller){
         attack.setOnAction(e -> controller.handleAttack());
         run.setOnAction((e -> controller.handleRun()));
         magic.setOnAction(e -> controller.handleMagic());
     }
 
+    /**
+     * The views model to receive updates from (and to subscribe too)
+     * @param comModel the model to set as the views model
+     */
     public void setModel(CombatModel comModel){
         model = comModel;
     }
 
+    /**
+     * Update view according to what has changed in the model
+     */
     @Override
     public void modelChanged() {
 
+        // Get current health, xp, and mana for the progress bars
         // Divided by 10 to get a float between 0-1 for progress bar
         playerManaBar.setProgress((float)model.player.characterStats.getWis()/10);
         playerHealthBar.setProgress((float)model.player.characterStats.getHealth()/10);
         enemyHealthBar.setProgress((float)model.enemy.characterStats.getHealth()/10);
 
+        // TODO: Handle closing out the combat view when game is over.
+        //      Add game dialogue
+        //      If statements only here to get feedback when user has lost or won (testing purposes)
         if(model.player.characterStats.getHealth() <= 0){
             System.out.println("YOU LOSE!");
             playerHealthBar.setProgress(0);
@@ -134,12 +157,11 @@ public class CombatView extends StackPane implements CombatSubscriber{
             System.out.println("YOU WIN!");
             enemyHealthBar.setProgress(0);
         }
-
         if (model.runAway){
             System.out.println("Ran Away");
         }
 
-        // If mana bar empty then player can no longer use magic button
+        // If mana bar is empty then player can no longer use magic button
         if (model.player.characterStats.getWis() <= 0){
             magic.setDisable(true);
         }

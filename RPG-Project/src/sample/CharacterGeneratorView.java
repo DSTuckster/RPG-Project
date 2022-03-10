@@ -16,12 +16,12 @@ import java.util.ArrayList;
 
 public class CharacterGeneratorView extends Pane implements CharacterSubscribers{
     protected Button generateRandom, save, play;
-    protected ComboBox<String> classList, backgroundList, raceList, goalsList, traitsList, genderList, extrasList,
-            heightList, strengthList, dexterityList, constitutionList, wisdomList, intelligenceList, charismaList;
-    protected ChoiceBox<String> hairColour, armour, weapon, eyeColour, hairType, bodyType;
+    protected ComboBox<String> raceList, strengthList, dexterityList, constitutionList, wisdomList,
+            intelligenceList, charismaList;
+    protected ChoiceBox<String> hairColour, eyeColour, hairType, bodyType;
     protected TextField name;
-    protected Label charName,Class, background, race, goals, traits, gender, extras, height, strength, dexterity, constitution,
-            wisdom, intelligence, charisma, hairC, armourChoice, weaponChoice, eyeColourChoice, hairT, body;
+    protected Label race, charName, strength, dexterity, constitution, wisdom, intelligence, charisma, hairC,
+            eyeColourChoice, hairT, body;
     protected Image character;
     protected HBox bottom,above,mid, textField;
     protected VBox top,combo,vboxChoice,labels,choiceLabels;
@@ -30,6 +30,10 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
     protected ObservableList<String> stats, races, hairColor, hairTypes, eyeColor, bodyTypes;
 
 
+    /**
+     * Constructor for character generator view
+     * @throws FileNotFoundException for image of stickman in view
+     */
     protected CharacterGeneratorView() throws FileNotFoundException {
         // Stats to add to some boxes
         stats = FXCollections.observableArrayList();
@@ -129,7 +133,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         vboxChoice.getChildren().addAll(hairColour, eyeColour, hairType, bodyType);
         vboxChoice.setSpacing(12);
 
-        // Mid section (label -> combobox -> stickman -> label -> choicebox)
+        // Mid section grouping (label -> combobox -> stickman -> label -> choicebox)
         mid.getChildren().addAll(labels,combo,imageView, choiceLabels, vboxChoice);
         mid.setSpacing(40);
 
@@ -141,7 +145,8 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
     }
 
     /**
-     * Deals with what to send to controller when buttons in view are pushed
+     * Lets controller know a button was pushed, and which button
+     * @param controller The views controller to handle all user interaction
      */
     public void setController(Controller controller){
         generateRandom.setOnAction(e -> controller.handleGenerateRandom());
@@ -154,12 +159,26 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         });
     }
 
+    /**
+     * Sets the model for the view to subscribe too
+     * @param mod The model to set to the view
+     */
     public void setModel(CharacterGenerator mod){
         model = mod;
     }
 
+    /**
+     * Gets accurate choices from view (User may have picked or just generated random) and returns
+     * them as an array to send to controller to handle when user presses the save button
+     * @return The array of choices user has made in the view
+     */
     private ArrayList<String> saveChoices(){
         ArrayList<String> custom = new ArrayList<>();
+
+        // If user leaves name field blank or deletes what was put there, generate random name
+        if (name.getText() == null || name.getText().equals("")){
+            name.setText(model.character.generateName());
+        }
         custom.add(name.getText());
         custom.add(charismaList.getValue());
         custom.add(constitutionList.getValue());
@@ -176,6 +195,10 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         return custom;
     }
 
+    /**
+     * Updates view when notified from model
+     * Used when user presses generate random
+     */
     @Override
     public void modelChanged() {
         strengthList.setValue(Integer.toString(model.character.characterStats.getStr()));

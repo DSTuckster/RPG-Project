@@ -26,7 +26,7 @@ public class Character {
         return new Features();
     }
 
-    private String generateName() {
+    protected String generateName() {
         return namePool.fetchName();
     }
 
