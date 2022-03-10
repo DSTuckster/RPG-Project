@@ -263,6 +263,13 @@ public class CombatModel {
         combatDialogue.clear();
     }
 
+    public void restCombat(){
+        player.characterStats.setMana(playerTotalWisdom);
+        player.characterStats.setHealth(playerTotalHealth);
+        //enemy.characterStats.setMana();
+        combatDialogue.clear();
+    }
+
     /**
      * add a view to implement changes from model
      * @param sub: a view (in this case, combatView)
@@ -289,7 +296,7 @@ public class CombatModel {
 
         //nextPhase() test #1
         //model.nextPhase();
-        int expected = 1;
+        int expected = 0;
         int result = model.phase;
         if(expected != result){
             System.out.println("nextPhase() test #1 failed! expected = " + expected + ", result = " + result);
@@ -381,10 +388,15 @@ public class CombatModel {
 
 
         //attack() test #1
-        //model.playerTurn = true;
-        //model.attack();
+        expected = model.enemy.characterStats.getHealth();
+        model.playerTurn = true;
+        model.attack();
+        result = model.enemy.characterStats.getHealth();
+        if(expected <= result){
+            System.out.println("attack() test # 1 failed! expected = " + expected + " result = " + result);
+        }
 
-        //
+        //check combatDialogue
         for(int i =  0; i < model.combatDialogue.size(); i++){
             System.out.println(model.combatDialogue.get(i));
         }
