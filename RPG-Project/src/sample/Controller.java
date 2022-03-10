@@ -22,17 +22,18 @@ public class Controller {
     }
 
     public void moveUp(){
-        g.setPlayerY(g.getPlayerY()-g.getPlayerSpeed());
-    }
+        g.player.setY(g.player.getY()-g.player.getSpeed());
+        g.player.setPlayerImage(g.up);}
     public void moveDown() {
-        g.setPlayerY(g.getPlayerY() + g.getPlayerSpeed());
-    }
+        g.player.setY(g.player.getY()+g.player.getSpeed());
+        g.player.setPlayerImage(g.down);}
+
     public void moveLeft() {
-        g.setPlayerX(g.getPlayerX() - g.getPlayerSpeed());
-    }
+        g.player.setX(g.player.getX()-g.player.getSpeed());
+        g.player.setPlayerImage(g.left);}
     public void moveRight() {
-        g.setPlayerX(g.getPlayerX() + g.getPlayerSpeed());
-    }
+        g.player.setX(g.player.getX()+g.player.getSpeed());
+        g.player.setPlayerImage(g.right);}
     public void dispose(){
         g.closeThread();
     }

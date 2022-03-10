@@ -75,7 +75,7 @@ public class Main extends Application {
         // different scenes created above ^^^^^
 
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(sceneCharGen);
+        primaryStage.setScene(sceneTraversal);
         primaryStage.show();
 
 

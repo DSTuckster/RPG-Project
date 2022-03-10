@@ -13,8 +13,6 @@ import javafx.scene.layout.VBox;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class CharacterGeneratorView extends Pane implements CharacterSubscribers{
     Button generateRandom, save, play;
