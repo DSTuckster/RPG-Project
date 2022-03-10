@@ -1,17 +1,22 @@
 package sample;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class gameModel implements Runnable{
     protected Thread thread;
     private boolean running;
-    protected final int playerSpeed=4;
+    protected Player player;
     protected final int FPS = 60;
-    
-    private int playerX=100,playerY=100;
+    protected String up ="boy_up_1.png";
+    protected String down = "boy_down_1.png";
+    protected String left = "boy_left_1.png";
+    protected String right = "boy_right_1.png";
+
     double drawInterval = (double)1000000000/FPS;
 
     ArrayList<GameSubscriber> subs = new ArrayList<>();
+
 
     public void startThread() {
         thread = new Thread(this);
@@ -21,6 +26,8 @@ public class gameModel implements Runnable{
     }
     @Override
     public void run() {
+        player = new Player();
+
         double nextDrawTime = System.nanoTime() + drawInterval;
         while (running) {
             update();
@@ -42,24 +49,6 @@ public class gameModel implements Runnable{
 
     }
 
-    public void setPlayerX(int playerX) {
-        this.playerX = playerX;
-    }
-
-    public int getPlayerX() {
-        return playerX;
-    }
-
-    public void setPlayerY(int playerY) {
-        this.playerY = playerY;
-    }
-
-    public int getPlayerY() {
-        return playerY;
-    }
-    public int getPlayerSpeed(){
-        return playerSpeed;
-    }
 
     public void update() {
         notifySubscribers();
@@ -73,7 +62,7 @@ public class gameModel implements Runnable{
 
     public void notifySubscribers(){
         for (GameSubscriber g : subs) {
-            g.modelChanged(getPlayerX(), getPlayerY());
+            g.modelChanged(player.getX(),player.getY(),player.getPlayerImage());
         }
 
     }
