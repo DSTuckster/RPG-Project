@@ -1,27 +1,31 @@
 package sample;
-
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 public class Player{
     private int x, y, speed;
     private Image up, down, left, right,current;
 
     public Player(){
+        /**Simple constructor to initialize default values to the player
+         */
         setDefaultValues();
     }
 
 
     private void setDefaultValues() {
+        /** Sets the default x,y coordinates and speed values for our character so the view can draw
+         * the character at its starting position, also loads all required images beforehand to make
+         * running more efficient
+         *  can cause a filenotfoundException if the png files are not loaded correctly
+         */
+        //initializing default values
         this.x = 100;
         this.y = 100;
-        this.speed = 64;
+        this.speed = 8;
+        //loading images
         try {
             FileInputStream inputStream = new FileInputStream("boy_down_1.png");
             this.down = new Image(inputStream);
@@ -39,7 +43,7 @@ public class Player{
 
     }
 
-    // getters and setters for player attributes
+    // getters and setters for player attributes, all self-descriptive
     public int getX() { return x; }
 
     public int getY() { return y; }
@@ -51,6 +55,11 @@ public class Player{
     public void setY(int y) { this.y = y; }
 
     public void setPlayerImage(String direction) {
+        /** This function changes the player image based on which string has been passed into the function
+         * mainly used in conjunction with a key handler so that each picture is used when moving in the corresponding direction
+         * String direction: a lowercase string of the direction the player is facing
+         *
+         */
         switch(direction){
             case "up" -> this.current = up;
             case "down" -> this.current = down;
@@ -60,7 +69,7 @@ public class Player{
         }
     }
 
-    public Image getPlayerImage() {
+    public Image getPlayerImage() { //self-descriptive
         return this.current;
     }
 }

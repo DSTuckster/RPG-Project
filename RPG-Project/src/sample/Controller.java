@@ -25,21 +25,28 @@ public class Controller {
     }
 
     public void moveUp(){
+        //self-descriptive
         g.player.setY(g.player.getY()-g.player.getSpeed());
         g.player.setPlayerImage("up");}
     public void moveDown() {
+        //self-descriptive
         g.player.setY(g.player.getY()+g.player.getSpeed());
         g.player.setPlayerImage("down");}
 
     public void moveLeft() {
+        //self-descriptive
         g.player.setX(g.player.getX()-g.player.getSpeed());
         g.player.setPlayerImage("left");}
+
     public void moveRight() {
+        //self-descriptive
         g.player.setX(g.player.getX()+g.player.getSpeed());
         g.player.setPlayerImage("right");}
 
 
     public void dispose(){
+
+        //closes the thread
         g.closeThread();
     }
 
@@ -62,6 +69,8 @@ public class Controller {
         }
     }
     public void handleKeys(KeyEvent event) {
+        /**This function handles key inputs from the view and determines which function to call and send the data to the model
+         */
         switch (event.getCode()) {
             case UP -> moveUp();
             case DOWN -> moveDown();
