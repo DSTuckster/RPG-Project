@@ -12,7 +12,7 @@ public class Features {
     protected String bodyType;
     //protected String height;
 
-    protected Random r;
+    private static Random r;
 
     // Each String Array represents possible preset values for character features
     // The ArrayList will hold those values once initialized
@@ -130,19 +130,15 @@ public class Features {
     // TEST METHODS
     //
     // Test 1
-    private static boolean TestRandomFeatures(Features f1, Features f2) {
+    private static boolean TestRandomFeaturesAreDifferent(Features f1, Features f2) {
 
-        // If any of the values for either feature <f1> or <f2> are matching, test fails
-        // else, test passes
-        if (f1.race.equalsIgnoreCase(f2.race) ||
+        // If any of the values for either feature <f1> or <f2> are matching
+        // test fails. Else, test passes
+        return f1.race.equalsIgnoreCase(f2.race) ||
                 f1.hairColor.equalsIgnoreCase(f2.hairColor) ||
                 f1.hairType.equalsIgnoreCase(f2.hairType) ||
                 f1.eyeColor.equalsIgnoreCase(f2.eyeColor) ||
-                f1.bodyType.equalsIgnoreCase(f2.bodyType)) {
-            return false;
-        } else {
-            return true;
-        }
+                f1.bodyType.equalsIgnoreCase(f2.bodyType);
     }
 
 
@@ -160,12 +156,10 @@ public class Features {
         f1.randomize();
         f2.randomize();
         Expected = true;
-        Result = Features.TestRandomFeatures(f1, f2);
+        Result = Features.TestRandomFeaturesAreDifferent(f1, f2);
 
         if (Result != Expected) {
             System.out.println("Error in Test 1: Result != Expected");
-
-
         }
 
 
