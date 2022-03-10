@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
@@ -23,17 +24,19 @@ public class Controller {
 
     public void moveUp(){
         g.player.setY(g.player.getY()-g.player.getSpeed());
-        g.player.setPlayerImage(g.up);}
+        g.player.setPlayerImage("up");}
     public void moveDown() {
         g.player.setY(g.player.getY()+g.player.getSpeed());
-        g.player.setPlayerImage(g.down);}
+        g.player.setPlayerImage("down");}
 
     public void moveLeft() {
         g.player.setX(g.player.getX()-g.player.getSpeed());
-        g.player.setPlayerImage(g.left);}
+        g.player.setPlayerImage("left");}
     public void moveRight() {
         g.player.setX(g.player.getX()+g.player.getSpeed());
-        g.player.setPlayerImage(g.right);}
+        g.player.setPlayerImage("right");}
+
+
     public void dispose(){
         g.closeThread();
     }

@@ -3,11 +3,13 @@ package sample;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+    protected Scene currentScene;
 
     protected Controller controller;
 
@@ -67,15 +69,17 @@ public class Main extends Application {
         Scene sceneCharGen = new Scene(charView, 800, 800);
         Scene sceneCombat = new Scene(combatView, 800, 800);
         Scene sceneTraversal = new Scene(gView, 800, 800);
+        currentScene = sceneTraversal;
         sceneTraversal.setFill(Color.BLACK);
         sceneTraversal.setOnKeyPressed(controller::handleKeys);
+
 
         // Will add ways to transition through different scenes later
         // For now add what scene you want to see in primaryStage.setScene( ENTER HERE ) from
         // different scenes created above ^^^^^
 
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(sceneCharGen);
+        primaryStage.setScene(currentScene);
         primaryStage.show();
 
 
