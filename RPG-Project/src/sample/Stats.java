@@ -39,9 +39,9 @@ public class Stats {
         // Health is calculated from the CharacterLevel as 'Hit Dice'
         // For instance, a character at level 5 would have "5d12" max hp, or 60hp
         //
-        //      * For now, only adds max value, 12 *
+        //      * For now, only adds max value, 100 *
         //
-        Health = CharacterLevel * 12;
+        Health = CharacterLevel * 100;
         Mana = 100;
 
     }
@@ -76,7 +76,7 @@ public class Stats {
 
     // Health get & set methods
     public int getHealth(){ return Health; }
-    public int getMaxHealth() { return getCharacterLevel() * 12; }
+    public int getMaxHealth() { return getCharacterLevel() * 100; }
     public void setHealth(int newHealth){ Health = newHealth; }
 
     // Mana get & set methods

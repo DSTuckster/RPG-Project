@@ -60,6 +60,8 @@ public class Main extends Application {
         combatModel.addSubscriber(combatView);
         charModel.addSubscriber(charView);
 
+        welcomeView.setController(controller);
+
 
         //NOTE: This is for testing the combatView, delete it later
         combatModel.setCombatScenario(new CombatScenario(new Character(), new Character()));
@@ -80,7 +82,7 @@ public class Main extends Application {
         // different scenes created above ^^^^^
 
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(sceneTraversal);
+        primaryStage.setScene(sceneWelcome);
         primaryStage.show();
 
 

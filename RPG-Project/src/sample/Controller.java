@@ -59,6 +59,22 @@ public class Controller {
         thisStage.show();
     }
 
+    public void genToTraversal(){
+        Stage stage = new Stage();
+        gameView traversal = (gameView) g.subs.get(0);
+        Scene sceneTraversal = traversal.getScene();
+        stage.setScene(sceneTraversal);
+        stage.show();
+    }
+
+    public void welcomeToGen(){
+        Stage stage = new Stage();
+        CharacterGeneratorView charGen = (CharacterGeneratorView) charModel.subs.get(0);
+        Scene sceneCharGen = charGen.getScene();
+        stage.setScene(sceneCharGen);
+        stage.show();
+    }
+
     public void nextPhase(MouseEvent e) {
         if(combatModel.phase != combatModel.playerTurnPhase){
             try {

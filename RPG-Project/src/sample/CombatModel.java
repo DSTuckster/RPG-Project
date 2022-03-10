@@ -45,6 +45,7 @@ public class CombatModel {
 
         playerTotalWisdom = player.characterStats.getMana();
         playerTotalHealth = player.characterStats.getHealth();
+        System.out.println(playerTotalHealth);
 
         //NOTE: The middle portion of this string should not be in double quotes. remove when name generation is implemented
         combatDialogue.put(0 ,"A wild " + enemy.name + " has appeared!");
@@ -128,10 +129,10 @@ public class CombatModel {
         if(!endCombatChecks() && phase >= 4){
             phase = 0;
         }
-        if(phase == playerTurnPhase-1){
+        if(phase == playerTurnPhase){
             playerTurn = true;
             playerPhase();
-        }else if(phase == enemyTurnPhase-1){
+        }else if(phase == enemyTurnPhase){
             playerTurn = false;
             enemyPhase();
         }else{
@@ -167,15 +168,15 @@ public class CombatModel {
 
     public void setCombatDialogue(){
         if(playerTurn){
-            playerTurnPhase = 1;
-            enemyTurnPhase = 3;
+            playerTurnPhase = 0;
+            enemyTurnPhase = 2;
             combatDialogue.put(1, "It is the players turn!");
             combatDialogue.put(2, "The player did " + player.characterStats.getStr() + " damage");
             combatDialogue.put(3, "It is the enemies turn!");
             combatDialogue.put(4, "The enemy did " + enemy.characterStats.getStr() + " damage");
         }else{
-            playerTurnPhase = 3;
-            enemyTurnPhase = 1;
+            playerTurnPhase = 2;
+            enemyTurnPhase = 0;
             combatDialogue.put(1, "It is the enemies turn!");
             combatDialogue.put(2, "The enemy did " + enemy.characterStats.getStr() + " damage");
             combatDialogue.put(3, "It is the players turn!");
@@ -314,16 +315,11 @@ public class CombatModel {
             result = 1;
         }else if(model.player.characterStats.getDex() < model.enemy.characterStats.getDex()){
             result = 0;
-        }else{
-            result = -1;
         }
         if(result == 0 && model.playerTurn){
             System.out.println("whoGoesFirst() test #1 failed! expected = playerTurn, result = enemyTurn");
         }else if(result == 1 && !model.playerTurn){
             System.out.println("whoGoesFirst() test #1 failed! expected = enemyTurn, result = PlayerTurn");
-        }
-        else if(result == -1){
-            System.out.println("whoGoesFirst() test #1 failed! expected = playerTurn, result = nobodies turn");
         }
 
         //expGain() test #1
@@ -402,6 +398,14 @@ public class CombatModel {
         //check combatDialogue
         for(int i =  0; i < model.combatDialogue.size(); i++){
             System.out.println(model.combatDialogue.get(i));
+        }
+
+        //resetCombat() test
+        expected = model.player.characterStats.getHealth();
+        model.restCombat();
+        result = model.player.characterStats.getHealth();
+        if(expected == result){
+            System.out.println("RestCombat() test failed! expected = " + expected + " result = " + result);
         }
     }
 }

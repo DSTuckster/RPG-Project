@@ -74,11 +74,12 @@ public class WelcomeView extends Pane {
         this.getChildren().addAll(main);
     }
 
-    // TODO: Set up handling using saved character and moving
-    //      views from welcome to character to traversal to combat or
-    //      welcome to traversal to combat
-    public void controller(Controller controller){
-
+    /**
+     * Sends user interaction to controller to handle
+     * @param controller the controller to handle user interaction
+     */
+    public void setController(Controller controller){
+        newChar.setOnAction(e -> controller.welcomeToGen());
     }
 
 }
