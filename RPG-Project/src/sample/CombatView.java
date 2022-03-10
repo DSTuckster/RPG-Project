@@ -142,9 +142,9 @@ public class CombatView extends StackPane implements CombatSubscriber{
 
         // Get current health, xp, and mana for the progress bars
         // Divided by 10 to get a float between 0-1 for progress bar
-        playerManaBar.setProgress((float)model.player.characterStats.getWis()/10);
-        playerHealthBar.setProgress((float)model.player.characterStats.getHealth()/10);
-        enemyHealthBar.setProgress((float)model.enemy.characterStats.getHealth()/10);
+        playerManaBar.setProgress((float)model.player.characterStats.getMana()/100);
+        playerHealthBar.setProgress((float)model.player.characterStats.getHealth()/100);
+        enemyHealthBar.setProgress((float)model.enemy.characterStats.getHealth()/100);
 
         // TODO: Handle closing out the combat view when game is over.
         //      Add game dialogue
