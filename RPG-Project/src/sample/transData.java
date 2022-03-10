@@ -5,6 +5,54 @@ import java.util.ArrayList;
 
 public class transData {
     
+    ArrayList<String> keylist;
+    ArrayList<String> valuelist;
+    /**
+     * translate the data class to a list
+     * @param character the data type from class
+     */
+    public ArrayList<String> CreateKeyList(){
+        keylist.add("name");
+        keylist.add("Stats");
+        keylist.add("Features");
+        keylist.add("Story");
+        keylist.add("CharacterLevel");
+        keylist.add("Health");
+        keylist.add("Strength");
+        keylist.add("Dexterity");
+        keylist.add("Constitution");
+        keylist.add("Wisdom");
+        keylist.add("Intelligence");
+        keylist.add("Charisma");
+        keylist.add("race");
+        keylist.add("hairColor");
+        keylist.add("hairType");
+        keylist.add("eyeColor");
+        keylist.add("bodyType");
+        return keylist;
+    }
+
+    /**
+     * translate the data class to a list
+     * @return
+     */
+    public ArrayList<String> CreateValueList(Character character){
+        valuelist.add(Integer.toString(character.characterStats.getCharacterLevel()));
+        valuelist.add(Integer.toString(character.characterStats.getHealth()));
+        valuelist.add(Integer.toString(character.characterStats.getStr()));
+        valuelist.add(Integer.toString(character.characterStats.getDex()));
+        valuelist.add(Integer.toString(character.characterStats.getCon()));
+        valuelist.add(Integer.toString(character.characterStats.getWis()));
+        valuelist.add(Integer.toString(character.characterStats.getInt()));
+        valuelist.add(Integer.toString(character.characterStats.getCha()));
+        valuelist.add(character.characterFeatures.getRace());
+        valuelist.add(character.characterFeatures.getHairColor());
+        valuelist.add(character.characterFeatures.getHairType());
+        valuelist.add(character.characterFeatures.getEyeColor());
+        valuelist.add(character.characterFeatures.getBodyType());
+        return valuelist;
+    }
+    
     /**
      * set the values of stats and features
      * @param list the values of stats and features you want to set
