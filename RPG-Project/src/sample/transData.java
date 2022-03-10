@@ -1,5 +1,6 @@
 package sample;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +13,23 @@ public class transData extends SaveSystem{
     ArrayList<String> valuelist;
     public Stats stats= new Stats();
     public Features features= new Features();
+    Character character;
+
+    public transData(Character c) throws FileNotFoundException {
+        character = c;
+
+        keylist = new ArrayList<>();
+        this.CreateKeyList();
+
+        valuelist = new ArrayList<>();
+        this.CreateValueList();
+
+        this.SaveToFile("save.txt", keylist, valuelist);
+    }
 
     public void CreateKeyList(){
 
-        keylist.add("name");
+        keylist.add("Name");
         keylist.add("Stats");
         keylist.add("Features");
         keylist.add("Story");
@@ -27,11 +41,11 @@ public class transData extends SaveSystem{
         keylist.add("Wisdom");
         keylist.add("Intelligence");
         keylist.add("Charisma");
-        keylist.add("race");
-        keylist.add("hairColor");
-        keylist.add("hairType");
-        keylist.add("eyeColor");
-        keylist.add("bodyType");
+        keylist.add("Race");
+        keylist.add("Hair Color");
+        keylist.add("Hair Type");
+        keylist.add("Eye Color");
+        keylist.add("Body Type");
 
     }
 
@@ -41,19 +55,20 @@ public class transData extends SaveSystem{
 
 
     public void CreateValueList(){
-        valuelist.add(Integer.toString(stats.getCharacterLevel()));
-        valuelist.add(Integer.toString(stats.getHealth()));
-        valuelist.add(Integer.toString(stats.getStr()));
-        valuelist.add(Integer.toString(stats.getDex()));
-        valuelist.add(Integer.toString(stats.getCon()));
-        valuelist.add(Integer.toString(stats.getWis()));
-        valuelist.add(Integer.toString(stats.getInt()));
-        valuelist.add(Integer.toString(stats.getCha()));
-        valuelist.add(features.getRace());
-        valuelist.add(features.getHairColor());
-        valuelist.add(features.getHairType());
-        valuelist.add(features.getEyeColor());
-        valuelist.add(features.getBodyType());
+        valuelist.add("NAME");
+        valuelist.add(Integer.toString(character.characterStats.getCharacterLevel()));
+        valuelist.add(Integer.toString(character.characterStats.getHealth()));
+        valuelist.add(Integer.toString(character.characterStats.getStr()));
+        valuelist.add(Integer.toString(character.characterStats.getDex()));
+        valuelist.add(Integer.toString(character.characterStats.getCon()));
+        valuelist.add(Integer.toString(character.characterStats.getWis()));
+        valuelist.add(Integer.toString(character.characterStats.getInt()));
+        valuelist.add(Integer.toString(character.characterStats.getCha()));
+        valuelist.add(character.characterFeatures.getRace());
+        valuelist.add(character.characterFeatures.getHairColor());
+        valuelist.add(character.characterFeatures.getHairType());
+        valuelist.add(character.characterFeatures.getEyeColor());
+        valuelist.add(character.characterFeatures.getBodyType());
     }
 
     /**

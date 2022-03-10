@@ -91,41 +91,26 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         bottom.setSpacing(10);
 
         // All ComboBox Labels (far left)
-        Class = new Label ("Class: ");
-        background = new Label("Background: ");
         race = new Label("Race: ");
-        goals = new Label("Goals: ");
-        traits = new Label("Traits: ");
-        gender = new Label("Gender: ");
-        extras = new Label("Extras: ");
-        height = new Label("Height: ");
         strength = new Label("Strength: ");
         dexterity = new Label("Dexterity: ");
         constitution = new Label("Constitution: ");
         wisdom = new Label("Wisdom: ");
         intelligence = new Label("Intelligence: ");
         charisma = new Label("Charisma: ");
-        labels.getChildren().addAll(Class, background, race, goals, traits, gender, extras, height, strength,
-                dexterity, constitution, wisdom, intelligence, charisma);
+        labels.getChildren().addAll(race, strength, dexterity, constitution, wisdom, intelligence, charisma);
         labels.setSpacing(20);
 
         // All comboboxes (far left)
-        classList = new ComboBox<>();
-        backgroundList = new ComboBox<>();
         raceList = new ComboBox<>(races);
-        goalsList = new ComboBox<>();
-        traitsList = new ComboBox<>();
-        genderList = new ComboBox<>();
-        extrasList = new ComboBox<>();
-        heightList = new ComboBox<>();
         strengthList = new ComboBox<>(stats);
         dexterityList = new ComboBox<>(stats);
         constitutionList = new ComboBox<>(stats);
         wisdomList = new ComboBox<>(stats);
         intelligenceList = new ComboBox<>(stats);
         charismaList = new ComboBox<>(stats);
-        combo.getChildren().addAll(classList, backgroundList, raceList, goalsList, traitsList, genderList, extrasList,
-                heightList, strengthList, dexterityList, constitutionList, wisdomList, intelligenceList, charismaList);
+        combo.getChildren().addAll(raceList, strengthList, dexterityList, constitutionList, wisdomList, intelligenceList,
+                charismaList);
         combo.setSpacing(12);
 
 
@@ -139,22 +124,18 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
 
         // Labels for choice boxes (far right)
         hairC = new Label("Hair Colour: ");
-        armourChoice = new Label("Armour: ");
-        weaponChoice = new Label("Weapon: ");
         eyeColourChoice = new Label("Eye Colour: ");
         hairT = new Label("Hair Type: ");
         body = new Label("Body Type: ");
-        choiceLabels.getChildren().addAll(hairC, armourChoice, weaponChoice, eyeColourChoice, hairT, body);
+        choiceLabels.getChildren().addAll(hairC, eyeColourChoice, hairT, body);
         choiceLabels.setSpacing(20);
 
         // Choice boxes (far right)
         hairColour = new ChoiceBox<>(hairColor);
-        armour = new ChoiceBox<>();
-        weapon = new ChoiceBox<>();
         eyeColour = new ChoiceBox<>(eyeColor);
         hairType = new ChoiceBox<>(hairTypes);
         bodyType = new ChoiceBox<>(bodyTypes);
-        vboxChoice.getChildren().addAll(hairColour, armour, weapon, eyeColour, hairType, bodyType);
+        vboxChoice.getChildren().addAll(hairColour, eyeColour, hairType, bodyType);
         vboxChoice.setSpacing(12);
 
         // Mid section (label -> combobox -> stickman -> label -> choicebox)
@@ -173,10 +154,34 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
      */
     public void setController(Controller controller){
         generateRandom.setOnAction(e -> controller.handleGenerateRandom());
+        save.setOnAction(e -> {
+            try {
+                controller.handleSave(this.saveChoices());
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     public void setModel(CharacterGenerator mod){
         model = mod;
+    }
+
+    private ArrayList<String> saveChoices(){
+        ArrayList<String> custom = new ArrayList<>();
+        custom.add(charismaList.getValue());
+        custom.add(constitutionList.getValue());
+        custom.add(wisdomList.getValue());
+        custom.add(dexterityList.getValue());
+        custom.add(intelligenceList.getValue());
+        custom.add(strengthList.getValue());
+        custom.add(bodyType.getValue());
+        custom.add(eyeColour.getValue());
+        custom.add(hairColour.getValue());
+        custom.add(hairType.getValue());
+        custom.add(raceList.getValue());
+
+        return custom;
     }
 
     @Override
@@ -192,5 +197,6 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         hairType.setValue(model.character.characterFeatures.hairType);
         eyeColour.setValue(model.character.characterFeatures.eyeColor);
         bodyType.setValue(model.character.characterFeatures.bodyType);
+        name.setText("RANDOM NAME");
     }
 }

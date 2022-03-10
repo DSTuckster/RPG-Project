@@ -120,9 +120,8 @@ public class CombatView extends StackPane implements CombatSubscriber{
 
     @Override
     public void modelChanged() {
-        System.out.println(model.player.characterStats.getHealth());
-        System.out.println(model.enemy.characterStats.getHealth());
 
+        // Divided by 10 to get a float between 0-1 for progress bar
         playerManaBar.setProgress((float)model.player.characterStats.getWis()/10);
         playerHealthBar.setProgress((float)model.player.characterStats.getHealth()/10);
         enemyHealthBar.setProgress((float)model.enemy.characterStats.getHealth()/10);
@@ -140,6 +139,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
             System.out.println("Ran Away");
         }
 
+        // If mana bar empty then player can no longer use magic button
         if (model.player.characterStats.getWis() <= 0){
             magic.setDisable(true);
         }

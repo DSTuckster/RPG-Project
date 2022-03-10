@@ -19,7 +19,6 @@ public class SaveSystem {
     transData transData;
 
     public void SaveToFile(String path, ArrayList<String> key, ArrayList<String> value) throws FileNotFoundException {
-        String savepath;
         int length = 0;
         File savefile = new File(path);
         PrintWriter filenName = new PrintWriter(savefile);
@@ -27,11 +26,13 @@ public class SaveSystem {
         while (length<=4){
 
             filenName.println(key.get(length)+ " : ");
-            filenName.println("  " + value.get(length-1));
+            if(length==0){
+                filenName.println(value.get(0));
+            }
             if(length ==1){
-                int i=0;
-                while (i<=7){
-                    filenName.println(key.get(i+4));
+                int i=1;
+                while (i<=8){
+                    filenName.println(key.get(i+3));
                     filenName.println(value.get(i));
                     i++;
                 }
@@ -40,7 +41,7 @@ public class SaveSystem {
                 int o =0;
                 while (o<=4){
                     filenName.println(key.get(o+12));
-                    filenName.println(value.get(o+8));
+                    filenName.println(value.get(o+9));
                     o++;
                 }
             }
