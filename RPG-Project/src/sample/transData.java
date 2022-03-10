@@ -93,7 +93,7 @@ public class transData extends SaveSystem{
 
         //set character a new name
     public void setName(Character character, String name){
-        character.setName(name);
+        character.name = name;
     }
     //set character a new race
     public void setRace(Character character, String race){
