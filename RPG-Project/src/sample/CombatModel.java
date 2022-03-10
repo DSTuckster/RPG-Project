@@ -128,10 +128,10 @@ public class CombatModel {
         if(!endCombatChecks() && phase >= 4){
             phase = 0;
         }
-        if(phase == playerTurnPhase-1){
+        if(phase == playerTurnPhase){
             playerTurn = true;
             playerPhase();
-        }else if(phase == enemyTurnPhase-1){
+        }else if(phase == enemyTurnPhase){
             playerTurn = false;
             enemyPhase();
         }else{
@@ -167,15 +167,15 @@ public class CombatModel {
 
     public void setCombatDialogue(){
         if(playerTurn){
-            playerTurnPhase = 1;
-            enemyTurnPhase = 3;
+            playerTurnPhase = 0;
+            enemyTurnPhase = 2;
             combatDialogue.put(1, "It is the players turn!");
             combatDialogue.put(2, "The player did " + player.characterStats.getStr() + " damage");
             combatDialogue.put(3, "It is the enemies turn!");
             combatDialogue.put(4, "The enemy did " + enemy.characterStats.getStr() + " damage");
         }else{
-            playerTurnPhase = 3;
-            enemyTurnPhase = 1;
+            playerTurnPhase = 2;
+            enemyTurnPhase = 0;
             combatDialogue.put(1, "It is the enemies turn!");
             combatDialogue.put(2, "The enemy did " + enemy.characterStats.getStr() + " damage");
             combatDialogue.put(3, "It is the players turn!");
