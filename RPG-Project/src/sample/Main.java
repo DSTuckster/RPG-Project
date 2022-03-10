@@ -1,15 +1,18 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.geometry.Dimension2D;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
     protected Controller controller;
+    protected Dimension2D dim;
 
     protected CombatModel combatModel;
     protected CombatView combatView;
@@ -27,13 +30,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        canHeight=800;
-        canWidth=800;
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        canHeight = (int)(screenBounds.getHeight()/1.5);
+        canWidth = (int)(screenBounds.getWidth()/1.5);
+
         controller = new Controller();
         combatModel = new CombatModel();
         combatView = new CombatView();
         g = new gameModel();
-        gView = new gameView(canHeight,canWidth);
+        gView = new gameView(800,800);
         charView = new CharacterGeneratorView();
         charModel = new CharacterGenerator();
         welcomeView = new WelcomeView();
@@ -75,7 +80,7 @@ public class Main extends Application {
         // different scenes created above ^^^^^
 
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(sceneCombat);
+        primaryStage.setScene(sceneTraversal);
         primaryStage.show();
 
 
