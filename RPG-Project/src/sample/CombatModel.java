@@ -314,16 +314,11 @@ public class CombatModel {
             result = 1;
         }else if(model.player.characterStats.getDex() < model.enemy.characterStats.getDex()){
             result = 0;
-        }else{
-            result = -1;
         }
         if(result == 0 && model.playerTurn){
             System.out.println("whoGoesFirst() test #1 failed! expected = playerTurn, result = enemyTurn");
         }else if(result == 1 && !model.playerTurn){
             System.out.println("whoGoesFirst() test #1 failed! expected = enemyTurn, result = PlayerTurn");
-        }
-        else if(result == -1){
-            System.out.println("whoGoesFirst() test #1 failed! expected = playerTurn, result = nobodies turn");
         }
 
         //expGain() test #1
@@ -402,6 +397,14 @@ public class CombatModel {
         //check combatDialogue
         for(int i =  0; i < model.combatDialogue.size(); i++){
             System.out.println(model.combatDialogue.get(i));
+        }
+
+        //resetCombat() test
+        expected = model.player.characterStats.getHealth();
+        model.restCombat();
+        result = model.player.characterStats.getHealth();
+        if(expected == result){
+            System.out.println("RestCombat() test failed! expected = " + expected + " result = " + result);
         }
     }
 }
