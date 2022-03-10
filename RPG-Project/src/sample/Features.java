@@ -126,6 +126,16 @@ public class Features {
         setEyeColor(eyeColors.get(r.nextInt(eyeColors.size())));
         setBodyType(bodyTypes.get(r.nextInt(bodyTypes.size())));
     }
+    @Override
+    public String toString() {
+        return "Features{" +
+                "race='" + race + '\'' +
+                ", hairColor='" + hairColor + '\'' +
+                ", hairType='" + hairType + '\'' +
+                ", eyeColor='" + eyeColor + '\'' +
+                ", bodyType='" + bodyType + '\'' +
+                '}';
+    }
 
     // TEST METHODS
     //
