@@ -80,4 +80,8 @@ public class Controller {
         combatModel.usedMagic();
     }
 
+    public void handleCombatRest(){
+        combatModel.restCombat();
+    }
+
 }
