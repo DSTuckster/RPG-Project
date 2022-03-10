@@ -25,7 +25,7 @@ public class Character {
     }
 
     private String generateName() {
-        return null;
+        return new Names().name;
     }
 
     private Story generateStory() {

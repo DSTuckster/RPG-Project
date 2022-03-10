@@ -17,11 +17,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class CombatView extends StackPane implements CombatSubscriber{
-    Image background;
-    Button attack, run, magic, retryYes, retryNo, attackOne, attackTwo, attackThree, attackFour;
-    ProgressBar playerXPBar, playerHealthBar, playerManaBar, enemyHealthBar;
-    Label Enemy, Player, HP, XP, Mana;
-    CombatModel model;
+    protected Image background;
+    protected Button attack, run, magic, retryYes, retryNo, attackOne, attackTwo, attackThree, attackFour;
+    protected ProgressBar playerXPBar, playerHealthBar, playerManaBar, enemyHealthBar;
+    protected Label Enemy, Player, HP, XP, Mana;
+    protected CombatModel model;
 
     public CombatView() throws FileNotFoundException {
 

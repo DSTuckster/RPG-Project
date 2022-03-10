@@ -55,7 +55,7 @@ public class transData extends SaveSystem{
 
 
     public void CreateValueList(){
-        valuelist.add("NAME");
+        valuelist.add(character.name);
         valuelist.add(Integer.toString(character.characterStats.getCharacterLevel()));
         valuelist.add(Integer.toString(character.characterStats.getHealth()));
         valuelist.add(Integer.toString(character.characterStats.getStr()));
