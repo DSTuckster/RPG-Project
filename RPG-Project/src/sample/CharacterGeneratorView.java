@@ -157,6 +157,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
                 ex.printStackTrace();
             }
         });
+        play.setOnAction(e -> controller.genToTraversal());
     }
 
     /**

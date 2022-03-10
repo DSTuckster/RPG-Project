@@ -45,6 +45,7 @@ public class CombatModel {
 
         playerTotalWisdom = player.characterStats.getMana();
         playerTotalHealth = player.characterStats.getHealth();
+        System.out.println(playerTotalHealth);
 
         //NOTE: The middle portion of this string should not be in double quotes. remove when name generation is implemented
         combatDialogue.put(0 ,"A wild " + enemy.name + " has appeared!");
