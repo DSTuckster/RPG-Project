@@ -42,7 +42,6 @@ public class Controller {
         if(combatModel.phase != combatModel.playerTurnPhase){
             try {
                 combatModel.nextPhase();
-                combatModel.typeOutDialogue(0, combatText);
             } catch (InterruptedException interruptedException) {
                 Thread.currentThread().interrupt();
             }

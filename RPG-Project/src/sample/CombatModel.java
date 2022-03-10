@@ -44,11 +44,11 @@ public class CombatModel {
         player = scenario.player;
         enemy = scenario.enemy;
 
-        playerTotalWisdom = player.characterStats.getWis();
+        playerTotalWisdom = player.characterStats.getMana();
         playerTotalHealth = player.characterStats.getHealth();
 
         //NOTE: The middle portion of this string should not be in double quotes. remove when name generation is implemented
-        combatDialogue.put(0 ,"A wild" + "enemy.characterStats.getName()" + " has appeared!");
+        combatDialogue.put(0 ,"A wild " + enemy.name + " has appeared!");
         currentDialogue = combatDialogue.get(0);
         whoGoesFirst();
     }
@@ -63,14 +63,14 @@ public class CombatModel {
             int damage = player.characterStats.getStr() + extraDamage;
             int newHealth = enemy.characterStats.getHealth() - damage;
             enemy.characterStats.setHealth(newHealth);
-            combatDialogue.put(phase+1, "The player did " + damage + " damage");
+            combatDialogue.replace(phase+1, "The player did " + damage + " damage");
             playerTurn = false;
         }else{
             //enemy attacks
             int damage = enemy.characterStats.getStr() + extraDamage;
             int newHealth = player.characterStats.getHealth() - damage;
             player.characterStats.setHealth(newHealth);
-            combatDialogue.put(phase+1, "The enemy did " + damage + " damage");
+            combatDialogue.replace(phase+1, "The enemy did " + damage + " damage");
             enemyTurn = false;
             playerTurn = true;
         }
@@ -88,8 +88,8 @@ public class CombatModel {
             enemy.characterStats.setHealth(newHealth);
 
             // subtract magic points from player
-            player.characterStats.setWis(player.characterStats.getWis()-2);
-            combatDialogue.put(phase+1, "The player used a spell and did " + player.characterStats.getInt() + " damage");
+            player.characterStats.setMana(player.characterStats.getMana()-1);
+            combatDialogue.replace(phase+1, "The player used a spell and did " + player.characterStats.getInt() + " damage");
             playerTurn=false;
 
         }else{
@@ -97,8 +97,8 @@ public class CombatModel {
             player.characterStats.setHealth(newHealth);
 
             // subtract magic points from enemy
-            enemy.characterStats.setWis(enemy.characterStats.getWis()-2);
-            combatDialogue.put(phase+1, "The enemy used a spell and did " + enemy.characterStats.getInt() + " damage");
+            enemy.characterStats.setMana(enemy.characterStats.getMana()-1);
+            combatDialogue.replace(phase+1, "The enemy used a spell and did " + enemy.characterStats.getInt() + " damage");
             playerTurn=true;
         }
         notifySubscribers();
@@ -189,27 +189,6 @@ public class CombatModel {
             combatDialogue.put(2, "The enemy did " + enemy.characterStats.getStr() + " damage");
             combatDialogue.put(3, "It is the players turn!");
             combatDialogue.put(4, "The player did " + player.characterStats.getStr() + " damage");
-        }
-    }
-
-    /**
-     * type out dialogue automatically one letter at a time
-     * (i.e. pokemon/final fantasy)
-     * NOTE: can't get typeOutDialogue to work for some reason, I will come back to it later - Dylan
-     */
-    public void typeOutDialogue(int index, Text text) throws InterruptedException {
-        text.setText("");
-        for(int i = 0; i < combatDialogue.get(phase).length(); i++){
-            /**
-            try{
-                TimeUnit.SECONDS.sleep(1);
-            }catch(InterruptedException ex){
-                Thread.currentThread().interrupt();
-            }
-             */
-
-            // This line will need to be modified when the UI is complete
-            text.setText(text.getText() + combatDialogue.get(phase).charAt(i));
         }
     }
 
@@ -308,7 +287,6 @@ public class CombatModel {
         //set combat scenario test #1
         model.setCombatScenario(new CombatScenario(new Character(), new Character()));
 
-
         //nextPhase() test #1
         //model.nextPhase();
         int expected = 1;
@@ -317,18 +295,7 @@ public class CombatModel {
             System.out.println("nextPhase() test #1 failed! expected = " + expected + ", result = " + result);
         }
 
-        //nextPhase() test #2
-        /**
-        for (int i = 0; i < 5; i++){
-            model.nextPhase();
-        }
 
-        expected = 1;
-        result = model.phase;
-        if(expected != result){
-            System.out.println("nextPhase() test #2 failed! expected = " + expected + ", result = " + result);
-        }
-         */
 
         //whoGoesFirst() test #1
         model.whoGoesFirst();
@@ -362,7 +329,7 @@ public class CombatModel {
         //This variable is a safety net, I would occasionally get an infinite loop. I think I fixed it, but just in case...
         int count = 0;
         while(!model.endCombatChecks()){
-            if(count == 5){
+            if(count == 10){
                 System.out.println("break!!!!!!!!!!!!!!!!!!!!");
                 break;
             }
@@ -376,7 +343,7 @@ public class CombatModel {
                 System.out.println("total damage was " + playerDamage);
             }else if(model.enemyTurn){
                 model.nextPhase();
-                model.attack();
+                //model.attack();
                 int playerHealth = model.player.characterStats.getHealth();
                 int playerTotalHealth = model.playerTotalHealth;
                 int enemyDamage = playerTotalHealth - playerHealth;
@@ -387,6 +354,8 @@ public class CombatModel {
             }
             count ++;
         }
+
+        model.setCombatDialogue();
 
 
         //expGain() test #2
@@ -403,12 +372,6 @@ public class CombatModel {
             System.out.println("Player level up test #1 failed! expected = 2 result = " + model.player.characterStats.getCharacterLevel());
         }
 
-
-        //typeOutDialogue() test #1
-        //model.typeOutDialogue(model.phase);
-
-        //the following tests should be uncommented once character generator is implemented
-
         //create enemy test #1
         model.createEnemy();
         Character characterResult = model.enemy;
@@ -418,7 +381,12 @@ public class CombatModel {
 
 
         //attack() test #1
-        model.playerTurn = true;
-        model.attack();
+        //model.playerTurn = true;
+        //model.attack();
+
+        //
+        for(int i =  0; i < model.combatDialogue.size(); i++){
+            System.out.println(model.combatDialogue.get(i));
+        }
     }
 }
