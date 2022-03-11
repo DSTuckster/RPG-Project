@@ -79,23 +79,24 @@ public class CombatModel {
      * then subtract cost of spell from magic points stat
      */
     public void usedMagic() {
+        int extraDamage = (int) (Math.random() * 5 + 1);
         if(playerTurn && player.characterStats.getMana() >= 10){
-            int newHealth = enemy.characterStats.getHealth() - player.characterStats.getInt();
+            int newHealth = enemy.characterStats.getHealth() - player.characterStats.getInt() - extraDamage;
             enemy.characterStats.setHealth(newHealth);
 
             // subtract magic points from player
             player.characterStats.setMana(player.characterStats.getMana()-10);
-            combatDialogue.replace(phase+1, "The player used a spell and did " + player.characterStats.getInt() + " damage");
+            combatDialogue.replace(phase+1, "The player used a spell and did " + (player.characterStats.getInt() + extraDamage) + " damage");
             setCurrentDialogue(combatDialogue.get(phase));
             playerTurn=false;
 
         }else if(enemy.characterStats.getMana() >= 10){
-            int newHealth = player.characterStats.getHealth() - enemy.characterStats.getInt();
+            int newHealth = player.characterStats.getHealth() - enemy.characterStats.getInt() - extraDamage;
             player.characterStats.setHealth(newHealth);
 
             // subtract magic points from enemy
             enemy.characterStats.setMana(enemy.characterStats.getMana()-10);
-            combatDialogue.replace(enemyTurnPhase+1, "The enemy used a spell and did " + enemy.characterStats.getInt() + " damage");
+            combatDialogue.replace(enemyTurnPhase+1, "The enemy used a spell and did " + (enemy.characterStats.getInt() + extraDamage) + " damage");
             setCurrentDialogue(combatDialogue.get(enemyTurnPhase+1));
             playerTurn=true;
         }

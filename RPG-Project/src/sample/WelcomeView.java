@@ -50,7 +50,6 @@ public class WelcomeView extends Pane {
         optionSaved.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 20));
         saved = new ChoiceBox<>();
         saved.setStyle("-fx-background-color: WHITE");
-        saved.setPrefSize(15,15);
 
         // Play with saved character selection
         play = new Button("Play");
@@ -67,10 +66,12 @@ public class WelcomeView extends Pane {
         bottom.getChildren().addAll(optionSaved,saved, playEdit);
         bottom.setAlignment(Pos.BOTTOM_CENTER);
         bottom.setSpacing(15);
+        bottom.setAlignment(Pos.CENTER);
 
         main.getChildren().addAll(top,middle,bottom);
         main.setSpacing(100);
-        main.setPrefSize(500,500);
+        main.setAlignment(Pos.CENTER);
+        main.setPrefSize(800,800);
         this.getChildren().addAll(main);
     }
 

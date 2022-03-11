@@ -16,9 +16,9 @@ import java.util.ArrayList;
 
 public class CharacterGeneratorView extends Pane implements CharacterSubscribers{
     protected Button generateRandom, save, play;
-    protected ComboBox<String> raceList, strengthList, dexterityList, constitutionList, wisdomList,
+    protected ChoiceBox<String> strengthList, dexterityList, constitutionList, wisdomList,
             intelligenceList, charismaList;
-    protected ChoiceBox<String> hairColour, eyeColour, hairType, bodyType;
+    protected ComboBox<String> raceList, hairColour, eyeColour, hairType, bodyType;
     protected TextField name;
     protected Label race, charName, strength, dexterity, constitution, wisdom, intelligence, charisma, hairC,
             eyeColourChoice, hairT, body;
@@ -86,25 +86,23 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         bottom.setSpacing(10);
 
         // All ComboBox Labels (far left)
-        race = new Label("Race: ");
         strength = new Label("Strength: ");
         dexterity = new Label("Dexterity: ");
         constitution = new Label("Constitution: ");
         wisdom = new Label("Wisdom: ");
         intelligence = new Label("Intelligence: ");
         charisma = new Label("Charisma: ");
-        labels.getChildren().addAll(race, strength, dexterity, constitution, wisdom, intelligence, charisma);
+        labels.getChildren().addAll(strength, dexterity, constitution, wisdom, intelligence, charisma);
         labels.setSpacing(20);
 
-        // All comboboxes (far left)
-        raceList = new ComboBox<>(races);
-        strengthList = new ComboBox<>(stats);
-        dexterityList = new ComboBox<>(stats);
-        constitutionList = new ComboBox<>(stats);
-        wisdomList = new ComboBox<>(stats);
-        intelligenceList = new ComboBox<>(stats);
-        charismaList = new ComboBox<>(stats);
-        combo.getChildren().addAll(raceList, strengthList, dexterityList, constitutionList, wisdomList, intelligenceList,
+        // All choiceboxes (far left)
+        strengthList = new ChoiceBox<>(stats);
+        dexterityList = new ChoiceBox<>(stats);
+        constitutionList = new ChoiceBox<>(stats);
+        wisdomList = new ChoiceBox<>(stats);
+        intelligenceList = new ChoiceBox<>(stats);
+        charismaList = new ChoiceBox<>(stats);
+        combo.getChildren().addAll(strengthList, dexterityList, constitutionList, wisdomList, intelligenceList,
                 charismaList);
         combo.setSpacing(12);
 
@@ -114,28 +112,34 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         character = new Image(inputStream);
         ImageView imageView = new ImageView();
         imageView.setImage(character);
-        imageView.setFitHeight(300);
-        imageView.setFitWidth(300);
+        imageView.setFitHeight(600);
+        imageView.setFitWidth(325);
 
-
+        race = new Label("Race: ");
         hairC = new Label("Hair Colour: ");
         eyeColourChoice = new Label("Eye Colour: ");
         hairT = new Label("Hair Type: ");
         body = new Label("Body Type: ");
-        choiceLabels.getChildren().addAll(hairC, eyeColourChoice, hairT, body);
+        choiceLabels.getChildren().addAll(race, hairC, eyeColourChoice, hairT, body);
         choiceLabels.setSpacing(20);
 
-        // Choice boxes (far right)
-        hairColour = new ChoiceBox<>(hairColor);
-        eyeColour = new ChoiceBox<>(eyeColor);
-        hairType = new ChoiceBox<>(hairTypes);
-        bodyType = new ChoiceBox<>(bodyTypes);
-        vboxChoice.getChildren().addAll(hairColour, eyeColour, hairType, bodyType);
+        // Combo boxes (far right) ALL SET TO EDITABLE so user can add unavailable feature choice
+        raceList = new ComboBox<>(races);
+        raceList.setEditable(true);
+        hairColour = new ComboBox<>(hairColor);
+        hairColour.setEditable(true);
+        eyeColour = new ComboBox<>(eyeColor);
+        eyeColour.setEditable(true);
+        hairType = new ComboBox<>(hairTypes);
+        hairType.setEditable(true);
+        bodyType = new ComboBox<>(bodyTypes);
+        bodyType.setEditable(true);
+        vboxChoice.getChildren().addAll(raceList, hairColour, eyeColour, hairType, bodyType);
         vboxChoice.setSpacing(12);
 
         // Mid section grouping (label -> combobox -> stickman -> label -> choicebox)
         mid.getChildren().addAll(labels,combo,imageView, choiceLabels, vboxChoice);
-        mid.setSpacing(40);
+        mid.setSpacing(20);
 
         // All put together
         VBox main = new VBox();
