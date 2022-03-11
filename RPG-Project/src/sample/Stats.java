@@ -81,7 +81,7 @@ public class Stats {
 
     // Mana get & set methods
     public int getMana() { return Mana; }
-    public int getMaxMana() { return getCharacterLevel() + (Intelligence+Wisdom) * 2; }
+    public int getMaxMana() { return 100; }
     public void setMana(int newMana) { Mana = newMana; }
 
     // Strength get & set methods
