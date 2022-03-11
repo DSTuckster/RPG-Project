@@ -7,9 +7,13 @@ public class transData {
     
     ArrayList<String> keylist;
     ArrayList<String> valuelist;
+
+    public transData(){
+        keylist = new ArrayList<>();
+        valuelist = new ArrayList<>();
+    }
     /**
      * translate the data class to a list
-     * @param character the data type from class
      */
     public ArrayList<String> CreateKeyList(){
         keylist.add("name");
