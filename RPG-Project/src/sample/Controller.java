@@ -73,6 +73,11 @@ public class Controller {
     }
 
     public void nextPhase(MouseEvent e) {
+        for(int i =  0; i < combatModel.combatDialogue.size(); i++){
+            System.out.println(combatModel.combatDialogue.get(i));
+        }
+        System.out.println();
+
         if(combatModel.phase != combatModel.playerTurnPhase){
             combatModel.nextPhase();
         }
@@ -103,6 +108,7 @@ public class Controller {
 
     public void handleAttack(){
         combatModel.attack();
+        combatModel.nextPhase();
     }
 
     public void handleRun(){
@@ -111,6 +117,7 @@ public class Controller {
 
     public void handleMagic(){
         combatModel.usedMagic();
+        combatModel.nextPhase();
     }
 
     public void handleCombatRest(){
