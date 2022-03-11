@@ -80,7 +80,7 @@ public class Stats {
 
     //add points to exp
     public void addExp(int enemyLevel){
-        exp += (int)Math.pow(2, enemyLevel)/4;
+        exp += (int)Math.pow(2, enemyLevel)/2;
     }
 
     // Health get & set methods

@@ -5,8 +5,9 @@ Stats :
 CharacterLevel :
 1
 Health :
-100
+12
 Strength :
+<<<<<<< HEAD
 13
 Dexterity :
 7
@@ -30,5 +31,30 @@ eyeColor :
 White
 bodyType :
 Girthy
+=======
+14
+Dexterity :
+8
+Constitution :
+7
+Wisdom :
+12
+Intelligence :
+16
+Charisma :
+11
+Features : 
+  
+race :
+Human
+hairColor :
+Brown
+hairType :
+Short
+eyeColor :
+Brown
+bodyType :
+None
+>>>>>>> 51d0c10c3cc937f5a21ca5dd5f7cf67f33edf34b
 Story : 
   

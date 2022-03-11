@@ -23,12 +23,15 @@ public class CombatModel {
     protected int playerTotalWisdom;
     protected int playerTotalHealth;
 
+    protected int costPerSpell;
+
     protected boolean runAway;
 
     public Hashtable<Integer, String> combatDialogue;
     public String currentDialogue;
 
     public CombatModel(){
+        costPerSpell = 25;
         combatDialogue = new Hashtable<>();
     }
 
@@ -55,7 +58,6 @@ public class CombatModel {
      * subtract damage from character health
      */
     public void attack() {
-        System.out.println(player.characterStats.getStr());
         int extraDamage = (int) (Math.random() * 5 + 1);
         if(playerTurn){
             //player attacks
@@ -81,23 +83,23 @@ public class CombatModel {
      * then subtract cost of spell from magic points stat
      */
     public void usedMagic() {
-        int extraDamage = (int) (Math.random() * 5 + 1);
-        if(playerTurn && player.characterStats.getMana() >= 25){
+        int extraDamage = (int) (Math.random() * (8-(-3)) + -3);
+        if(playerTurn && player.characterStats.getMana() >= costPerSpell){
             int newHealth = enemy.characterStats.getHealth() - player.characterStats.getInt() - extraDamage;
             enemy.characterStats.setHealth(newHealth);
 
             // subtract magic points from player
-            player.characterStats.setMana(player.characterStats.getMana()-25);
+            player.characterStats.setMana(player.characterStats.getMana()-costPerSpell);
             combatDialogue.replace(phase+1, "The player used a spell and did " + (player.characterStats.getInt() + extraDamage) + " damage");
             setCurrentDialogue(combatDialogue.get(phase));
             playerTurn=false;
 
-        }else if(enemy.characterStats.getMana() >= 10){
+        }else if(enemy.characterStats.getMana() >= costPerSpell){
             int newHealth = player.characterStats.getHealth() - enemy.characterStats.getInt() - extraDamage;
             player.characterStats.setHealth(newHealth);
 
             // subtract magic points from enemy
-            enemy.characterStats.setMana(enemy.characterStats.getMana()-25);
+            enemy.characterStats.setMana(enemy.characterStats.getMana()-costPerSpell);
             combatDialogue.replace(enemyTurnPhase+1, "The enemy used a spell and did " + (enemy.characterStats.getInt() + extraDamage) + " damage");
             setCurrentDialogue(combatDialogue.get(enemyTurnPhase+1));
         }
@@ -110,7 +112,6 @@ public class CombatModel {
      * formula = ?
      */
     public void expGain(){
-        System.out.println(player.characterStats.getExp() + " " + player.characterStats.getStr());
         //add exp to player, and if player has enough to level up, then increment player level
         player.characterStats.addExp(enemy.characterStats.getCharacterLevel());
         if (player.characterStats.getExp() >= player.characterStats.getMaxExp()){
@@ -118,7 +119,6 @@ public class CombatModel {
             System.out.println(player.characterStats.getExp() + " " + player.characterStats.getStr());
 
         }
-        System.out.println(player.characterStats.getCharacterLevel());
         notifySubscribers();
     }
 
@@ -190,6 +190,18 @@ public class CombatModel {
      */
     public Character createEnemy(){
         Character c = new Character();
+        int maxEnemyLevel = player.characterStats.getCharacterLevel()+3;
+        int minEnemyLevel = player.characterStats.getCharacterLevel()-3;
+        if(minEnemyLevel <= 0){
+            minEnemyLevel = 1;
+        }
+
+        int enemyLevel = (int) (Math.random() * (maxEnemyLevel-(minEnemyLevel)) + minEnemyLevel);
+        //c.characterStats.setCharacterLevel(enemyLevel);
+        for(int i = 1; i < c.characterStats.getCharacterLevel(); i++){
+            c.characterStats.levelUp();
+        }
+        System.out.println(c.characterStats.getCharacterLevel());
         return c;
     }
 
@@ -197,7 +209,7 @@ public class CombatModel {
      * enemies turn
      */
     public void enemyPhase() {
-        if(enemy.characterStats.getInt() >= enemy.characterStats.getStr() && enemy.characterStats.getMana() >= 25){
+        if(enemy.characterStats.getInt() >= enemy.characterStats.getStr() && enemy.characterStats.getMana() >= costPerSpell){
             usedMagic();
         }else{
             attack();

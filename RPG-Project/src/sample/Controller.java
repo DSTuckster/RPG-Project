@@ -56,12 +56,15 @@ public class Controller {
         thisStage.show();
     }
 
-    public void genToTraversal(Scene scene){
+    public void genToTraversal(Scene scene, ArrayList<String> character){
+        charModel.generateCustom(character);
+        combatModel.setCombatScenario(new CombatScenario(charModel.character, combatModel.createEnemy()));
         Stage stage = (Stage) scene.getWindow();
         gameView traversal = (gameView) g.subs.get(0);
         Scene sceneTraversal = traversal.getScene();
         stage.setScene(sceneTraversal);
         stage.show();
+
     }
 
     public void welcomeToGen(Scene scene){
@@ -96,9 +99,7 @@ public class Controller {
     }
 
     public void handleSave(ArrayList<String> custom) throws FileNotFoundException {
-        if (charModel.character==null){
-            charModel.generateCustom(custom);
-        }
+        charModel.generateCustom(custom);
         SaveSystem.SaveToFile("save.txt",charModel.character);
     }
 
