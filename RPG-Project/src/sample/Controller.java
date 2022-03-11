@@ -73,11 +73,6 @@ public class Controller {
     }
 
     public void nextPhase(MouseEvent e) {
-        for(int i =  0; i < combatModel.combatDialogue.size(); i++){
-            System.out.println(combatModel.combatDialogue.get(i));
-        }
-        System.out.println();
-
         if(combatModel.phase != combatModel.playerTurnPhase){
             combatModel.nextPhase();
         }

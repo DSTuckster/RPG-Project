@@ -65,13 +65,11 @@ public class CombatModel {
             playerTurn = false;
         }else{
             //enemy attacks
-            System.out.println("here " + phase);
             int damage = enemy.characterStats.getStr() + extraDamage;
             int newHealth = player.characterStats.getHealth() - damage;
             player.characterStats.setHealth(newHealth);
             combatDialogue.replace(enemyTurnPhase+1, "The enemy did " + damage + " damage");
             setCurrentDialogue(combatDialogue.get(enemyTurnPhase+1));
-            //playerTurn = true;
         }
         notifySubscribers();
     }
@@ -234,14 +232,8 @@ public class CombatModel {
     public boolean endCombatChecks(){
         boolean end = false;
         if(player.characterStats.getHealth() <= 0){
-            combatDialogue.put(5, "The player wins!");
-            phase = 5;
-            currentDialogue = combatDialogue.get(phase);
             end = true;
         }else if(enemy.characterStats.getHealth() <= 0){
-            combatDialogue.put(5, "The player lost!");
-            phase = 5;
-            currentDialogue = combatDialogue.get(phase);
             end = true;
         }else if(runAway){
             end = true;
@@ -350,8 +342,6 @@ public class CombatModel {
                 System.out.println("break!!!!!!!!!!!!!!!!!!!!");
                 break;
             }
-            System.out.println(model.playerTurn + " " + model.playerTurnPhase + " " + model.phase);
-            System.out.println(model.enemyTurnPhase + " " + model.phase);
             if(model.playerTurn){
                 int enemyTotalHealth = model.enemy.characterStats.getHealth();
                 model.attack();
