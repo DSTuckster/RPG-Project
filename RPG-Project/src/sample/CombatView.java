@@ -16,14 +16,17 @@ import javafx.scene.text.FontWeight;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+
 public class CombatView extends StackPane implements CombatSubscriber{
     protected Image background;
-    protected Button attack, run, magic, retryYes, retryNo, attackOne, attackTwo, attackThree, attackFour;
+    protected Button attack, run, magic, retryYes, retryNo, attackOne, attackTwo, attackThree, attackFour, next;
     protected ProgressBar playerXPBar, playerHealthBar, playerManaBar, enemyHealthBar;
-    protected Label Enemy, Player, HP, XP, Mana;
+    protected Label Enemy, Player, HP, XP, Mana, Retry, Dialogue;
     protected CombatModel model;
-    protected HBox bottom;
-    protected VBox main;
+    protected HBox bottomMain,hp ,xp, mana, top;
+    protected VBox main, retryBottom, buttonsMain, retry, enemy, player,diaNext, dialogueMain;
+    protected ImageView imageView;
+    protected FileInputStream inputStream;
 
     /**
      * CombatView controller
@@ -32,9 +35,9 @@ public class CombatView extends StackPane implements CombatSubscriber{
     public CombatView() throws FileNotFoundException {
 
         // Background Picture
-        FileInputStream inputStream = new FileInputStream("background.png");
+        inputStream = new FileInputStream("background.png");
         background = new Image(inputStream);
-        ImageView imageView = new ImageView();
+        imageView = new ImageView();
         imageView.setImage(background);
         imageView.setFitWidth(1000);
         imageView.setFitHeight(1000);
@@ -55,18 +58,22 @@ public class CombatView extends StackPane implements CombatSubscriber{
         XP.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 13));
         Mana = new Label("Mana");
         Mana.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 13));
-        HBox hp = new HBox(playerHealthBar, HP);
-        HBox xp = new HBox(playerXPBar, XP);
-        HBox mana = new HBox(playerManaBar, Mana);
+        hp = new HBox(playerHealthBar, HP);
+        xp = new HBox(playerXPBar, XP);
+        mana = new HBox(playerManaBar, Mana);
 
         Enemy = new Label("Enemy");
         Enemy.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 15));
         Player = new Label("Player");
         Player.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 15));
-        VBox enemy = new VBox();
-        VBox player = new VBox();
+        enemy = new VBox();
+        player = new VBox();
         enemy.getChildren().addAll(Enemy, enemyHealthBar);
         player.getChildren().addAll(Player, hp, xp, mana);
+
+        // Dialogue Label
+        Dialogue = new Label();
+        Dialogue.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 25));
 
         // All Buttons
         Font font = Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 15);
@@ -84,34 +91,60 @@ public class CombatView extends StackPane implements CombatSubscriber{
         magic.setFont(font);
         magic.setStyle("-fx-background-color: WHITE");
 
-        // TODO: Implement buttons when battle is over
-        //      and for a player to have more than one
-        //      attack to choose from
+        Retry = new Label("Would you like to retry?");
+        Retry.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 25));
         retryYes = new Button("Yes");
+        retryYes.setFont(font);
+        retryYes.setStyle("-fx-background-color: WHITE");
         retryNo = new Button("No");
+        retryNo.setFont(font);
+        retryNo.setStyle("-fx-background-color: WHITE");
+
+
+        // TODO: Implement buttons for a player to have more than one
+        //      attack to choose from
         attackOne = new Button("Attack One");
         attackTwo = new Button("Attack Two");
         attackThree = new Button("Attack Three");
         attackFour = new Button("Attack Four");
 
-        VBox buttons = new VBox();
-        bottom = new HBox();
-        buttons.getChildren().addAll(attack, magic);
-        buttons.setSpacing(100);
-        bottom.getChildren().addAll(buttons, run);
-        bottom.setAlignment(Pos.CENTER);
-        bottom.setSpacing(650);
 
-
-        // Coordinate all boxes together to fit screen properly
-        HBox top = new HBox();
+        // Coordinate all top boxes together to fit screen properly
+        top = new HBox();
         top.getChildren().addAll(enemy,player);
         top.setSpacing(550);
 
+        // Will be used for smoother dialogue in the place of other buttons
+        next = new Button("Head Back");
+        next.setFont(font);
+        next.setStyle("-fx-background-color: WHITE");
+        diaNext = new VBox(Dialogue, next);
+        diaNext.setAlignment(Pos.BOTTOM_CENTER);
+        diaNext.setSpacing(50);
+
+
+        // Retry bottom of screen for CombatView
+        retryBottom = new VBox(Retry, retryYes, retryNo);
+        retryBottom.setSpacing(25);
+        retryBottom.setAlignment(Pos.BOTTOM_CENTER);
+        retry = new VBox();
+        retry.getChildren().addAll(top, retryBottom);
+
+        // Main bottom of screen for CombatView
+        buttonsMain = new VBox();
+        bottomMain = new HBox();
+        buttonsMain.getChildren().addAll(attack, magic);
+        buttonsMain.setSpacing(100);
+        bottomMain.getChildren().addAll(buttonsMain, run);
+        bottomMain.setAlignment(Pos.CENTER);
+        bottomMain.setSpacing(650);
+        dialogueMain = new VBox(Dialogue, bottomMain);
+        dialogueMain.setAlignment(Pos.CENTER);
         main = new VBox();
-        main.getChildren().addAll(top, bottom);
-        main.setSpacing(550);
+        main.getChildren().addAll(top, dialogueMain);
+        main.setSpacing(525);
         main.setPrefSize(1000,1000);
+
 
         this.getChildren().addAll(imageView, main);
         this.setPrefHeight(1000);
@@ -126,6 +159,15 @@ public class CombatView extends StackPane implements CombatSubscriber{
         attack.setOnAction(e -> controller.handleAttack());
         run.setOnAction((e -> controller.handleRun()));
         magic.setOnAction(e -> controller.handleMagic());
+        retryYes.setOnAction(e -> {controller.handleCombatRest();this.reset();});
+        retryNo.setOnAction(e -> {controller.handleNoReset(this.getScene());this.reset();});
+        next.setOnAction(e -> {controller.handleWin(this.getScene());this.reset();});
+        main.setOnMousePressed(controller::nextPhase);
+    }
+
+    private void reset() {
+        this.getChildren().retainAll();
+        this.getChildren().addAll(imageView, main);
     }
 
     /**
@@ -137,10 +179,16 @@ public class CombatView extends StackPane implements CombatSubscriber{
     }
 
     private void retryButtons(){
-        bottom.getChildren().addAll(retryYes,retryNo);
-        main.getChildren().remove(1);
-        main.getChildren().add(1,bottom);
+        this.getChildren().remove(1);
+        this.getChildren().add(1, retry);
     }
+
+    private void end(){
+        Dialogue.setText("Player Wins!");
+        this.getChildren().remove(1);
+        this.getChildren().addAll(Dialogue, diaNext);
+    }
+
 
     /**
      * Update view according to what has changed in the model
@@ -148,29 +196,31 @@ public class CombatView extends StackPane implements CombatSubscriber{
     @Override
     public void modelChanged() {
 
+        Dialogue.setText(model.getCurrentDialogue());
+
         // Get current health, xp, and mana for the progress bars
-        // Divided by 10 to get a float between 0-1 for progress bar
+        // Divided by 100 to get a float between 0-1 for progress bar (Max for all is 100)
         playerManaBar.setProgress((float)model.player.characterStats.getMana()/100);
         playerHealthBar.setProgress((float)model.player.characterStats.getHealth()/100);
         enemyHealthBar.setProgress((float)model.enemy.characterStats.getHealth()/100);
 
-        // TODO: Handle closing out the combat view when game is over.
-        //      Add game dialogue
-        //      If statements only here to get feedback when user has lost or won (testing purposes)
+        // If player loses, option to replay
         if(model.player.characterStats.getHealth() <= 0){
-            playerHealthBar.setProgress(0);
+            playerHealthBar.setProgress(0); // So it doesn't look like player has negative health
             this.retryButtons();
         }
+        // If player wins, go back to traversal scene
         else if (model.enemy.characterStats.getHealth() <= 0){
-            System.out.println("YOU WIN!");
             enemyHealthBar.setProgress(0);
+            this.end();
         }
+        // If run is successful, go back to traversal scene
         if (model.runAway){
-            System.out.println("Ran Away");
+            this.retryNo.fire();
         }
 
         // If mana bar is empty then player can no longer use magic button
-        if (model.player.characterStats.getWis() <= 0){
+        if (model.player.characterStats.getMana() <= 0){
             magic.setDisable(true);
         }
     }

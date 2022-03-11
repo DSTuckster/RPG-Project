@@ -81,7 +81,7 @@ public class Stats {
 
     // Mana get & set methods
     public int getMana() { return Mana; }
-    public int getMaxMana() { return getCharacterLevel() + (Intelligence+Wisdom) * 2; }
+    public int getMaxMana() { return 100; }
     public void setMana(int newMana) { Mana = newMana; }
 
     // Strength get & set methods
@@ -169,6 +169,35 @@ public class Stats {
                 (Charisma > 2 && Charisma < 19);
     }
 
+    protected void RunStatsTestSuite() {
+        System.out.println("This is the Stats Test Suite");
+        Stats stats = new Stats();
+        boolean Expected;
+        boolean Result;
+        boolean ErrorDetected = false;
+
+        // Test 1
+        // Test to see that the values rolled range from 3 to 18 (max and min roll of 3 dice)
+        // Run test 100 times to assert validity of rolls through iteration
+        for (int i = 0; i < 1000; i++) {
+            Result = stats.TestRollsAccuracy();
+
+            if (!Result) {
+                System.out.println("ERROR in Test 1, <Result> != Expected");
+                ErrorDetected = true;
+            }
+        }
+        if (!ErrorDetected) {
+            System.out.println("Roll accuracy tests successful");
+        }
+
+        if (ErrorDetected) {
+            System.out.println("Errors Detected in StatsTestSuite");
+        } else {
+            System.out.println("No errors in StatsTestSuite\n");
+        }
+    }
+
     public static void main(String[] args) {
         System.out.println("This is the Stats Test Suite\n");
 
@@ -199,7 +228,11 @@ public class Stats {
         }
 
 
-        // Test 2
+        if (ErrorDetected) {
+            System.out.println("Errors Detected in Stats.java");
+        } else {
+            System.out.println("No errors in Stats.java");
+        }
 
     }
 

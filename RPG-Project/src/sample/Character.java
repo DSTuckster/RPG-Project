@@ -1,5 +1,7 @@
 package sample;
 
+import java.util.Objects;
+
 public class Character {
     Stats characterStats;
     Features characterFeatures;
@@ -52,9 +54,68 @@ public class Character {
 
     public static void main(String[] args) {
 
-        Character c = new Character();
+        Character character = new Character();
 
-        System.out.println(c.characterStory);
+        boolean Expected;
+        boolean Result;
+
+        /**
+         * THIS IS THE TEST DRIVER FOR THE USER STORY
+         *
+         *
+         *          "Generate a freshly created Character with one button press"
+         *
+         *
+         * * Tests will report errors to std output if detected *
+         */
+
+        System.out.println("\nCharacter Test Suite Begin\n\n\n");
+
+        // Test 1
+        //  Test that 'Stats' are generated appropriately
+        // Runs 1000 tests to see that Character Stats are within reasonable bounds (3 - 18) for each stat
+        TestStatsForAppropriateValues(character);
+
+        // Test 2
+        //  Test that 'Features' are generated appropriately
+        // Runs 1000 tests to see that Features are generated uniquely, with no duplicates
+        TestFeaturesForAppropriateValues(character);
+
+        // Test 3
+        //  Test that 'Name' is generated appropriately
+        // Runs 1000 tests to see that 'Name' is generated properly each time
+        TestNameIsGenerated(character);
+
+        // Test 4
+        //  Test that character 'Story' is acceptable
+        TestStoryIsGenerated(character);
+
+
+        System.out.println("\n\n\nCharacter Test Suite End");
     }
+
+    private static void TestStatsForAppropriateValues(Character c) {
+        c.characterStats.RunStatsTestSuite();
+    }
+
+    private static void TestFeaturesForAppropriateValues(Character c) {
+        c.characterFeatures.RunFeaturesTestSuite();
+    }
+
+    private static void TestNameIsGenerated(Character c) {
+        c.namePool.RunNamePoolTestSuite();
+    }
+
+    private static void TestStoryIsGenerated(Character c) {
+        System.out.println("This is the StoryTestSuite");
+        String TestStory = c.generateStory();
+        if (TestStory.length() > 0) {
+            System.out.println("Story generation successful");
+            System.out.println("Story:\n  '"+TestStory+"'");
+        } else {
+            System.out.println("Error in TestStoryIsGenerated(): \n TestStory == "+TestStory);
+        }
+    }
+
 
 }

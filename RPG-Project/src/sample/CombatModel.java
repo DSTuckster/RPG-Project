@@ -1,10 +1,10 @@
 package sample;
 
-import javafx.scene.text.Text;
+
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.concurrent.TimeUnit;
+
 
 public class CombatModel {
 
@@ -37,7 +37,7 @@ public class CombatModel {
      * NOTE: this method is incomplete
      * @param s: a new combat scenario
      */
-    public void setCombatScenario(CombatScenario s){
+    public void setCombatScenario(CombatScenario s) {
         scenario = s;
 
         player = scenario.player;
@@ -45,35 +45,35 @@ public class CombatModel {
 
         playerTotalWisdom = player.characterStats.getMana();
         playerTotalHealth = player.characterStats.getHealth();
-        System.out.println(playerTotalHealth);
-
-        //NOTE: The middle portion of this string should not be in double quotes. remove when name generation is implemented
         combatDialogue.put(0 ,"A wild " + enemy.name + " has appeared!");
-        currentDialogue = combatDialogue.get(0);
+        setCurrentDialogue(combatDialogue.get(phase));
         whoGoesFirst();
     }
 
     /**
      * subtract damage from character health
      */
-    public void attack(){
+    public void attack() {
         int extraDamage = (int) (Math.random() * 5 + 1);
         if(playerTurn){
             //player attacks
             int damage = player.characterStats.getStr() + extraDamage;
             int newHealth = enemy.characterStats.getHealth() - damage;
             enemy.characterStats.setHealth(newHealth);
-            combatDialogue.replace(phase+1, "The player did " + damage + " damage");
+            combatDialogue.replace(phase, "The player did " + damage + " damage");
+            setCurrentDialogue(combatDialogue.get(phase));
             playerTurn = false;
         }else{
             //enemy attacks
             int damage = enemy.characterStats.getStr() + extraDamage;
             int newHealth = player.characterStats.getHealth() - damage;
             player.characterStats.setHealth(newHealth);
-            combatDialogue.replace(phase+1, "The enemy did " + damage + " damage");
-            playerTurn = true;
+            combatDialogue.replace(phase, "The enemy did " + damage + " damage");
+            setCurrentDialogue(combatDialogue.get(phase));
+            //playerTurn = true;
         }
         phase += 1;
+        setCurrentDialogue(combatDialogue.get(phase));
         notifySubscribers();
     }
 
@@ -81,14 +81,15 @@ public class CombatModel {
      * when player or enemy uses magic,
      * then subtract cost of spell from magic points stat
      */
-    public void usedMagic(){
+    public void usedMagic() {
         if(playerTurn && player.characterStats.getMana() >= 10){
             int newHealth = enemy.characterStats.getHealth() - player.characterStats.getInt();
             enemy.characterStats.setHealth(newHealth);
 
             // subtract magic points from player
             player.characterStats.setMana(player.characterStats.getMana()-10);
-            combatDialogue.replace(phase+1, "The player used a spell and did " + player.characterStats.getInt() + " damage");
+            combatDialogue.replace(phase, "The player used a spell and did " + player.characterStats.getInt() + " damage");
+            setCurrentDialogue(combatDialogue.get(phase));
             playerTurn=false;
 
         }else if(enemy.characterStats.getMana() >= 10){
@@ -97,9 +98,12 @@ public class CombatModel {
 
             // subtract magic points from enemy
             enemy.characterStats.setMana(enemy.characterStats.getMana()-10);
-            combatDialogue.replace(phase+1, "The enemy used a spell and did " + enemy.characterStats.getInt() + " damage");
-            playerTurn=true;
+            combatDialogue.replace(phase, "The enemy used a spell and did " + enemy.characterStats.getInt() + " damage");
+            setCurrentDialogue(combatDialogue.get(phase));
+            //playerTurn=true;
         }
+        phase += 1;
+        setCurrentDialogue(combatDialogue.get(phase));
         notifySubscribers();
     }
 
@@ -122,7 +126,7 @@ public class CombatModel {
      * go to next phase of battle
      * NOTE: this method is likely to change
      */
-    public void nextPhase() throws InterruptedException {
+    public void nextPhase() {
         if(phase == 7){
             endCombat();
         }
@@ -139,7 +143,7 @@ public class CombatModel {
             playerTurn = false;
         }
         phase += 1;
-        currentDialogue = combatDialogue.get(phase);
+        setCurrentDialogue(combatDialogue.get(phase));
         notifySubscribers();
     }
 
@@ -156,11 +160,7 @@ public class CombatModel {
         }else{  // playerDex == enemyDex, so roll dice
             int decision = (int) (Math.random() * 101 + 1);
 
-            if(decision >= 50){
-                playerTurn = true;
-            }else{
-                playerTurn = false;
-            }
+            playerTurn = decision >= 50;
         }
         setCombatDialogue();
         notifySubscribers();
@@ -168,20 +168,21 @@ public class CombatModel {
 
     public void setCombatDialogue(){
         if(playerTurn){
-            playerTurnPhase = 0;
-            enemyTurnPhase = 2;
+            playerTurnPhase = 1;
+            enemyTurnPhase = 3;
             combatDialogue.put(1, "It is the players turn!");
             combatDialogue.put(2, "The player did " + player.characterStats.getStr() + " damage");
             combatDialogue.put(3, "It is the enemies turn!");
             combatDialogue.put(4, "The enemy did " + enemy.characterStats.getStr() + " damage");
         }else{
-            playerTurnPhase = 2;
-            enemyTurnPhase = 0;
+            playerTurnPhase = 3;
+            enemyTurnPhase = 1;
             combatDialogue.put(1, "It is the enemies turn!");
             combatDialogue.put(2, "The enemy did " + enemy.characterStats.getStr() + " damage");
             combatDialogue.put(3, "It is the players turn!");
             combatDialogue.put(4, "The player did " + player.characterStats.getStr() + " damage");
         }
+        playerTurn = false;
     }
 
     /**
@@ -195,7 +196,7 @@ public class CombatModel {
     /**
      * enemies turn
      */
-    public void enemyPhase(){
+    public void enemyPhase() {
         if(enemy.characterStats.getInt() >= enemy.characterStats.getStr()){
             usedMagic();
         }else{
@@ -218,8 +219,10 @@ public class CombatModel {
             combatDialogue.put(6, "The player escaped");
             currentDialogue = combatDialogue.get(6);
             phase = 6;
+            this.endCombat();
         }else{
-            combatDialogue.put(phase+1, "The player tried to run away but could not escape.");
+            combatDialogue.replace(phase+1, "The player tried to run away but could not escape.");
+            setCurrentDialogue(combatDialogue.get(phase));
         }
         notifySubscribers();
     }
@@ -259,7 +262,7 @@ public class CombatModel {
      * if the user selects yes, to retry combat
      * this method will completely restart the same combat scenario combat
      */
-    public void restCombat(){
+    public void restCombat() {
         player.characterStats.setMana(player.characterStats.getMaxMana());
         player.characterStats.setHealth(player.characterStats.getMaxHealth());
         enemy.characterStats.setMana(enemy.characterStats.getMaxMana());
@@ -274,6 +277,14 @@ public class CombatModel {
         CombatScenario newCombatScenario = new CombatScenario(player, enemy);
         setCombatScenario(newCombatScenario);
         notifySubscribers();
+    }
+
+    public String getCurrentDialogue(){
+        return currentDialogue;
+    }
+
+    public void setCurrentDialogue(String dialogue){
+        currentDialogue = dialogue;
     }
 
     /**
@@ -347,7 +358,7 @@ public class CombatModel {
                 int playerDamage = enemyTotalHealth - enemyHealth;
                 System.out.println("It is the player's turn. The enemies total health was " + enemyTotalHealth + ". The enemies health is now " + enemyHealth);
                 System.out.println("total damage was " + playerDamage);
-            }else if(model.enemyTurnPhase-1 == model.phase){
+            }else if(model.enemyTurnPhase == model.phase){
                 model.nextPhase();
                 //model.attack();
                 int playerHealth = model.player.characterStats.getHealth();

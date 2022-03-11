@@ -3,7 +3,6 @@ package sample;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 public class Controller {
 
     protected CombatModel combatModel;
-    protected Text combatText;
     protected CharacterGenerator charModel;
     protected gameModel g;
 
@@ -76,11 +74,7 @@ public class Controller {
 
     public void nextPhase(MouseEvent e) {
         if(combatModel.phase != combatModel.playerTurnPhase){
-            try {
-                combatModel.nextPhase();
-            } catch (InterruptedException interruptedException) {
-                Thread.currentThread().interrupt();
-            }
+            combatModel.nextPhase();
         }
     }
     public void handleKeys(KeyEvent event) {
@@ -121,6 +115,21 @@ public class Controller {
 
     public void handleCombatRest(){
         combatModel.restCombat();
+    }
+
+    public void handleNoReset(Scene scene) {
+        Stage stage = (Stage) scene.getWindow();
+        gameView traversal = (gameView) g.subs.get(0);
+        Scene sceneTraverse = traversal.getScene();
+        stage.setScene(sceneTraverse);
+        stage.show();
+
+        combatModel.endCombat();
+        combatModel.restCombat();
+    }
+
+    public void handleWin(Scene scene){
+        this.handleNoReset(scene);
     }
 
 }

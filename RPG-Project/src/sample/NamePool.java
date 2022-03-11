@@ -26,4 +26,22 @@ public class NamePool {
         System.out.println(names.length);
     }
 
+    protected void RunNamePoolTestSuite() {
+        System.out.println("This is the NamePoolTestSuite");
+        String name;
+        boolean ErrorDetected = false;
+        for (int i=0; i<1000; i++) {
+            name = this.fetchName();
+            if (name.length() < 1) {
+                System.out.println("Error in NamePoolTestSuite\nName == "+name);
+                ErrorDetected = true;
+            }
+        }
+
+        if (!ErrorDetected) {
+            System.out.println("No Errors in NamePoolTestSuite\n");
+        } else {
+            System.out.println("Errors detected in NamePoolTestSuite");
+        }
+    }
 }

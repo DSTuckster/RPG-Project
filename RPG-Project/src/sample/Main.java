@@ -69,7 +69,8 @@ public class Main extends Application {
 
         HBox root = new HBox();
 
-
+        // Transitioning works from the welcome page through to the battle. For testing input
+        // any of these scenes into primaryStage.setScene( "HERE" )
         Scene sceneWelcome = new Scene(welcomeView, 800, 800);
         Scene sceneCharGen = new Scene(charView, 800, 800);
         Scene sceneCombat = new Scene(combatView, 800, 800);
@@ -77,12 +78,9 @@ public class Main extends Application {
         sceneTraversal.setFill(Color.BLACK);
         sceneTraversal.setOnKeyPressed(controller::handleKeys);
 
-        // Will add ways to transition through different scenes later
-        // For now add what scene you want to see in primaryStage.setScene( ENTER HERE ) from
-        // different scenes created above ^^^^^
 
         primaryStage.setTitle("RPG");
-        primaryStage.setScene(sceneWelcome);
+        primaryStage.setScene(sceneCombat);
         primaryStage.show();
 
 
