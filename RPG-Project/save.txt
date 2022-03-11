@@ -5,30 +5,30 @@ Stats :
 CharacterLevel :
 1
 Health :
-100
+12
 Strength :
-11
+14
 Dexterity :
 8
 Constitution :
-13
+7
 Wisdom :
-3
+12
 Intelligence :
-11
+16
 Charisma :
-15
+11
 Features : 
   
 race :
-Spoodle
+Human
 hairColor :
-Auburn
+Brown
 hairType :
-Long
+Short
 eyeColor :
-Hazel
+Brown
 bodyType :
-Tall
+None
 Story : 
   

@@ -51,7 +51,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         eyeColor = FXCollections.observableArrayList();
         eyeColor.addAll(features.eyeColorPresets);
         bodyTypes = FXCollections.observableArrayList();
-        bodyTypes.addAll(features.bodyTypePresets);
+        bodyTypes.addAll(features.bodyTypes);
 
         // All Boxes for structure
         top = new VBox();
@@ -161,7 +161,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
                 ex.printStackTrace();
             }
         });
-        play.setOnAction(e -> controller.genToTraversal(this.getScene()));
+        play.setOnAction(e -> controller.genToTraversal(this.getScene(), this.saveChoices()));
     }
 
     /**

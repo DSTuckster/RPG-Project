@@ -25,8 +25,6 @@ public class CharacterGenerator{
 
         // Set players chosen character stats
         character.characterStats.setCha(Integer.parseInt(custom.get(1)));
-        character.characterStats.setCharacterLevel(1);
-        character.characterStats.setHealth(12);
         character.characterStats.setCon(Integer.parseInt(custom.get(2)));
         character.characterStats.setWis(Integer.parseInt(custom.get(3)));
         character.characterStats.setDex(Integer.parseInt(custom.get(4)));
