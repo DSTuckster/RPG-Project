@@ -57,9 +57,15 @@ public class Stats {
      *  Sets Mana to (Current Max Mana + Int+Wis * 2)
      */
     public void levelUp(){
+        exp -= getMaxExp();
         CharacterLevel++;
-        Health = getMaxHealth() + 12;
-        Mana = getMaxMana() + (Intelligence+Wisdom) * 2;
+        Health = getMaxHealth();
+        Strength += 5;
+        Dexterity += 5;
+        Constitution += 5;
+        Wisdom += 5;
+        Intelligence += 5;
+        Charisma += 5;
     }
 
     /**get players current experience points
@@ -68,10 +74,13 @@ public class Stats {
     public int getExp(){
         return exp;
     }
+    public int getMaxExp(){
+        return (int)Math.pow(2, CharacterLevel);
+    }
 
     //add points to exp
-    public void addExp(int expToAdd){
-        exp += expToAdd;
+    public void addExp(int enemyLevel){
+        exp += (int)Math.pow(2, enemyLevel)/4;
     }
 
     // Health get & set methods
