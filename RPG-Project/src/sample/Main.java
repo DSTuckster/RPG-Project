@@ -80,7 +80,7 @@ public class Main extends Application {
 
 
         primaryStage.setTitle("RPG");
-        primaryStage.setScene(sceneCombat);
+        primaryStage.setScene(sceneCharGen);
         primaryStage.show();
 
 
