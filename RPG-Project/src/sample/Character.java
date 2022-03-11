@@ -71,22 +71,22 @@ public class Character {
 
         System.out.println("\nCharacter Test Suite Begin\n\n\n");
 
-        // Test 1
+        // Test 1 - TC-01
         //  Test that 'Stats' are generated appropriately
         // Runs 1000 tests to see that Character Stats are within reasonable bounds (3 - 18) for each stat
         TestStatsForAppropriateValues(character);
 
-        // Test 2
+        // Test 2 - TC-02
         //  Test that 'Features' are generated appropriately
         // Runs 1000 tests to see that Features are generated uniquely, with no duplicates
         TestFeaturesForAppropriateValues(character);
 
-        // Test 3
+        // Test 3 - TC-03
         //  Test that 'Name' is generated appropriately
         // Runs 1000 tests to see that 'Name' is generated properly each time
         TestNameIsGenerated(character);
 
-        // Test 4
+        // Test 4 - TC-04
         //  Test that character 'Story' is acceptable
         TestStoryIsGenerated(character);
 
