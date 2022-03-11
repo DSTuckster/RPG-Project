@@ -168,6 +168,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
     private void reset() {
         this.getChildren().retainAll();
         this.getChildren().addAll(imageView, main);
+        model.reset = false;
     }
 
     /**
@@ -196,6 +197,9 @@ public class CombatView extends StackPane implements CombatSubscriber{
     @Override
     public void modelChanged() {
 
+        if(model.reset){
+            reset();
+        }
         Dialogue.setText(model.getCurrentDialogue());
 
         // Get current health, xp, and mana for the progress bars

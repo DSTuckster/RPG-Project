@@ -27,6 +27,8 @@ public class CombatModel {
 
     protected boolean runAway;
 
+    protected boolean reset;
+
     public Hashtable<Integer, String> combatDialogue;
     public String currentDialogue;
 
@@ -52,6 +54,7 @@ public class CombatModel {
         combatDialogue.put(0 ,"A wild " + enemy.name + " has appeared!");
         setCurrentDialogue(combatDialogue.get(phase));
         whoGoesFirst();
+        notifySubscribers();
     }
 
     /**
@@ -279,7 +282,8 @@ public class CombatModel {
         runAway = false;
         playerTurnPhase = 0;
         enemyTurnPhase = 0;
-        currentDialogue = "";
+        phase = 0;
+        reset = true;
 
         CombatScenario newCombatScenario = new CombatScenario(player, enemy);
         setCombatScenario(newCombatScenario);
