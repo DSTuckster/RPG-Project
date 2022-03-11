@@ -74,11 +74,7 @@ public class Controller {
 
     public void nextPhase(MouseEvent e) {
         if(combatModel.phase != combatModel.playerTurnPhase){
-            try {
-                combatModel.nextPhase();
-            } catch (InterruptedException interruptedException) {
-                Thread.currentThread().interrupt();
-            }
+            combatModel.nextPhase();
         }
     }
     public void handleKeys(KeyEvent event) {

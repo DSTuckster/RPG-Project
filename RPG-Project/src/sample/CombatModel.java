@@ -55,13 +55,12 @@ public class CombatModel {
      */
     public void attack() {
         int extraDamage = (int) (Math.random() * 5 + 1);
-        phase++;
         if(playerTurn){
             //player attacks
             int damage = player.characterStats.getStr() + extraDamage;
             int newHealth = enemy.characterStats.getHealth() - damage;
             enemy.characterStats.setHealth(newHealth);
-            combatDialogue.put(phase, "The player did " + damage + " damage");
+            combatDialogue.replace(phase, "The player did " + damage + " damage");
             setCurrentDialogue(combatDialogue.get(phase));
             playerTurn = false;
         }else{
@@ -69,10 +68,12 @@ public class CombatModel {
             int damage = enemy.characterStats.getStr() + extraDamage;
             int newHealth = player.characterStats.getHealth() - damage;
             player.characterStats.setHealth(newHealth);
-            combatDialogue.put(phase, "The enemy did " + damage + " damage");
+            combatDialogue.replace(phase, "The enemy did " + damage + " damage");
             setCurrentDialogue(combatDialogue.get(phase));
-            playerTurn = true;
+            //playerTurn = true;
         }
+        phase += 1;
+        setCurrentDialogue(combatDialogue.get(phase));
         notifySubscribers();
     }
 
@@ -87,8 +88,7 @@ public class CombatModel {
 
             // subtract magic points from player
             player.characterStats.setMana(player.characterStats.getMana()-10);
-            phase++;
-            combatDialogue.put(phase, "The player used a spell and did " + player.characterStats.getInt() + " damage");
+            combatDialogue.replace(phase, "The player used a spell and did " + player.characterStats.getInt() + " damage");
             setCurrentDialogue(combatDialogue.get(phase));
             playerTurn=false;
 
@@ -98,11 +98,12 @@ public class CombatModel {
 
             // subtract magic points from enemy
             enemy.characterStats.setMana(enemy.characterStats.getMana()-10);
-            phase++;
-            combatDialogue.put(phase, "The enemy used a spell and did " + enemy.characterStats.getInt() + " damage");
+            combatDialogue.replace(phase, "The enemy used a spell and did " + enemy.characterStats.getInt() + " damage");
             setCurrentDialogue(combatDialogue.get(phase));
-            playerTurn=true;
+            //playerTurn=true;
         }
+        phase += 1;
+        setCurrentDialogue(combatDialogue.get(phase));
         notifySubscribers();
     }
 
@@ -125,7 +126,7 @@ public class CombatModel {
      * go to next phase of battle
      * NOTE: this method is likely to change
      */
-    public void nextPhase() throws InterruptedException {
+    public void nextPhase() {
         if(phase == 7){
             endCombat();
         }
@@ -167,20 +168,21 @@ public class CombatModel {
 
     public void setCombatDialogue(){
         if(playerTurn){
-            playerTurnPhase = 0;
-            enemyTurnPhase = 2;
+            playerTurnPhase = 1;
+            enemyTurnPhase = 3;
             combatDialogue.put(1, "It is the players turn!");
             combatDialogue.put(2, "The player did " + player.characterStats.getStr() + " damage");
             combatDialogue.put(3, "It is the enemies turn!");
             combatDialogue.put(4, "The enemy did " + enemy.characterStats.getStr() + " damage");
         }else{
-            playerTurnPhase = 2;
-            enemyTurnPhase = 0;
+            playerTurnPhase = 3;
+            enemyTurnPhase = 1;
             combatDialogue.put(1, "It is the enemies turn!");
             combatDialogue.put(2, "The enemy did " + enemy.characterStats.getStr() + " damage");
             combatDialogue.put(3, "It is the players turn!");
             combatDialogue.put(4, "The player did " + player.characterStats.getStr() + " damage");
         }
+        playerTurn = false;
     }
 
     /**
@@ -219,7 +221,7 @@ public class CombatModel {
             phase = 6;
             this.endCombat();
         }else{
-            combatDialogue.put(phase+1, "The player tried to run away but could not escape.");
+            combatDialogue.replace(phase+1, "The player tried to run away but could not escape.");
             setCurrentDialogue(combatDialogue.get(phase));
         }
         notifySubscribers();
@@ -356,7 +358,7 @@ public class CombatModel {
                 int playerDamage = enemyTotalHealth - enemyHealth;
                 System.out.println("It is the player's turn. The enemies total health was " + enemyTotalHealth + ". The enemies health is now " + enemyHealth);
                 System.out.println("total damage was " + playerDamage);
-            }else if(model.enemyTurnPhase-1 == model.phase){
+            }else if(model.enemyTurnPhase == model.phase){
                 model.nextPhase();
                 //model.attack();
                 int playerHealth = model.player.characterStats.getHealth();
