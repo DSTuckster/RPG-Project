@@ -96,7 +96,9 @@ public class Controller {
     }
 
     public void handleSave(ArrayList<String> custom) throws FileNotFoundException {
-        charModel.generateCustom(custom);
+        if (charModel.character==null){
+            charModel.generateCustom(custom);
+        }
         SaveSystem.SaveToFile("save.txt",charModel.character);
     }
 
