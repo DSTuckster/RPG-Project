@@ -116,8 +116,6 @@ public class CombatModel {
         player.characterStats.addExp(enemy.characterStats.getCharacterLevel());
         if (player.characterStats.getExp() >= player.characterStats.getMaxExp()){
             player.characterStats.levelUp();
-            System.out.println(player.characterStats.getExp() + " " + player.characterStats.getStr());
-
         }
         notifySubscribers();
     }
@@ -342,15 +340,6 @@ public class CombatModel {
             System.out.println("whoGoesFirst() test #1 failed! expected = enemyTurn, result = PlayerTurn");
         }
 
-        //expGain() test #1
-        model.enemy.characterStats.addExp(50);
-        model.expGain();
-        expected = 50;
-        result = model.player.characterStats.getExp();
-        if(expected != result){
-            System.out.println("expGain() test #1 failed! expected = " + expected + " result = " + result);
-        }
-
         //test each combat phase
         //This variable is a safety net, I would occasionally get an infinite loop. I think I fixed it, but just in case...
         int count = 0;
@@ -384,20 +373,6 @@ public class CombatModel {
 
         model.setCombatDialogue();
 
-
-        //expGain() test #2
-        model.enemy.characterStats.addExp(1);
-        model.expGain();
-        expected = 1;
-        result = model.player.characterStats.getExp();
-        if(expected != result){
-            System.out.println("expGain() test #2 failed! expected = " + expected + " result = " + result);
-        }
-
-        // player level up test #1, expected = 2
-        if(model.player.characterStats.getCharacterLevel() != 2){
-            System.out.println("Player level up test #1 failed! expected = 2 result = " + model.player.characterStats.getCharacterLevel());
-        }
 
         //create enemy test #1
         model.createEnemy();
