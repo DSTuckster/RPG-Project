@@ -81,7 +81,7 @@ public class Main extends Application {
         // For now add what scene you want to see in primaryStage.setScene( ENTER HERE ) from
         // different scenes created above ^^^^^
 
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("RPG");
         primaryStage.setScene(sceneWelcome);
         primaryStage.show();
 

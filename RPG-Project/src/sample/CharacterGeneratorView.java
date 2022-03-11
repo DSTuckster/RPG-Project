@@ -114,7 +114,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         character = new Image(inputStream);
         ImageView imageView = new ImageView();
         imageView.setImage(character);
-        imageView.setFitHeight(600);
+        imageView.setFitHeight(300);
         imageView.setFitWidth(300);
 
 
@@ -157,7 +157,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
                 ex.printStackTrace();
             }
         });
-        play.setOnAction(e -> controller.genToTraversal());
+        play.setOnAction(e -> controller.genToTraversal(this.getScene()));
     }
 
     /**

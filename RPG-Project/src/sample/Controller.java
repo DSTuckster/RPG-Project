@@ -1,6 +1,5 @@
 package sample;
 
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -59,16 +58,16 @@ public class Controller {
         thisStage.show();
     }
 
-    public void genToTraversal(){
-        Stage stage = new Stage();
+    public void genToTraversal(Scene scene){
+        Stage stage = (Stage) scene.getWindow();
         gameView traversal = (gameView) g.subs.get(0);
         Scene sceneTraversal = traversal.getScene();
         stage.setScene(sceneTraversal);
         stage.show();
     }
 
-    public void welcomeToGen(){
-        Stage stage = new Stage();
+    public void welcomeToGen(Scene scene){
+        Stage stage = (Stage) scene.getWindow();
         CharacterGeneratorView charGen = (CharacterGeneratorView) charModel.subs.get(0);
         Scene sceneCharGen = charGen.getScene();
         stage.setScene(sceneCharGen);

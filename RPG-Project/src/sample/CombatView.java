@@ -22,6 +22,8 @@ public class CombatView extends StackPane implements CombatSubscriber{
     protected ProgressBar playerXPBar, playerHealthBar, playerManaBar, enemyHealthBar;
     protected Label Enemy, Player, HP, XP, Mana;
     protected CombatModel model;
+    protected HBox bottom;
+    protected VBox main;
 
     /**
      * CombatView controller
@@ -93,7 +95,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
         attackFour = new Button("Attack Four");
 
         VBox buttons = new VBox();
-        HBox bottom = new HBox();
+        bottom = new HBox();
         buttons.getChildren().addAll(attack, magic);
         buttons.setSpacing(100);
         bottom.getChildren().addAll(buttons, run);
@@ -106,7 +108,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
         top.getChildren().addAll(enemy,player);
         top.setSpacing(550);
 
-        VBox main = new VBox();
+        main = new VBox();
         main.getChildren().addAll(top, bottom);
         main.setSpacing(550);
         main.setPrefSize(1000,1000);
@@ -120,7 +122,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
      * Notifies controller that a button has been pressed
      * @param controller The views controller to handle user interaction
      */
-    public void setController(Controller controller){
+    protected void setController(Controller controller){
         attack.setOnAction(e -> controller.handleAttack());
         run.setOnAction((e -> controller.handleRun()));
         magic.setOnAction(e -> controller.handleMagic());
@@ -130,8 +132,14 @@ public class CombatView extends StackPane implements CombatSubscriber{
      * The views model to receive updates from (and to subscribe too)
      * @param comModel the model to set as the views model
      */
-    public void setModel(CombatModel comModel){
+    protected void setModel(CombatModel comModel){
         model = comModel;
+    }
+
+    private void retryButtons(){
+        bottom.getChildren().addAll(retryYes,retryNo);
+        main.getChildren().remove(1);
+        main.getChildren().add(1,bottom);
     }
 
     /**
@@ -150,8 +158,8 @@ public class CombatView extends StackPane implements CombatSubscriber{
         //      Add game dialogue
         //      If statements only here to get feedback when user has lost or won (testing purposes)
         if(model.player.characterStats.getHealth() <= 0){
-            System.out.println("YOU LOSE!");
             playerHealthBar.setProgress(0);
+            this.retryButtons();
         }
         else if (model.enemy.characterStats.getHealth() <= 0){
             System.out.println("YOU WIN!");

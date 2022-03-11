@@ -79,7 +79,7 @@ public class WelcomeView extends Pane {
      * @param controller the controller to handle user interaction
      */
     public void setController(Controller controller){
-        newChar.setOnAction(e -> controller.welcomeToGen());
+        newChar.setOnAction(e -> controller.welcomeToGen(this.getScene()));
     }
 
 }
