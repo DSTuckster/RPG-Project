@@ -141,14 +141,43 @@ public class Features {
     //
     // Test 1
     private static boolean TestRandomFeaturesAreDifferent(Features f1, Features f2) {
+        // If all values for either feature <f1> or <f2> are matching, test fails.
+        // Else, test passes
+        return !(f1.race.equalsIgnoreCase(f2.race) &&
+                f1.hairColor.equalsIgnoreCase(f2.hairColor) &&
+                f1.hairType.equalsIgnoreCase(f2.hairType) &&
+                f1.eyeColor.equalsIgnoreCase(f2.eyeColor) &&
+                f1.bodyType.equalsIgnoreCase(f2.bodyType));
+    }
 
-        // If any of the values for either feature <f1> or <f2> are matching
-        // test fails. Else, test passes
-        return f1.race.equalsIgnoreCase(f2.race) ||
-                f1.hairColor.equalsIgnoreCase(f2.hairColor) ||
-                f1.hairType.equalsIgnoreCase(f2.hairType) ||
-                f1.eyeColor.equalsIgnoreCase(f2.eyeColor) ||
-                f1.bodyType.equalsIgnoreCase(f2.bodyType);
+    protected void RunFeaturesTestSuite() {
+        System.out.println("This is the Features Test Suite");
+
+        Features f1 = new Features();
+        Features f2 = new Features();
+        boolean Expected;
+        boolean Result;
+        boolean ErrorDetected = false;
+
+        // Test 1
+        // Ensure that features are randomly generated with randomize()
+        // Ensure that no two generations are identical
+        for (int i=0; i<1000; i++) {
+            f1.randomize();
+            f2.randomize();
+            Expected = true;
+            Result = Features.TestRandomFeaturesAreDifferent(f1, f2);
+            if (Result != Expected) {
+                System.out.println("Error in Features.java Test 1: Result != Expected");
+            }
+        }
+        System.out.println("Features Generation Completed");
+
+        if (ErrorDetected) {
+            System.out.println("Errors in FeaturesTestSuite");
+        } else {
+            System.out.println("No errors in FeaturesTestSuite\n");
+        }
     }
 
 
@@ -174,4 +203,6 @@ public class Features {
 
 
     }
+
+
 }
