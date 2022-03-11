@@ -5,13 +5,9 @@ import java.util.ArrayList;
 
 public class transData {
     
-    ArrayList<String> keylist;
-    ArrayList<String> valuelist;
+    ArrayList<String> keylist = new ArrayList<>();
+    ArrayList<String> valuelist = new ArrayList<>();
 
-    public transData(){
-        keylist = new ArrayList<>();
-        valuelist = new ArrayList<>();
-    }
     /**
      * translate the data class to a list
      */
