@@ -56,12 +56,15 @@ public class Controller {
         thisStage.show();
     }
 
-    public void genToTraversal(Scene scene){
+    public void genToTraversal(Scene scene, ArrayList<String> character){
+        charModel.generateCustom(character);
+        combatModel.setCombatScenario(new CombatScenario(charModel.character, combatModel.createEnemy()));
         Stage stage = (Stage) scene.getWindow();
         gameView traversal = (gameView) g.subs.get(0);
         Scene sceneTraversal = traversal.getScene();
         stage.setScene(sceneTraversal);
         stage.show();
+
     }
 
     public void welcomeToGen(Scene scene){
@@ -103,6 +106,7 @@ public class Controller {
 
     public void handleAttack(){
         combatModel.attack();
+        combatModel.nextPhase();
     }
 
     public void handleRun(){
@@ -111,6 +115,7 @@ public class Controller {
 
     public void handleMagic(){
         combatModel.usedMagic();
+        combatModel.nextPhase();
     }
 
     public void handleCombatRest(){

@@ -168,6 +168,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
     private void reset() {
         this.getChildren().retainAll();
         this.getChildren().addAll(imageView, main);
+        model.reset = false;
     }
 
     /**
@@ -185,8 +186,8 @@ public class CombatView extends StackPane implements CombatSubscriber{
 
     private void end(){
         Dialogue.setText("Player Wins!");
-        this.getChildren().remove(1);
-        this.getChildren().addAll(Dialogue, diaNext);
+        this.getChildren().clear();
+        this.getChildren().addAll(imageView, Dialogue, diaNext);
     }
 
 
@@ -196,6 +197,9 @@ public class CombatView extends StackPane implements CombatSubscriber{
     @Override
     public void modelChanged() {
 
+        if(model.reset){
+            reset();
+        }
         Dialogue.setText(model.getCurrentDialogue());
 
         // Get current health, xp, and mana for the progress bars
@@ -222,6 +226,17 @@ public class CombatView extends StackPane implements CombatSubscriber{
         // If mana bar is empty then player can no longer use magic button
         if (model.player.characterStats.getMana() <= 0){
             magic.setDisable(true);
+        }
+
+        //if it is not the players turn, then disable action buttons. Enable otherwise
+        if(model.playerTurnPhase == model.phase){
+            magic.setDisable(false);
+            attack.setDisable(false);
+            run.setDisable(false);
+        }else{
+            magic.setDisable(true);
+            attack.setDisable(true);
+            run.setDisable(true);
         }
     }
 }

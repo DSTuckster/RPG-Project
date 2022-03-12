@@ -1,32 +1,60 @@
-Name : 
-Olawart
+name : 
+  
 Stats : 
-CharacterLevel
+  
+CharacterLevel :
 1
-Health
+Health :
 12
-Strength
-9
-Dexterity
-10
-Constitution
+Strength :
+<<<<<<< HEAD
 13
-Wisdom
-9
-Intelligence
-10
-Charisma
+Dexterity :
+7
+Constitution :
+16
+Wisdom :
+15
+Intelligence :
+17
+Charisma :
 12
 Features : 
-Race
+  
+race :
 Orc
-Hair Color
-Blonde
-Hair Type
-Long
-Eye Color
-Green
-Body Type
+hairColor :
+Black
+hairType :
+Bald
+eyeColor :
+White
+bodyType :
 Girthy
+=======
+14
+Dexterity :
+8
+Constitution :
+7
+Wisdom :
+12
+Intelligence :
+16
+Charisma :
+11
+Features : 
+  
+race :
+Human
+hairColor :
+Brown
+hairType :
+Short
+eyeColor :
+Brown
+bodyType :
+None
+>>>>>>> 51d0c10c3cc937f5a21ca5dd5f7cf67f33edf34b
 Story : 
-CharacterLevel : 
+  
