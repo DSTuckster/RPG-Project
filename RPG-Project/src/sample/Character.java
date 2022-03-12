@@ -35,6 +35,17 @@ public class Character {
     public void setName(String name) {
         this.name = name;
     }
+    public String getName() {
+        return name;
+    }
+
+    public String getCharacterStory() {
+        return characterStory;
+    }
+
+    public void setCharacterStory(String characterStory) {
+        this.characterStory = characterStory;
+    }
 
     /**
      * generateStory()

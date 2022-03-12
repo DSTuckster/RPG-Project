@@ -18,19 +18,19 @@ public class SaveSystem {
         transData data=new transData();
         ArrayList<String> key=data.CreateKeyList();
         ArrayList<String> value=data.CreateValueList(character);
-
         int length = 0;
         File savefile = new File(Filename);
         PrintWriter fileName = new PrintWriter(savefile);
-
         while (length<4){
             fileName.println(key.get(length)+ " : ");
-            fileName.println("  ");
+            if(length ==0){
+                fileName.println(value.get(length));
+            }
             if(length ==1){
                 int i=0;
                 while (i<=7){
                     fileName.println(key.get(i+4)+" :");
-                    fileName.println(value.get(i));
+                    fileName.println(value.get(i+1));
                     i++;
                 }
             }
@@ -38,9 +38,12 @@ public class SaveSystem {
                 int o =0;
                 while (o<=4){
                     fileName.println(key.get(o+12)+" :");
-                    fileName.println(value.get(o+8));
+                    fileName.println(value.get(o+9));
                     o++;
                 }
+            }
+            if(length ==3){
+                fileName.println(value.get(value.size()-1));
             }
             length++;
         }
@@ -63,25 +66,32 @@ public class SaveSystem {
         int i=0;
         while(length<=3){
             key.set(length,scan.nextLine());
-            scan.nextLine();
+            if(length==0){
+                value.set(length,scan.nextLine());
+            }
+
             if(length==1){
                 while(i<=7){
+                    i++;
                     scan.nextLine();
                     value.set(i,scan.nextLine());
-                    i++;
                 }
             }
             if(length ==2){
                 while(i<=12){
+                    i++;
                     scan.nextLine();
                     value.set(i,scan.nextLine());
-                    i++;
                 }
+            }
+            if(length==3){
+                i++;
+                value.set(i,scan.nextLine());
             }
             length++;
         }
         data.SetValueFromList(value,character);
+
     }
 }
-
 
