@@ -1,60 +1,32 @@
 name : 
-  
+the guy
 Stats : 
-  
 CharacterLevel :
 1
 Health :
-12
+100
 Strength :
-<<<<<<< HEAD
-13
+3
 Dexterity :
-7
+3
 Constitution :
-16
+3
 Wisdom :
-15
+3
 Intelligence :
-17
+3
 Charisma :
-12
+3
 Features : 
-  
 race :
-Orc
+guy
 hairColor :
-Black
+guye
 hairType :
-Bald
+guyful
 eyeColor :
-White
+guye
 bodyType :
-Girthy
-=======
-14
-Dexterity :
-8
-Constitution :
-7
-Wisdom :
-12
-Intelligence :
-16
-Charisma :
-11
-Features : 
-  
-race :
-Human
-hairColor :
-Brown
-hairType :
-Short
-eyeColor :
-Brown
-bodyType :
-None
->>>>>>> 51d0c10c3cc937f5a21ca5dd5f7cf67f33edf34b
+very guy
 Story : 
-  
+You are a(n) Orc. Your hair is Horned and noticeably Black. Your eyes shine a bold Gray color. Your build is Gargantuan...and impressive. You are brimming with vitality, and ripe for adventure!
