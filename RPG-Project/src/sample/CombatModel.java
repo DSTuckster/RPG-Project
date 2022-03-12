@@ -202,7 +202,6 @@ public class CombatModel {
         for(int i = 1; i < c.characterStats.getCharacterLevel(); i++){
             c.characterStats.levelUp();
         }
-        System.out.println(c.characterStats.getCharacterLevel());
         return c;
     }
 
@@ -263,9 +262,17 @@ public class CombatModel {
 
     //end combat
     public void endCombat(){
-        player.characterStats.setWis(playerTotalWisdom);
-        player.characterStats.setHealth(playerTotalHealth);
+        player.characterStats.setMana(player.characterStats.getMaxMana());
+        player.characterStats.setHealth(player.characterStats.getMaxHealth());
+        enemy.characterStats.setMana(enemy.characterStats.getMaxMana());
+        enemy.characterStats.setHealth(enemy.characterStats.getMaxHealth());
         combatDialogue.clear();
+        playerTurn = false;
+        runAway = false;
+        playerTurnPhase = 0;
+        enemyTurnPhase = 0;
+        phase = 0;
+        reset = true;
     }
 
     /**
@@ -337,13 +344,20 @@ public class CombatModel {
             result = 1;
         }else if(model.player.characterStats.getDex() < model.enemy.characterStats.getDex()){
             result = 0;
+        }else{
+            result = -1;
         }
-        if(result == 0 && model.playerTurn){
+        if(result != 1 && model.player.characterStats.getDex() > model.enemy.characterStats.getDex()){
             System.out.println("whoGoesFirst() test #1 failed! expected = playerTurn, result = enemyTurn");
-        }else if(result == 1 && !model.playerTurn){
+        }
+        if(result != 0 && model.player.characterStats.getDex() < model.enemy.characterStats.getDex()){
             System.out.println("whoGoesFirst() test #1 failed! expected = enemyTurn, result = PlayerTurn");
         }
+        if(result != -1 && model.player.characterStats.getDex() == model.enemy.characterStats.getDex()){
+            System.out.println("whoGoesFirst() test #1 failed! expected a result of -1, but result = " + result);
+        }
 
+        //enemy and player damage test
         //test each combat phase
         //This variable is a safety net, I would occasionally get an infinite loop. I think I fixed it, but just in case...
         int count = 0;
@@ -359,16 +373,25 @@ public class CombatModel {
                 model.nextPhase();
                 int enemyHealth = model.enemy.characterStats.getHealth();
                 int playerDamage = enemyTotalHealth - enemyHealth;
-                System.out.println("It is the player's turn. The enemies total health was " + enemyTotalHealth + ". The enemies health is now " + enemyHealth);
-                System.out.println("total damage was " + playerDamage);
+                int totalPlayerDamage = model.player.characterStats.getStr()+5;
+                if(model.player.characterStats.getStr() > playerDamage || model.player.characterStats.getStr()+5 < playerDamage){
+                    System.out.println("damage test failed!");
+                    System.out.println("It is the player's turn. The enemies total health was " + enemyTotalHealth + ". The enemies health is now " + enemyHealth);
+                    System.out.println("total damage was " + playerDamage + ". Should have been between " + model.player.characterStats.getStr() + "-" + totalPlayerDamage);
+                }
             }else if(model.enemyTurnPhase == model.phase){
+                int playerTotalHealth = model.player.characterStats.getHealth();
                 model.attack();
                 model.nextPhase();
                 int playerHealth = model.player.characterStats.getHealth();
-                int playerTotalHealth = model.playerTotalHealth;
                 int enemyDamage = playerTotalHealth - playerHealth;
-                System.out.println("It is the enemies turn. The player's total health was " + playerTotalHealth + ". The player's health is now " + playerHealth);
-                System.out.println("total damage was " + enemyDamage);
+                int totalEnemyDamage = model.enemy.characterStats.getStr()+5;
+                if(model.enemy.characterStats.getStr() > enemyDamage || model.enemy.characterStats.getStr()+5 < enemyDamage){
+                    System.out.println("damage test failed!");
+                    System.out.println("It is the enemies turn. The player's total health was " + playerTotalHealth + ". The player's health is now " + playerHealth);
+                    System.out.println("total damage was " + enemyDamage + ". Should have been between " + model.enemy.characterStats.getStr() + "-" + totalEnemyDamage);
+                }
+
             }else{
                 model.nextPhase();
             }
@@ -376,6 +399,14 @@ public class CombatModel {
         }
 
         model.setCombatDialogue();
+
+        //enemyPhase() test #1
+        int totalEnemyMana = model.enemy.characterStats.getMana();
+        model.enemyPhase();
+        if(totalEnemyMana == model.enemy.characterStats.getMana() && model.enemy.characterStats.getInt() >= model.enemy.characterStats.getStr() && model.enemy.characterStats.getMana() >= model.costPerSpell){
+            System.out.println("enemy chose attack when they should have chosen magic");
+        }
+
 
 
         //create enemy test #1
