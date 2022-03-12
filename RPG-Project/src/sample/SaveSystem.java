@@ -14,16 +14,13 @@ public class SaveSystem {
      * @param character the character want to save
      * @throws FileNotFoundException
      */
-        public static void SaveToFile(String Filename, Character character) throws FileNotFoundException {
+    public static void SaveToFile(String Filename, Character character) throws FileNotFoundException {
         transData data=new transData();
         ArrayList<String> key=data.CreateKeyList();
         ArrayList<String> value=data.CreateValueList(character);
-        System.out.println(value);
-
         int length = 0;
         File savefile = new File(Filename);
         PrintWriter fileName = new PrintWriter(savefile);
-
         while (length<4){
             fileName.println(key.get(length)+ " : ");
             if(length ==0){
@@ -75,26 +72,26 @@ public class SaveSystem {
 
             if(length==1){
                 while(i<=7){
+                    i++;
                     scan.nextLine();
                     value.set(i,scan.nextLine());
-                    i++;
                 }
             }
             if(length ==2){
                 while(i<=12){
+                    i++;
                     scan.nextLine();
                     value.set(i,scan.nextLine());
-                    i++;
                 }
             }
             if(length==3){
+                i++;
                 value.set(i,scan.nextLine());
-
             }
             length++;
         }
         data.SetValueFromList(value,character);
+
     }
 }
-
 
