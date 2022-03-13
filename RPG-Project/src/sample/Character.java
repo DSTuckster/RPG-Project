@@ -53,11 +53,11 @@ public class Character {
      *  It is represented as a String value, where each feature is noted.
      *  The only things that changes in the Story String are the Character Features (generated randomly)
      */
-    private String generateStory() {
-        characterStory = "You are a(n) "+characterFeatures.race+". ";
-        characterStory = characterStory.concat("Your hair is "+characterFeatures.hairType+" and noticeably "+characterFeatures.hairColor+". ");
-        characterStory = characterStory.concat("Your eyes shine a bold "+characterFeatures.eyeColor+" color. ");
-        characterStory =  characterStory.concat("Your build is "+characterFeatures.bodyType+"...and impressive. ");
+    protected String generateStory() {
+        characterStory = "You are a(n) "+ this.characterFeatures.race+". ";
+        characterStory = characterStory.concat("Your hair is "+ this.characterFeatures.hairType+" and noticeably "+ this.characterFeatures.hairColor+". ");
+        characterStory = characterStory.concat("Your eyes shine a bold "+ this.characterFeatures.eyeColor+" color. ");
+        characterStory =  characterStory.concat("Your build is "+ this.characterFeatures.bodyType+"...and impressive. ");
         characterStory = characterStory.concat("You are brimming with vitality, and ripe for adventure!");
 
         return characterStory;

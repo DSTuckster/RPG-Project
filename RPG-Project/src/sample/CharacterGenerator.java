@@ -37,6 +37,9 @@ public class CharacterGenerator{
         character.characterFeatures.setHairColor(custom.get(9));
         character.characterFeatures.setHairType(custom.get(10));
         character.characterFeatures.setRace(custom.get(11));
+
+        // Update Character Story
+        character.generateStory();
     }
 
     public void addSubscriber (CharacterSubscribers sub) {subs.add(sub);}
