@@ -1,32 +1,32 @@
 name : 
-Rainking
+Smrett
 Stats : 
 CharacterLevel :
 1
 Health :
 100
 Strength :
-5
+18
 Dexterity :
-15
+6
 Constitution :
-12
+11
 Wisdom :
-5
+11
 Intelligence :
-15
+18
 Charisma :
 11
 Features : 
 race :
-Gnome
+Dunmer
 hairColor :
-Auburn
+Red
 hairType :
-Long
+Short
 eyeColor :
-Indigo
+Faded
 bodyType :
 Girthy
 Story : 
-You are a(n) Gnome. Your hair is Long and noticeably Auburn. Your eyes shine a bold Indigo color. Your build is Girthy...and impressive. You are brimming with vitality, and ripe for adventure!
+You are a(n) Dunmer. Your hair is Short and noticeably Red. Your eyes shine a bold Faded color. Your build is Girthy...and impressive. You are brimming with vitality, and ripe for adventure!
