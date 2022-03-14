@@ -4,6 +4,7 @@ package sample;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Random;
 
 
 public class CombatModel {
@@ -28,6 +29,8 @@ public class CombatModel {
 
     public Hashtable<Integer, String> combatDialogue;
     public String currentDialogue;
+
+    private Random r = new Random();
 
     public CombatModel(){
         costPerSpell = 25;
@@ -58,7 +61,6 @@ public class CombatModel {
      */
     public void attack() {
         int extraDamage = (int) (Math.random() * 5 + 1);
-        
         //IF statement checks whose turn it is
         if(playerTurn){
             //player attacks
@@ -151,7 +153,7 @@ public class CombatModel {
         //who's turn is it?
         if(phase == playerTurnPhase-1){
             playerTurn = true;
-        }else if(phase == enemyTurnPhase-1){
+        }else if(phase == enemyTurnPhase){
             playerTurn = false;
             enemyPhase();
         }else{  // no ones turn
@@ -205,21 +207,20 @@ public class CombatModel {
 
     /**
      * use character generator to create an enemy for battle
-     * Create an enemy within +3 or -2 of player level
+     * Create an enemy within +2 or -2 of player level
      * return: enemy Character
-     * TODO: this method does not work yet. The enemy should be created with a level within a range of +3 or -2 of the player's level
+     * TODO: this method does not work yet. The enemy should be created with a level within a range of +2 or -2 of the player's level
      */
     public Character createEnemy(){
         Character c = new Character();
-        int maxEnemyLevel = player.characterStats.getCharacterLevel()+3;
-        int minEnemyLevel = player.characterStats.getCharacterLevel()-3;
+        int maxEnemyLevel = player.characterStats.getCharacterLevel()+2;
+        int minEnemyLevel = player.characterStats.getCharacterLevel()-2;
         if(minEnemyLevel <= 0){
             minEnemyLevel = 1;
         }
 
-        int enemyLevel = (int) (Math.random() * (maxEnemyLevel-(minEnemyLevel)) + minEnemyLevel);
-        //c.characterStats.setCharacterLevel(enemyLevel);
-        for(int i = 1; i < c.characterStats.getCharacterLevel(); i++){
+        int enemyLevel = minEnemyLevel + r.nextInt(maxEnemyLevel - minEnemyLevel + 1);
+        for(int i = 1; i < enemyLevel; i++){
             c.characterStats.levelUp();
         }
         return c;
@@ -242,16 +243,12 @@ public class CombatModel {
      * TODO: this method does not work. Scrap it and start over
      */
     public void runAway(){
-        int check = (int) (Math.random() * 101 + 1);
+        int check = r.nextInt(101);
         if(check > 51){
             runAway = true;
-            combatDialogue.put(6, "The player escaped");
-            currentDialogue = combatDialogue.get(6);
-            phase = 6;
-            this.endCombat();
         }else{
-            combatDialogue.replace(phase+1, "The player tried to run away but could not escape.");
-            setCurrentDialogue(combatDialogue.get(phase));
+            combatDialogue.replace(playerTurnPhase+1, "The player failed to run away!");
+            nextPhase();
         }
         notifySubscribers();
     }
