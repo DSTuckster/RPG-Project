@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -11,17 +13,20 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-public class WelcomeView extends Pane {
+public class WelcomeView extends Pane{
     Label welcome, optionNew, optionSaved;
     Button newChar, play, edit;
-    ChoiceBox<ArrayList<String>> saved;
+    ChoiceBox<String> saved;
+    ObservableList<String> choices;
+    Character character;
 
     /**
      * Constructor for welcome view
      */
-    WelcomeView(){
+    WelcomeView() throws FileNotFoundException {
 
         // Boxes for view structure
         HBox top = new HBox();
@@ -45,10 +50,14 @@ public class WelcomeView extends Pane {
         middle.getChildren().addAll(optionNew, newChar);
         middle.setAlignment(Pos.CENTER);
 
-        // Use saved selection
+        // Use saved selection (add saved character from save.txt)
+        choices = FXCollections.observableArrayList();
+        character = new Character();
+        SaveSystem.LoadFile("save.txt", character);
+        choices.add(character.name);
         optionSaved = new Label("Use a saved character?");
         optionSaved.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 20));
-        saved = new ChoiceBox<>();
+        saved = new ChoiceBox<>(choices);
         saved.setStyle("-fx-background-color: WHITE");
 
         // Play with saved character selection
@@ -75,12 +84,14 @@ public class WelcomeView extends Pane {
         this.getChildren().addAll(main);
     }
 
+
     /**
      * Sends user interaction to controller to handle
      * @param controller the controller to handle user interaction
      */
     public void setController(Controller controller){
         newChar.setOnAction(e -> controller.welcomeToGen(this.getScene()));
+        play.setOnAction(e -> controller.handlePlayWithSaved(this.getScene(), character));
+        edit.setOnAction(e -> controller.handleEdit(this.getScene(), character));
     }
-
 }

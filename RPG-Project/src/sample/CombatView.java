@@ -142,7 +142,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
         dialogueMain.setAlignment(Pos.CENTER);
         main = new VBox();
         main.getChildren().addAll(top, dialogueMain);
-        main.setSpacing(525);
+        main.setSpacing(300);
         main.setPrefSize(1000,1000);
 
 
@@ -197,9 +197,6 @@ public class CombatView extends StackPane implements CombatSubscriber{
     @Override
     public void modelChanged() {
 
-        if(model.reset){
-            reset();
-        }
         Dialogue.setText(model.getCurrentDialogue());
 
         // Get current health, xp, and mana for the progress bars
@@ -224,13 +221,15 @@ public class CombatView extends StackPane implements CombatSubscriber{
         }
 
         // If mana bar is empty then player can no longer use magic button
-        if (model.player.characterStats.getMana() <= 0){
+        if (model.player.characterStats.getMana() <= 0 || model.player.characterStats.getMana() < model.costPerSpell){
             magic.setDisable(true);
         }
 
         //if it is not the players turn, then disable action buttons. Enable otherwise
         if(model.playerTurnPhase == model.phase){
-            magic.setDisable(false);
+            if(model.player.characterStats.getMana() >= model.costPerSpell){
+                magic.setDisable(false);
+            }
             attack.setDisable(false);
             run.setDisable(false);
         }else{

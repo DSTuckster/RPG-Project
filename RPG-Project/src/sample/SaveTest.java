@@ -42,7 +42,7 @@ public class SaveTest {
         System.out.println("This is the character stats now: " + character.characterStats);
 
         System.out.println("Now load the initial character from the file");
-        SaveSystem.LoadFile(path, character);
+        SaveSystem.LoadFile(path,character);
         System.out.println("This is the character after load: ");
         System.out.println(character.characterStats);
         System.out.println(character.characterFeatures);
