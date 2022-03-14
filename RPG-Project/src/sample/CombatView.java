@@ -201,9 +201,9 @@ public class CombatView extends StackPane implements CombatSubscriber{
 
         // Get current health, xp, and mana for the progress bars
         // Divided by 100 to get a float between 0-1 for progress bar (Max for all is 100)
-        playerManaBar.setProgress((float)model.player.characterStats.getMana()/100);
-        playerHealthBar.setProgress((float)model.player.characterStats.getHealth()/100);
-        enemyHealthBar.setProgress((float)model.enemy.characterStats.getHealth()/100);
+        playerManaBar.setProgress((float)model.player.characterStats.getMana()/model.player.characterStats.getMaxMana());
+        playerHealthBar.setProgress((float)model.player.characterStats.getHealth()/model.player.characterStats.getMaxHealth());
+        enemyHealthBar.setProgress((float)model.enemy.characterStats.getHealth()/model.enemy.characterStats.getMaxHealth());
 
         // If player loses, option to replay
         if(model.player.characterStats.getHealth() <= 0){

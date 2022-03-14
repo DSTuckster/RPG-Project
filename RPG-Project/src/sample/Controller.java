@@ -130,7 +130,7 @@ public class Controller {
         stage.setScene(sceneTraverse);
         stage.show();
 
-        combatModel.endCombat();
+        combatModel.restCombat();
     }
 
     public void handleWin(Scene scene){
