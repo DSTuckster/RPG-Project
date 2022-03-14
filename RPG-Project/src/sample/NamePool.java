@@ -5,7 +5,7 @@ public class NamePool {
 
     private static Random r;
 
-    static String[] names = { "Owensalam", "Sullivanslight", "Undeadwang", "Russellrek", "Rainking", "Hoskelis", "Torreflame",
+    static String[] names = { "Owensalam", "Sullivanslight", "Russellrek", "Rainking", "Hoskelis", "Torreflame",
             "Jobow", "Crookedtho", "Harrin The Ellistt", "Fangporter Pearfur", "Onoryant", "Royanka", "Hydraper",
             "Jonesgan Le Fraser", "Angergan", "Abagibson", "Crocothomas", "Lilles Shafang", "Bigjames", "Wickedagui Aumghlin",
             "Burkeg", "Slimerose", "Dunavaca", "Satanrker", "Piercentress", "Gonden", "Flutterhernandez", "Ifera", "Satanmills",
