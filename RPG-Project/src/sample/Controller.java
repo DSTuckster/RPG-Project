@@ -99,10 +99,9 @@ public class Controller {
     }
 
     public void handleSave(ArrayList<String> custom) throws FileNotFoundException {
-        if (charModel.character == null){
-            charModel.generateCustom(custom);
-        }
+        charModel.generateCustom(custom);
         SaveSystem.SaveToFile("save.txt",charModel.character);
+
     }
 
 
@@ -132,11 +131,25 @@ public class Controller {
         stage.show();
 
         combatModel.endCombat();
-        combatModel.restCombat();
     }
 
     public void handleWin(Scene scene){
         this.handleNoReset(scene);
+    }
+
+    public void handlePlayWithSaved(Scene scene, Character character){
+        charModel.setCharacter(character);
+        combatModel.setCombatScenario(new CombatScenario(charModel.character, combatModel.createEnemy()));
+        Stage stage = (Stage) scene.getWindow();
+        gameView traversal = (gameView) g.subs.get(0);
+        Scene sceneTraversal = traversal.getScene();
+        stage.setScene(sceneTraversal);
+        stage.show();
+    }
+
+    public void handleEdit(Scene scene, Character character){
+        welcomeToGen(scene);
+        charModel.editChar(character);
     }
 
 }

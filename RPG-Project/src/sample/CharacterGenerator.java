@@ -37,6 +37,21 @@ public class CharacterGenerator{
         character.characterFeatures.setHairColor(custom.get(9));
         character.characterFeatures.setHairType(custom.get(10));
         character.characterFeatures.setRace(custom.get(11));
+
+        // Update Character Story
+        character.generateStory();
+
+        // Notify Welcome Page that new saved character
+        notifySubscribers();
+    }
+
+    protected void setCharacter(Character c){
+        character = c;
+    }
+
+    protected void editChar(Character c){
+        character = c;
+        notifySubscribers();
     }
 
     public void addSubscriber (CharacterSubscribers sub) {subs.add(sub);}

@@ -3,8 +3,7 @@ package sample;
 import java.util.ArrayList;
 
 public class Story {
-    private ArrayList<String> storyList;
-    private String characterClass;
+    protected String characterStory;
 
 
     public Story() {

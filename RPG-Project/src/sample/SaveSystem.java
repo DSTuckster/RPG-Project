@@ -57,6 +57,7 @@ public class SaveSystem {
      * @throws FileNotFoundException
      */
     public static void LoadFile(String filename, Character character) throws FileNotFoundException {
+
         transData data =new transData();
         ArrayList<String> value = data.CreateValueList(character);
         ArrayList<String> key = data.CreateKeyList();
