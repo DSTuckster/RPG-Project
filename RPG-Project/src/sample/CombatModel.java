@@ -59,7 +59,7 @@ public class CombatModel {
     public void attack() {
         int extraDamage = (int) (Math.random() * 5 + 1);
         
-        //IF statement checks who's turn it is
+        //IF statement checks whose turn it is
         if(playerTurn){
             //player attacks
             int damage = player.characterStats.getStr() + extraDamage;

@@ -40,6 +40,18 @@ public class CharacterGenerator{
 
         // Update Character Story
         character.generateStory();
+
+        // Notify Welcome Page that new saved character
+        notifySubscribers();
+    }
+
+    protected void setCharacter(Character c){
+        character = c;
+    }
+
+    protected void editChar(Character c){
+        character = c;
+        notifySubscribers();
     }
 
     public void addSubscriber (CharacterSubscribers sub) {subs.add(sub);}
