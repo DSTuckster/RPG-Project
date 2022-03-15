@@ -53,8 +53,7 @@ public class Stats {
     /**
      * levelUp()
      *  Increments the Character Level by 1
-     *  Sets Health to (Current Max Health + 12)
-     *  Sets Mana to (Current Max Mana + Int+Wis * 2)
+     *  Increases stats by 5 each
      */
     public void levelUp(){
         exp -= getMaxExp();
