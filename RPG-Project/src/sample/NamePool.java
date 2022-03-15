@@ -18,8 +18,7 @@ public class NamePool {
         r = new Random();
     }
 
-    protected String fetchName() {
-        r = new Random();
+    protected static String fetchName() {
         return names[r.nextInt(names.length)];
     }
 

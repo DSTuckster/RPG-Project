@@ -49,6 +49,10 @@ public class Main extends Application {
 
         gView.setController(controller);
 
+        //NOTE: This is for testing the combatView, delete it later
+        combatModel.setCombatScenario(new CombatScenario(new Character(), new Character()));
+
+
         combatView.setModel(combatModel);
         controller.setModels(combatModel, g, charModel);
 
@@ -63,9 +67,6 @@ public class Main extends Application {
         welcomeView.setController(controller);
 
 
-        //NOTE: This is for testing the combatView, delete it later
-        combatModel.setCombatScenario(new CombatScenario(new Character(), new Character()));
-
 
         HBox root = new HBox();
 
@@ -73,7 +74,7 @@ public class Main extends Application {
         // any of these scenes into primaryStage.setScene( "HERE" )
         Scene sceneWelcome = new Scene(welcomeView, 800, 800);
         Scene sceneCharGen = new Scene(charView, 800, 800);
-        Scene sceneCombat = new Scene(combatView, 800, 800);
+        Scene sceneCombat = new Scene(combatView, 1000, 1000);
         Scene sceneTraversal = new Scene(gView, 800, 800);
         sceneTraversal.setFill(Color.BLACK);
         sceneTraversal.setOnKeyPressed(controller::handleKeys);

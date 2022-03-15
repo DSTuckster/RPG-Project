@@ -30,11 +30,15 @@ public class CombatModel {
     public Hashtable<Integer, String> combatDialogue;
     public String currentDialogue;
 
+    public Character boss;
+
     private Random r = new Random();
 
     public CombatModel(){
         costPerSpell = 25;
         combatDialogue = new Hashtable<>();
+        boss = new Character();
+        setBoss(20);
     }
 
     /**
@@ -47,6 +51,10 @@ public class CombatModel {
 
         player = scenario.player;
         enemy = scenario.enemy;
+
+        if(enemy == null){
+            enemy = boss;
+        }
 
         combatDialogue.put(0 ,"A wild " + enemy.name + " has appeared!");
         setCurrentDialogue(combatDialogue.get(phase));
@@ -140,13 +148,8 @@ public class CombatModel {
      */
     public void nextPhase() {
         //TODO this method can be optimized better. Also, the view handles end of combat, so this class does not need to
-        //end combat at phase 7
-        if(phase == 7){
-            endCombat();
-        }
-
         //If player or enemy are not dead and both characters have attacked, then go back to phase 1
-        if(!endCombatChecks() && phase >= 4){
+        if(phase >= 4){
             phase = 0;
         }
 
@@ -202,14 +205,12 @@ public class CombatModel {
             combatDialogue.put(3, "It is the players turn!");
             combatDialogue.put(4, "The player did " + player.characterStats.getStr() + " damage");
         }
-        playerTurn = false;
     }
 
     /**
      * use character generator to create an enemy for battle
      * Create an enemy within +2 or -2 of player level
      * return: enemy Character
-     * TODO: this method does not work yet. The enemy should be created with a level within a range of +2 or -2 of the player's level
      */
     public Character createEnemy(){
         Character c = new Character();
@@ -223,7 +224,31 @@ public class CombatModel {
         for(int i = 1; i < enemyLevel; i++){
             c.characterStats.levelUp();
         }
+        if(enemyLevel <= 2){
+            c.characterStats.setStr(3);
+        }else{
+            c.characterStats.setStr(c.characterStats.getStr()-6);
+        }
+        if(enemyLevel <= 2){
+            c.characterStats.setInt(4);
+        }else{
+            c.characterStats.setInt(c.characterStats.getInt()-7);
+        }
         return c;
+    }
+
+    /**
+     * sets the character level for the boss and sets appropriate attributes so the fight is consistent
+     * @param bossLevel: set to 20 for now
+     */
+    private void setBoss(int bossLevel){
+        for(int i = 1; i < bossLevel; i++){
+            boss.characterStats.levelUp();
+        }
+        boss.characterStats.setStr(115);
+        boss.characterStats.setInt(110);
+        boss.characterStats.setCon(105);
+        boss.setName("Megasaurus Rex");
     }
 
     /**
@@ -240,7 +265,6 @@ public class CombatModel {
 
     /**
      * end combat if random number coin toss is in players favor
-     * TODO: this method does not work. Scrap it and start over
      */
     public void runAway(){
         int check = r.nextInt(101);
@@ -272,24 +296,6 @@ public class CombatModel {
         }
 
         return end;
-    }
-
-    /**
-     * end combat
-     * TODO: this method may not be needed
-     */
-    public void endCombat(){
-        player.characterStats.setMana(player.characterStats.getMaxMana());
-        player.characterStats.setHealth(player.characterStats.getMaxHealth());
-        enemy.characterStats.setMana(enemy.characterStats.getMaxMana());
-        enemy.characterStats.setHealth(enemy.characterStats.getMaxHealth());
-        combatDialogue.clear();
-        playerTurn = false;
-        runAway = false;
-        playerTurnPhase = 0;
-        enemyTurnPhase = 0;
-        phase = 0;
-        reset = true;
     }
 
     /**

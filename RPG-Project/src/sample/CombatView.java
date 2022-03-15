@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -19,8 +20,8 @@ import java.io.FileNotFoundException;
 
 public class CombatView extends StackPane implements CombatSubscriber{
     protected Image background;
-    protected Button attack, run, magic, retryYes, retryNo, attackOne, attackTwo, attackThree, attackFour, next;
-    protected ProgressBar playerXPBar, playerHealthBar, playerManaBar, enemyHealthBar;
+    protected Button attack, run, magic, retryYes, retryNo, next;
+    protected ProgressBar playerXPBar, playerHealthBar, playerManaBar, enemyHealthBar, enemyManaBar;
     protected Label Enemy, Player, HP, XP, Mana, Retry, Dialogue;
     protected CombatModel model;
     protected HBox bottomMain,hp ,xp, mana, top;
@@ -44,31 +45,39 @@ public class CombatView extends StackPane implements CombatSubscriber{
 
         // XP, Mana, and Health Bars
         playerXPBar = new ProgressBar(1);
-        playerXPBar.setStyle("-fx-accent: GREEN");
+        playerXPBar.setStyle("-fx-accent: YELLOW");
         playerHealthBar = new ProgressBar(1);
         playerHealthBar.setStyle("-fx-accent: RED");
         playerManaBar = new ProgressBar(1);
         enemyHealthBar = new ProgressBar(1);
         enemyHealthBar.setStyle("-fx-accent: RED");
+        enemyManaBar = new ProgressBar(1);
 
         // Bars Labels
         HP = new Label("HP");
-        HP.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 13));
+        HP.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 13));
+        HP.setTextFill(Color.BLACK);
         XP = new Label("XP");
-        XP.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 13));
+        XP.setTextFill(Color.BLACK);
+        XP.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 13));
         Mana = new Label("Mana");
-        Mana.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 13));
+        Mana.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 13));
+        Mana.setTextFill(Color.BLACK);
         hp = new HBox(playerHealthBar, HP);
         xp = new HBox(playerXPBar, XP);
         mana = new HBox(playerManaBar, Mana);
 
-        Enemy = new Label("Enemy");
+        Enemy = new Label();
         Enemy.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 15));
-        Player = new Label("Player");
+        Enemy.setWrapText(true);
+        Enemy.setTextFill(Color.BLACK);
+        Player = new Label();
         Player.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 15));
+        Player.setWrapText(true);
+        Player.setTextFill(Color.BLACK);
         enemy = new VBox();
         player = new VBox();
-        enemy.getChildren().addAll(Enemy, enemyHealthBar);
+        enemy.getChildren().addAll(Enemy, enemyHealthBar, enemyManaBar);
         player.getChildren().addAll(Player, hp, xp, mana);
 
         // Dialogue Label
@@ -101,17 +110,9 @@ public class CombatView extends StackPane implements CombatSubscriber{
         retryNo.setStyle("-fx-background-color: WHITE");
 
 
-        // TODO: Implement buttons for a player to have more than one
-        //      attack to choose from
-        attackOne = new Button("Attack One");
-        attackTwo = new Button("Attack Two");
-        attackThree = new Button("Attack Three");
-        attackFour = new Button("Attack Four");
-
-
         // Coordinate all top boxes together to fit screen properly
         top = new HBox();
-        top.getChildren().addAll(enemy,player);
+        top.getChildren().addAll(player, enemy);
         top.setSpacing(550);
 
         // Will be used for smoother dialogue in the place of other buttons
@@ -142,7 +143,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
         dialogueMain.setAlignment(Pos.CENTER);
         main = new VBox();
         main.getChildren().addAll(top, dialogueMain);
-        main.setSpacing(300);
+        main.setSpacing(700);
         main.setPrefSize(1000,1000);
 
 
@@ -161,7 +162,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
         magic.setOnAction(e -> controller.handleMagic());
         retryYes.setOnAction(e -> {controller.handleCombatRest();this.reset();});
         retryNo.setOnAction(e -> {controller.handleNoReset(this.getScene());this.reset();});
-        next.setOnAction(e -> {controller.handleWin(this.getScene());this.reset();});
+        next.setOnAction(e -> {controller.handleNoReset(this.getScene());this.reset();});
         main.setOnMousePressed(controller::nextPhase);
     }
 
@@ -176,7 +177,10 @@ public class CombatView extends StackPane implements CombatSubscriber{
      * @param comModel the model to set as the views model
      */
     protected void setModel(CombatModel comModel){
+
         model = comModel;
+        Player.setText(model.player.name + " /Level: " + model.player.characterStats.getCharacterLevel());
+        Enemy.setText(model.enemy.name + " /Level: " + model.enemy.characterStats.getCharacterLevel());
     }
 
     private void retryButtons(){
@@ -196,14 +200,14 @@ public class CombatView extends StackPane implements CombatSubscriber{
      */
     @Override
     public void modelChanged() {
-
         Dialogue.setText(model.getCurrentDialogue());
 
         // Get current health, xp, and mana for the progress bars
-        // Divided by 100 to get a float between 0-1 for progress bar (Max for all is 100)
+        // Normalized for progress bar needing number between 0-1
         playerManaBar.setProgress((float)model.player.characterStats.getMana()/model.player.characterStats.getMaxMana());
         playerHealthBar.setProgress((float)model.player.characterStats.getHealth()/model.player.characterStats.getMaxHealth());
         enemyHealthBar.setProgress((float)model.enemy.characterStats.getHealth()/model.enemy.characterStats.getMaxHealth());
+        enemyManaBar.setProgress((float)model.enemy.characterStats.getMana()/model.enemy.characterStats.getMaxMana());
 
         // If player loses, option to replay
         if(model.player.characterStats.getHealth() <= 0){

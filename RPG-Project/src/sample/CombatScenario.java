@@ -9,4 +9,13 @@ public class CombatScenario {
         player = p;
         enemy = e;
     }
+
+    /**
+     * calling this version of the constructor will default to the boss fight
+     * @param p: The player character
+     */
+    public CombatScenario(Character p){
+        player = p;
+        enemy = null;
+    }
 }
