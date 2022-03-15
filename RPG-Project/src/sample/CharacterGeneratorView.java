@@ -2,17 +2,21 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+
 
 public class CharacterGeneratorView extends Pane implements CharacterSubscribers{
     protected Button generateRandom, save, play;
@@ -21,10 +25,10 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
     protected ComboBox<String> raceList, hairColour, eyeColour, hairType, bodyType;
     protected TextField name;
     protected Label race, charName, strength, dexterity, constitution, wisdom, intelligence, charisma, hairC,
-            eyeColourChoice, hairT, body;
+            eyeColourChoice, hairT, body, story;
     protected Image character;
     protected HBox bottom,above,mid, textField;
-    protected VBox top,combo,vboxChoice,labels,choiceLabels;
+    protected VBox top,combo,vboxChoice,labels,choiceLabels, topMid;
     protected CharacterGenerator model;
     protected Features features;
     protected ObservableList<String> stats, races, hairColor, hairTypes, eyeColor, bodyTypes;
@@ -53,6 +57,13 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         bodyTypes = FXCollections.observableArrayList();
         bodyTypes.addAll(features.bodyTypes);
 
+        // Label to show story for generated character
+        Font font = Font.font("Helvetica", FontWeight.EXTRA_BOLD, FontPosture.ITALIC, 15);
+        story = new Label();
+        story.setFont(font);
+        story.setWrapText(true);
+
+
         // All Boxes for structure
         top = new VBox();
         above = new HBox();
@@ -63,45 +74,68 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         vboxChoice = new VBox();
         labels = new VBox();
         choiceLabels = new VBox();
+        topMid = new VBox();
+
+        Font labelFont = Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 12);
+
 
         // Name input/random name
         name = new TextField();
+        name.setFont(labelFont);
         charName = new Label("Name: ");
+        charName.setFont(labelFont);
         textField.getChildren().addAll(charName, name);
         textField.setAlignment(Pos.TOP_CENTER);
 
         // Generate random button. Located on top of everything
         generateRandom = new Button("Generate Random");
+        generateRandom.setFont(labelFont);
+        generateRandom.setStyle("-fx-border-color: BLACK; -fx-border-radius: 4px");
         top.getChildren().addAll(generateRandom, textField);
         top.setAlignment(Pos.CENTER);
-        top.setSpacing(15);
+        top.setSpacing(25);
         above.getChildren().addAll(top);
         above.setAlignment(Pos.CENTER);
+        above.setPadding(new Insets(50));
 
         // Save and play buttons. Located in bottom right corner
         save = new Button("Save");
+        save.setFont(labelFont);
         play = new Button("Play");
+        play.setFont(labelFont);
         bottom.getChildren().addAll(save,play);
         bottom.setAlignment(Pos.BOTTOM_RIGHT);
         bottom.setSpacing(10);
 
         // All ComboBox Labels (far left)
         strength = new Label("Strength: ");
+        strength.setFont(labelFont);
         dexterity = new Label("Dexterity: ");
+        dexterity.setFont(labelFont);
         constitution = new Label("Constitution: ");
+        constitution.setFont(labelFont);
         wisdom = new Label("Wisdom: ");
+        wisdom.setFont(labelFont);
         intelligence = new Label("Intelligence: ");
+        intelligence.setFont(labelFont);
         charisma = new Label("Charisma: ");
+        charisma.setFont(labelFont);
         labels.getChildren().addAll(strength, dexterity, constitution, wisdom, intelligence, charisma);
-        labels.setSpacing(20);
+        labels.setSpacing(21);
 
         // All choiceboxes (far left)
         strengthList = new ChoiceBox<>(stats);
+        strengthList.setStyle("-fx-font: 12 Verdana");
         dexterityList = new ChoiceBox<>(stats);
+        dexterityList.setStyle("-fx-font: 12 Verdana");
         constitutionList = new ChoiceBox<>(stats);
+        constitutionList.setStyle("-fx-font: 12 Verdana");
         wisdomList = new ChoiceBox<>(stats);
+        wisdomList.setStyle("-fx-font: 12 Verdana");
         intelligenceList = new ChoiceBox<>(stats);
+        intelligenceList.setStyle("-fx-font: 12 Verdana");
         charismaList = new ChoiceBox<>(stats);
+        charismaList.setStyle("-fx-font: 12 Verdana");
         combo.getChildren().addAll(strengthList, dexterityList, constitutionList, wisdomList, intelligenceList,
                 charismaList);
         combo.setSpacing(12);
@@ -112,39 +146,62 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         character = new Image(inputStream);
         ImageView imageView = new ImageView();
         imageView.setImage(character);
-        imageView.setFitHeight(600);
-        imageView.setFitWidth(325);
+        imageView.setFitHeight(350);
+        imageView.setFitWidth(200);
+
+        // Labels for combo boxes
         race = new Label("Race: ");
+        race.setFont(labelFont);
         hairC = new Label("Hair Colour: ");
+        hairC.setFont(labelFont);
         eyeColourChoice = new Label("Eye Colour: ");
+        eyeColourChoice.setFont(labelFont);
         hairT = new Label("Hair Type: ");
+        hairT.setFont(labelFont);
         body = new Label("Body Type: ");
+        body.setFont(labelFont);
         choiceLabels.getChildren().addAll(race, hairC, eyeColourChoice, hairT, body);
-        choiceLabels.setSpacing(20);
+        choiceLabels.setSpacing(22);
 
         // Combo boxes (far right) ALL SET TO EDITABLE so user can add unavailable feature choice
+
         raceList = new ComboBox<>(races);
         raceList.setEditable(true);
+        raceList.setStyle("-fx-font: 12 Verdana");
         hairColour = new ComboBox<>(hairColor);
+        hairColour.setStyle("-fx-font: 12 Verdana");
         hairColour.setEditable(true);
         eyeColour = new ComboBox<>(eyeColor);
+        eyeColour.setStyle("-fx-font: 12 Verdana");
         eyeColour.setEditable(true);
         hairType = new ComboBox<>(hairTypes);
+        hairType.setStyle("-fx-font: 12 Verdana");
         hairType.setEditable(true);
         bodyType = new ComboBox<>(bodyTypes);
+        bodyType.setStyle("-fx-font: 12 Verdana");
         bodyType.setEditable(true);
         vboxChoice.getChildren().addAll(raceList, hairColour, eyeColour, hairType, bodyType);
         vboxChoice.setSpacing(12);
 
         // Mid section grouping (label -> combobox -> stickman -> label -> choicebox)
-        mid.getChildren().addAll(labels,combo,imageView, choiceLabels, vboxChoice);
-        mid.setSpacing(20);
+        mid.getChildren().addAll(labels,combo,imageView,choiceLabels, vboxChoice);
+        mid.setSpacing(25);
+        mid.setAlignment(Pos.CENTER);
+
+        topMid.getChildren().addAll(top,mid);
+        topMid.setSpacing(100);
 
         // All put together
         VBox main = new VBox();
-        main.getChildren().addAll(above, mid, bottom);
-        main.setSpacing(40);
+        main.getChildren().addAll(topMid, story, bottom);
+        main.setSpacing(75);
+        main.setPrefSize(800,800);
+        main.setPadding(new Insets(25));
         this.getChildren().addAll(main);
+
+        BackgroundFill backgroundFill = new BackgroundFill(Color.GHOSTWHITE, CornerRadii.EMPTY, Insets.EMPTY);
+        Background background = new Background(backgroundFill);
+        this.setBackground(background);
     }
 
     /**
@@ -181,7 +238,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
 
         // If user leaves name field blank or deletes what was put there, generate random name
         if (name.getText() == null || name.getText().equals("")){
-            name.setText(model.character.generateName());
+            name.setText(NamePool.fetchName());
         }
         custom.add(name.getText());
         custom.add(charismaList.getValue());
@@ -217,5 +274,6 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         eyeColour.setValue(model.character.characterFeatures.eyeColor);
         bodyType.setValue(model.character.characterFeatures.bodyType);
         name.setText(model.character.name);
+        story.setText(model.character.characterStory);
     }
 }
