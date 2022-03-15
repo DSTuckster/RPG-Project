@@ -76,6 +76,7 @@ public class transData {
         character.characterFeatures.setHairType(list.get(11));
         character.characterFeatures.setEyeColor(list.get(12));
         character.characterFeatures.setBodyType(list.get(13));
+        character.getCharacterStory();
         character.setCharacterStory(list.get(14));
     }
 

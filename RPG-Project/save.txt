@@ -1,32 +1,32 @@
 name : 
-Smrett
+Ifblack
 Stats : 
 CharacterLevel :
 1
 Health :
 100
 Strength :
-18
+11
 Dexterity :
-6
+15
 Constitution :
-11
+7
 Wisdom :
-11
+13
 Intelligence :
-18
+5
 Charisma :
-11
+3
 Features : 
 race :
-Dunmer
+High Elf
 hairColor :
-Red
+Platinum
 hairType :
-Short
+Medium
 eyeColor :
-Faded
+Brown
 bodyType :
-Girthy
+Round
 Story : 
-You are a(n) Dunmer. Your hair is Short and noticeably Red. Your eyes shine a bold Faded color. Your build is Girthy...and impressive. You are brimming with vitality, and ripe for adventure!
+You are a(n) High Elf. Your hair is Medium and noticeably Platinum. Your eyes shine a bold Brown color. Your build is Round...and impressive. You are brimming with vitality, and ripe for adventure!
