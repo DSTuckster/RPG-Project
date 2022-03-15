@@ -161,7 +161,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
         magic.setOnAction(e -> controller.handleMagic());
         retryYes.setOnAction(e -> {controller.handleCombatRest();this.reset();});
         retryNo.setOnAction(e -> {controller.handleNoReset(this.getScene());this.reset();});
-        next.setOnAction(e -> {controller.handleWin(this.getScene());this.reset();});
+        next.setOnAction(e -> {controller.handleNoReset(this.getScene());this.reset();});
         main.setOnMousePressed(controller::nextPhase);
     }
 
@@ -196,7 +196,6 @@ public class CombatView extends StackPane implements CombatSubscriber{
      */
     @Override
     public void modelChanged() {
-
         Dialogue.setText(model.getCurrentDialogue());
 
         // Get current health, xp, and mana for the progress bars
