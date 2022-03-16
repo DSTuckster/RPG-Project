@@ -13,6 +13,8 @@ public class Controller {
     protected CombatModel combatModel;
     protected CharacterGenerator charModel;
     protected gameModel g;
+    protected Entity player;
+
 
     //sets the combat model and characterGen model
     public void setModels(CombatModel cm, gameModel gM, CharacterGenerator characterModel){
@@ -21,24 +23,30 @@ public class Controller {
         charModel = characterModel;
     }
 
-    public void moveUp(){
-        //self-descriptive
-        g.player.setY(g.player.getY()-g.player.getSpeed());
-        g.player.setPlayerImage("up");}
-    public void moveDown() {
-        //self-descriptive
-        g.player.setY(g.player.getY()+g.player.getSpeed());
-        g.player.setPlayerImage("down");}
+    public void initPlayer() {
+        if(this.player ==null) {
+            this.player = g.entities.get(0);
+        }
+    }
 
-    public void moveLeft() {
+    public void moveUp(Entity e){
         //self-descriptive
-        g.player.setX(g.player.getX()-g.player.getSpeed());
-        g.player.setPlayerImage("left");}
+        e.setY(e.getY()-e.getSpeed());
+        e.setImage("up");}
+    public void moveDown(Entity e) {
+        //self-descriptive
+        e.setY(e.getY()+e.getSpeed());
+        e.setImage("down");}
 
-    public void moveRight() {
+    public void moveLeft(Entity e) {
         //self-descriptive
-        g.player.setX(g.player.getX()+g.player.getSpeed());
-        g.player.setPlayerImage("right");}
+        e.setX(player.getX()-e.getSpeed());
+        e.setImage("left");}
+
+    public void moveRight(Entity e) {
+        //self-descriptive
+        e.setX(player.getX()+e.getSpeed());
+        e.setImage("right");}
 
 
     public void dispose(){
@@ -83,11 +91,12 @@ public class Controller {
     public void handleKeys(KeyEvent event) {
         /**This function handles key inputs from the view and determines which function to call and send the data to the model
          */
+        initPlayer();
         switch (event.getCode()) {
-            case UP -> moveUp();
-            case DOWN -> moveDown();
-            case LEFT -> moveLeft();
-            case RIGHT -> moveRight();
+            case UP -> moveUp(player);
+            case DOWN -> moveDown(player);
+            case LEFT -> moveLeft(player);
+            case RIGHT -> moveRight(player);
             case A -> switchScene(event);
             default -> {
             }

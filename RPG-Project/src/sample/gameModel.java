@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class gameModel implements Runnable{
     protected Thread thread;
     private boolean running;
-    protected Player player;
+    ArrayList<Entity> entities = new ArrayList<>();
     protected final int FPS = 60;
 
 
@@ -24,7 +24,7 @@ public class gameModel implements Runnable{
     public void run() {
         /**Core game loop function, Creates a player object and runs the loop and the update function every 1/FPS seconds
          * tries to let the thread sleep if there is remaining time as to not overload the thread optimizing performance*/
-        player = new Player();
+        entities.add(new Player());
 
         double delta =0;
         long lastTime = System.nanoTime();
@@ -62,7 +62,10 @@ public class gameModel implements Runnable{
     public void notifySubscribers(){
         /**updates all gameSubscribers in this case, the view so that they can draw with the new locations and required images*/
         for (GameSubscriber g : subs) {
-            g.modelChanged(player.getX(),player.getY(),player.getPlayerImage());
+            for(Entity e : entities) {
+                g.modelChanged();
+            }
+
         }
 
     }
@@ -84,10 +87,8 @@ public class gameModel implements Runnable{
         }
 
         //test 2 checks to see if all player images load correctly
-        g.player = new Player();
-        if(g.player.getPlayerImage()==null) {
-            System.out.println("error in run method, player object images are not properly loaded");
-        }
+
+
 
 
     }

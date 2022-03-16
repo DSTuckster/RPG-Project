@@ -3,10 +3,12 @@ import javafx.scene.image.Image;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
-public class Player{
+public class Player implements Entity{
     private int x, y, speed;
-    private Image up, down, left, right,current;
+    private Image current;
+    ArrayList<Image> images;
 
     public Player(){
         /**Simple constructor to initialize default values to the player
@@ -22,20 +24,21 @@ public class Player{
          *  can cause a filenotfoundException if the png files are not loaded correctly
          */
         //initializing default values
+        images = new ArrayList<>();
         this.x = 100;
         this.y = 100;
         this.speed = 4;
         //loading images
         try {
             FileInputStream inputStream = new FileInputStream("boy_down_1.png");
-            this.down = new Image(inputStream);
+            images.add(new Image(inputStream));
             inputStream = new FileInputStream("boy_up_1.png");
-            this.up = new Image(inputStream);
+            images.add(new Image(inputStream));
             inputStream = new FileInputStream("boy_left_1.png");
-            this.left = new Image(inputStream);
+            images.add(new Image(inputStream));
             inputStream = new FileInputStream("boy_right_1.png");
-            this.right= new Image(inputStream);
-            this.current = down;
+            images.add(new Image(inputStream));
+            this.current = images.get(0);
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -54,22 +57,22 @@ public class Player{
 
     public void setY(int y) { this.y = y; }
 
-    public void setPlayerImage(String direction) {
+    public void setImage(String direction) {
         /** This function changes the player image based on which string has been passed into the function
          * mainly used in conjunction with a key handler so that each picture is used when moving in the corresponding direction
          * String direction: a lowercase string of the direction the player is facing
          *
          */
         switch(direction){
-            case "up" -> this.current = up;
-            case "down" -> this.current = down;
-            case "left" -> this.current =left;
-            case "right" ->this.current=right;
-            default -> this.current=down;
+            case "down" -> this.current = images.get(0);
+            case "up" -> this.current = images.get(1);
+            case "left" -> this.current =images.get(2);
+            case "right" ->this.current=images.get(3);
+            default -> this.current=images.get(0);
         }
     }
 
-    public Image getPlayerImage() { //self-descriptive
+    public Image getImage() { //self-descriptive
         return this.current;
     }
 }

@@ -11,12 +11,16 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+
+    private static final int resWidth =1296;
+    private static final int resHeight=720;
+
     protected Controller controller;
 
     protected CombatModel combatModel;
     protected CombatView combatView;
 
-    protected gameModel g;
+    protected gameModel gModel;
     protected gameView gView;
 
     protected CharacterGeneratorView charView;
@@ -27,21 +31,18 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
-
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         controller = new Controller();
         combatModel = new CombatModel();
         combatView = new CombatView();
-        g = new gameModel();
-        gView = new gameView(1280,720);
+        gModel = new gameModel();
+        gView = new gameView(resWidth,resHeight);
         charView = new CharacterGeneratorView();
         charModel = new CharacterGenerator();
         welcomeView = new WelcomeView();
 
         //enable this line if you are running the traversal mechanic
-        g.startThread();
-        g.addSubscriber(gView);
+        gModel.startThread();
+        gModel.addSubscriber(gView);
 
         gView.setController(controller);
 
@@ -50,7 +51,7 @@ public class Main extends Application {
 
 
         combatView.setModel(combatModel);
-        controller.setModels(combatModel, g, charModel);
+        controller.setModels(combatModel, gModel, charModel);
 
         combatView.setController(controller);
 
@@ -68,10 +69,10 @@ public class Main extends Application {
 
         // Transitioning works from the welcome page through to the battle. For testing input
         // any of these scenes into primaryStage.setScene( "HERE" )
-        Scene sceneWelcome = new Scene(welcomeView, 1280, 720);
-        Scene sceneCharGen = new Scene(charView, 1280, 720);
-        Scene sceneCombat = new Scene(combatView, 1280, 720);
-        Scene sceneTraversal = new Scene(gView, 1280, 720);
+        Scene sceneWelcome = new Scene(welcomeView, resWidth, resHeight);
+        Scene sceneCharGen = new Scene(charView, resWidth, resHeight);
+        Scene sceneCombat = new Scene(combatView, resWidth, resHeight);
+        Scene sceneTraversal = new Scene(gView, resWidth, resHeight);
         sceneTraversal.setFill(Color.BLACK);
         sceneTraversal.setOnKeyPressed(controller::handleKeys);
 
