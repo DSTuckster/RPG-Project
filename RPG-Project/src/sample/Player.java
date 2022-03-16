@@ -26,7 +26,7 @@ public class Player implements Entity{
         //initializing default values
         images = new ArrayList<>();
         this.x = 0;
-        this.y = 0;
+        this.y = 272;
         this.speed = 4;
         //loading images
         try {

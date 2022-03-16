@@ -34,6 +34,7 @@ public class gameModel implements Runnable{
     public Entity getEntity(int index){
         return entities.get(index);
     }
+
     public void createMonster() {
         Monster m = new Monster();
         addEntity(m);

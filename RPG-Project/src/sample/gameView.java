@@ -6,7 +6,10 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class gameView extends StackPane implements GameSubscriber {
@@ -20,6 +23,7 @@ public class gameView extends StackPane implements GameSubscriber {
     final static int maxRow = 15;
     final static int maxCol =27;
     final int scaledTileSize = originalTileSize*scale;
+    int[][] numberMap;
 
 
 
@@ -33,29 +37,56 @@ public class gameView extends StackPane implements GameSubscriber {
         gc.setFill(Color.BLACK);
         this.getChildren().addAll(canvas);
         t = new TileManager();
+        numberMap = new int[maxCol][maxRow];
+        loadMap();
 
 
 
     }
+    public void loadMap() {
+        try  {
+            FileInputStream map = new FileInputStream("map.txt"); {
+                Scanner scanner = new Scanner(map);
+                int row=0,col=0;
+                while (col < maxCol && row < maxRow) {
+                    String newLine = scanner.nextLine();
+
+                    while (col < maxCol) {
+                        String chars[] = newLine.split( " ");
+                        int num = Integer.parseInt(chars[col]);
+                        numberMap[col][row] = num;
+                        col++;
+                    }
+                    if(col == maxCol){
+                        col =0;
+                        row++;
+                    }
+
+                }
+            scanner.close();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void drawMap() {
-        int col =0;
-        int row =0;
-        int x=0;
-        int y=0;
+        int row=0,col=0,x=0,y =0;
 
         while (col < maxCol && row < maxRow) {
-            gc.drawImage(t.getTileImage(),x,y,scaledTileSize,scaledTileSize);
-            col ++;
+            int tile = numberMap[col][row];
+            gc.drawImage(t.getTileImage(tile),x,y,scaledTileSize,scaledTileSize);
             x+=scaledTileSize;
-            if(col == maxCol){
-                col = 0;
+            col ++;
+            if (col == maxCol) {
                 x=0;
-                row++;
-                y+=scaledTileSize;
-
+                col=0;
+                row ++;
+                y+= scaledTileSize;
             }
         }
+
+
 
     }
 
