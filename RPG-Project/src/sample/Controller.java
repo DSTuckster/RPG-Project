@@ -92,13 +92,17 @@ public class Controller {
         /**This function handles key inputs from the view and determines which function to call and send the data to the model
          */
         initPlayer();
+        if(g.checkEncounter()) {
+            switchScene(event);
+        }
+
         switch (event.getCode()) {
             case UP -> moveUp(player);
             case DOWN -> moveDown(player);
             case LEFT -> moveLeft(player);
             case RIGHT -> moveRight(player);
-            case A -> switchScene(event);
             default -> {
+
             }
         }
     }

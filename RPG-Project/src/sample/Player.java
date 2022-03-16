@@ -17,7 +17,7 @@ public class Player implements Entity{
     }
 
 
-    private void setDefaultValues() {
+        public void setDefaultValues() {
         /** Sets the default x,y coordinates and speed values for our character so the view can draw
          * the character at its starting position, also loads all required images beforehand to make
          * running more efficient
@@ -25,8 +25,8 @@ public class Player implements Entity{
          */
         //initializing default values
         images = new ArrayList<>();
-        this.x = 100;
-        this.y = 100;
+        this.x = 0;
+        this.y = 0;
         this.speed = 4;
         //loading images
         try {

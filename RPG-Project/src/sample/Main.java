@@ -5,8 +5,6 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
-import java.awt.Toolkit;
-import java.awt.Dimension;
 import javafx.stage.Stage;
 
 public class Main extends Application {

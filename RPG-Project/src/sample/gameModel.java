@@ -1,6 +1,7 @@
 package sample;
 
 import java.util.ArrayList;
+import java.lang.Math;
 
 public class gameModel implements Runnable{
     protected Thread thread;
@@ -12,6 +13,31 @@ public class gameModel implements Runnable{
     double drawInterval = (double)1000000000/FPS; //How often the thread needs to update in nanoseconds
     ArrayList<GameSubscriber> subs = new ArrayList<>();
 
+    public boolean checkEncounter() {
+        Entity player = entities.get(0);
+
+        for(int i=1;i<entities.size();i++){
+            Entity e = entities.get(i);
+            if(Math.abs(player.getX()-e.getX())<48) {
+                if(Math.abs(player.getY()-e.getY())<48) {
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
+    public void addEntity(Entity e) {
+        entities.add(e);
+    }
+    public Entity getEntity(int index){
+        return entities.get(index);
+    }
+    public void createMonster() {
+        Monster m = new Monster();
+        addEntity(m);
+    }
 
     public void startThread() {
         /** Creates and starts the game thread in such a way that it will close when the javaFX window is closed*/
@@ -24,7 +50,8 @@ public class gameModel implements Runnable{
     public void run() {
         /**Core game loop function, Creates a player object and runs the loop and the update function every 1/FPS seconds
          * tries to let the thread sleep if there is remaining time as to not overload the thread optimizing performance*/
-        entities.add(new Player());
+        addEntity(new Player());// The player should always be the first Entity in the Arraylist
+        createMonster();
 
         double delta =0;
         long lastTime = System.nanoTime();
