@@ -30,13 +30,11 @@ public class Main extends Application {
 
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int)(screenSize.getWidth());
-        int height = (int)(screenSize.getHeight()/1.067); //idk why this number works but it does
         controller = new Controller();
         combatModel = new CombatModel();
         combatView = new CombatView();
         g = new gameModel();
-        gView = new gameView(width,height);
+        gView = new gameView(1280,720);
         charView = new CharacterGeneratorView();
         charModel = new CharacterGenerator();
         welcomeView = new WelcomeView();
@@ -70,10 +68,10 @@ public class Main extends Application {
 
         // Transitioning works from the welcome page through to the battle. For testing input
         // any of these scenes into primaryStage.setScene( "HERE" )
-        Scene sceneWelcome = new Scene(welcomeView, width, height);
-        Scene sceneCharGen = new Scene(charView, width, height);
-        Scene sceneCombat = new Scene(combatView, width, height);
-        Scene sceneTraversal = new Scene(gView, width, height);
+        Scene sceneWelcome = new Scene(welcomeView, 1280, 720);
+        Scene sceneCharGen = new Scene(charView, 1280, 720);
+        Scene sceneCombat = new Scene(combatView, 1280, 720);
+        Scene sceneTraversal = new Scene(gView, 1280, 720);
         sceneTraversal.setFill(Color.BLACK);
         sceneTraversal.setOnKeyPressed(controller::handleKeys);
 

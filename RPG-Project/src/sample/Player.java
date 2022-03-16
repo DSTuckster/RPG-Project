@@ -24,7 +24,7 @@ public class Player{
         //initializing default values
         this.x = 100;
         this.y = 100;
-        this.speed = 8;
+        this.speed = 4;
         //loading images
         try {
             FileInputStream inputStream = new FileInputStream("boy_down_1.png");

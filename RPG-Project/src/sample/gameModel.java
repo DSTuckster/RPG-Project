@@ -26,21 +26,20 @@ public class gameModel implements Runnable{
          * tries to let the thread sleep if there is remaining time as to not overload the thread optimizing performance*/
         player = new Player();
 
-        double nextDrawTime = System.nanoTime() + drawInterval;
+        double delta =0;
+        long lastTime = System.nanoTime();
+        long currentTime;
+
         while (running) {
-            update();
+            currentTime = System.nanoTime();
 
+            delta+= (currentTime - lastTime) / drawInterval;
+            lastTime = currentTime;
 
-            try {
-                double remainingTime = (nextDrawTime - System.nanoTime())/1000000;
-                if(remainingTime <0) {
-                    remainingTime = 0;
-                }
-                Thread.sleep((long)remainingTime);
-                nextDrawTime += drawInterval;
+            if(delta >=1) {
+                update();
+                delta--;
 
-            }catch (InterruptedException e){
-                e.printStackTrace();
             }
 
         }
