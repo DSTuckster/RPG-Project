@@ -1,6 +1,5 @@
 package sample;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class gameModel implements Runnable{
@@ -8,10 +7,7 @@ public class gameModel implements Runnable{
     private boolean running;
     protected Player player;
     protected final int FPS = 60;
-    protected String up ="boy_up_1.png";
-    protected String down = "boy_down_1.png";
-    protected String left = "boy_left_1.png";
-    protected String right = "boy_right_1.png";
+
 
     double drawInterval = (double)1000000000/FPS; //How often the thread needs to update in nanoseconds
     ArrayList<GameSubscriber> subs = new ArrayList<>();
@@ -74,5 +70,26 @@ public class gameModel implements Runnable{
     public void closeThread(){
         /**closes the thread when window is closed*/
         running=false;
+    }
+
+    public static void main(String args[]) {
+
+        //test 1 checks to see if thread closes and starts properly
+        gameModel g = new gameModel();
+        g.startThread();
+
+
+
+        if (!g.thread.isAlive()) {
+            System.out.println("error in closeThread function expected thread to be dead but is not");
+        }
+
+        //test 2 checks to see if all player images load correctly
+        g.player = new Player();
+        if(g.player.getPlayerImage()==null) {
+            System.out.println("error in run method, player object images are not properly loaded");
+        }
+
+
     }
 }

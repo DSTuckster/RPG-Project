@@ -12,12 +12,12 @@ public class gameView extends StackPane implements GameSubscriber {
     protected Canvas canvas;
     private GraphicsContext gc;
 
-    public gameView(int height, int width) {
+    public gameView(int width, int height) {
         /**Constructor that initializes a new canvas so the player object can be drawn
          * onto the Scene,
          * height: canvas height
          * width: canvas width*/
-        canvas = new Canvas(height,width);
+        canvas = new Canvas(width,height);
         gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.BLACK);
         this.getChildren().addAll(canvas);
