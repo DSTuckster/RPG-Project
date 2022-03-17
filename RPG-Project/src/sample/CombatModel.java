@@ -126,8 +126,8 @@ public class CombatModel {
     }
 
     public void heal(){
-        int extraHealAmount = (int) (Math.random() * 5 + 1);
         if(playerTurn && player.characterStats.getMana() >= costPerSpell){
+            int extraHealAmount = r.nextInt((player.characterStats.getCon()/2));
             int healAmount = player.characterStats.getWis() + extraHealAmount;
             int newHealth = player.characterStats.getHealth() + healAmount;
             player.characterStats.setMana(player.characterStats.getMana()-costPerSpell);
@@ -135,7 +135,6 @@ public class CombatModel {
 
             if(newHealth > player.characterStats.getMaxHealth()){
                 player.characterStats.setHealth(player.characterStats.getMaxHealth());
-
             }else{
                 player.characterStats.setHealth(player.characterStats.getHealth() + healAmount);
             }
@@ -143,6 +142,7 @@ public class CombatModel {
             setCurrentDialogue(combatDialogue.get(phase));
         }
         if(!playerTurn && enemy.characterStats.getMana() >= costPerSpell){
+            int extraHealAmount = r.nextInt((enemy.characterStats.getCon()/2));
             int healAmount = enemy.characterStats.getWis() + extraHealAmount;
             int newHealth = enemy.characterStats.getHealth() + healAmount;
             enemy.characterStats.setMana(enemy.characterStats.getMana()-costPerSpell);
