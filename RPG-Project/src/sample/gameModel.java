@@ -48,6 +48,8 @@ public class gameModel implements Runnable{
     }
     @Override
     public void run() {
+        System.out.println("yes");
+
         /**Core game loop function, Creates a player object and runs the loop and the update function every 1/FPS seconds
          * tries to let the thread sleep if there is remaining time as to not overload the thread optimizing performance*/
         addEntity(new Player());// The player should always be the first Entity in the Arraylist

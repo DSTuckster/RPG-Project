@@ -186,6 +186,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
         attack.setOnAction(e -> controller.handleAttack());
         run.setOnAction((e -> controller.handleRun()));
         magic.setOnAction(e -> controller.handleMagic());
+        heal.setOnAction(e -> controller.handleHeal());
         retryYes.setOnAction(e -> {controller.handleCombatRest();this.reset();});
         retryNo.setOnAction(e -> {controller.handleNoReset(this.getScene());this.reset();});
         next.setOnAction(e -> {controller.handleNoReset(this.getScene());this.reset();});
