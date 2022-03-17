@@ -27,7 +27,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
     protected Label race, charName, strength, dexterity, constitution, wisdom, intelligence, charisma, hairC,
             eyeColourChoice, hairT, body, story;
     protected Image character;
-    protected HBox bottom,above,mid, textField;
+    protected HBox bottom,mid, textField;
     protected VBox top,combo,vboxChoice,labels,choiceLabels, topMid;
     protected CharacterGenerator model;
     protected Features features;
@@ -62,11 +62,11 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         story = new Label();
         story.setFont(font);
         story.setWrapText(true);
+        story.setStyle("-fx-padding: 0 50 0 50");
 
 
         // All Boxes for structure
         top = new VBox();
-        above = new HBox();
         mid = new HBox();
         textField = new HBox();
         bottom = new HBox();
@@ -76,7 +76,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         choiceLabels = new VBox();
         topMid = new VBox();
 
-        Font labelFont = Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 12);
+        Font labelFont = Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 15);
 
 
         // Name input/random name
@@ -94,18 +94,20 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         top.getChildren().addAll(generateRandom, textField);
         top.setAlignment(Pos.CENTER);
         top.setSpacing(25);
-        above.getChildren().addAll(top);
-        above.setAlignment(Pos.CENTER);
-        above.setPadding(new Insets(50));
+        top.setStyle("-fx-padding: 20 0 0 0");
+
 
         // Save and play buttons. Located in bottom right corner
         save = new Button("Save");
         save.setFont(labelFont);
+        save.setStyle("-fx-padding: 5 20 5 20");
         play = new Button("Play");
+        play.setStyle("-fx-padding: 5 20 5 20");
         play.setFont(labelFont);
         bottom.getChildren().addAll(save,play);
         bottom.setAlignment(Pos.BOTTOM_RIGHT);
         bottom.setSpacing(10);
+        bottom.setStyle("-fx-padding: 0 20 0 0");
 
         // All ComboBox Labels (far left)
         strength = new Label("Strength: ");
@@ -138,7 +140,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         charismaList.setStyle("-fx-font: 12 Verdana");
         combo.getChildren().addAll(strengthList, dexterityList, constitutionList, wisdomList, intelligenceList,
                 charismaList);
-        combo.setSpacing(12);
+        combo.setSpacing(16);
 
 
         // Random stickman just for fun (in middle)
@@ -181,22 +183,23 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         bodyType.setStyle("-fx-font: 12 Verdana");
         bodyType.setEditable(true);
         vboxChoice.getChildren().addAll(raceList, hairColour, eyeColour, hairType, bodyType);
-        vboxChoice.setSpacing(12);
+        vboxChoice.setSpacing(18);
 
         // Mid section grouping (label -> combobox -> stickman -> label -> choicebox)
         mid.getChildren().addAll(labels,combo,imageView,choiceLabels, vboxChoice);
-        mid.setSpacing(25);
+        mid.setSpacing(75);
         mid.setAlignment(Pos.CENTER);
+        mid.setStyle("-fx-padding: 0 0 0 75");
 
         topMid.getChildren().addAll(top,mid);
         topMid.setSpacing(100);
 
+
         // All put together
         VBox main = new VBox();
         main.getChildren().addAll(topMid, story, bottom);
-        main.setSpacing(75);
-        main.setPrefSize(800,800);
-        main.setPadding(new Insets(25));
+        main.setSpacing(20);
+        main.setPrefSize(1296,720);
         this.getChildren().addAll(main);
 
         BackgroundFill backgroundFill = new BackgroundFill(Color.GHOSTWHITE, CornerRadii.EMPTY, Insets.EMPTY);

@@ -22,9 +22,9 @@ public class CombatView extends StackPane implements CombatSubscriber{
     protected Image background;
     protected Button attack, run, magic, retryYes, retryNo, next;
     protected ProgressBar playerXPBar, playerHealthBar, playerManaBar, enemyHealthBar, enemyManaBar;
-    protected Label Enemy, Player, HP, XP, Mana, Retry, Dialogue;
+    protected Label Enemy, Player, HP, XP, Mana, Retry, Dialogue, playerLevel, enemyLevel, enemyHP, enemyMana;
     protected CombatModel model;
-    protected HBox bottomMain,hp ,xp, mana, top;
+    protected HBox bottomMain,hp ,xp, mana, top, enemyHPBOX, enemyMANABOX;
     protected VBox main, retryBottom, buttonsMain, retry, enemy, player,diaNext, dialogueMain;
     protected ImageView imageView;
     protected FileInputStream inputStream;
@@ -40,11 +40,11 @@ public class CombatView extends StackPane implements CombatSubscriber{
         background = new Image(inputStream);
         imageView = new ImageView();
         imageView.setImage(background);
-        imageView.setFitWidth(1000);
-        imageView.setFitHeight(1000);
+        imageView.setFitWidth(1300);
+        imageView.setFitHeight(800);
 
         // XP, Mana, and Health Bars
-        playerXPBar = new ProgressBar(1);
+        playerXPBar = new ProgressBar(0);
         playerXPBar.setStyle("-fx-accent: YELLOW");
         playerHealthBar = new ProgressBar(1);
         playerHealthBar.setStyle("-fx-accent: RED");
@@ -63,42 +63,63 @@ public class CombatView extends StackPane implements CombatSubscriber{
         Mana = new Label("Mana");
         Mana.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 13));
         Mana.setTextFill(Color.BLACK);
+        enemyHP = new Label("HP");
+        enemyHP.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 13));
+        enemyHP.setTextFill(Color.BLACK);
+        enemyMana = new Label("Mana");
+        enemyMana.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 13));
+        enemyMana.setTextFill(Color.BLACK);
+
+
         hp = new HBox(playerHealthBar, HP);
         xp = new HBox(playerXPBar, XP);
         mana = new HBox(playerManaBar, Mana);
+        enemyHPBOX = new HBox(enemyHealthBar, enemyHP);
+        enemyMANABOX = new HBox(enemyManaBar, enemyMana);
 
         Enemy = new Label();
-        Enemy.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 15));
+        Enemy.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 25));
         Enemy.setWrapText(true);
         Enemy.setTextFill(Color.BLACK);
+        enemyLevel = new Label();
+        enemyLevel.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 25));
+        enemyLevel.setTextFill(Color.BLACK);
         Player = new Label();
-        Player.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 15));
+        Player.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 25));
         Player.setWrapText(true);
         Player.setTextFill(Color.BLACK);
+        playerLevel = new Label();
+        playerLevel.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 25));
+        playerLevel.setTextFill(Color.BLACK);
         enemy = new VBox();
         player = new VBox();
-        enemy.getChildren().addAll(Enemy, enemyHealthBar, enemyManaBar);
-        player.getChildren().addAll(Player, hp, xp, mana);
+        enemy.getChildren().addAll(Enemy, enemyLevel, enemyHPBOX, enemyMANABOX);
+        player.getChildren().addAll(Player, playerLevel, hp, xp, mana);
+        player.setSpacing(5);
+        enemy.setSpacing(5);
+        player.setStyle("-fx-padding: 200 0 0 100");
+        enemy.setStyle("-fx-padding: 30 0 0 800");
 
         // Dialogue Label
         Dialogue = new Label();
         Dialogue.setFont(Font.font("Verdana", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 25));
+        Dialogue.setTextFill(Color.BLACK);
 
         // All Buttons
-        Font font = Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 15);
+        Font font = Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 20);
 
         attack = new Button("Attack");
         attack.setFont(font);
-        attack.setStyle("-fx-background-color: WHITE");
+        attack.setStyle("-fx-background-color: WHITE; -fx-padding: 10, 10, 10, 10");
 
         run = new Button("Run");
         run.setFont(font);
-        run.setStyle("-fx-background-color: WHITE");
+        run.setStyle("-fx-background-color: WHITE; -fx-padding: 10 10 10 10");
 
         magic = new Button("Magic");
         magic.setDisable(false);
         magic.setFont(font);
-        magic.setStyle("-fx-background-color: WHITE");
+        magic.setStyle("-fx-background-color: WHITE; -fx-padding: 10 10 10 10");
 
         Retry = new Label("Would you like to retry?");
         Retry.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 25));
@@ -113,7 +134,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
         // Coordinate all top boxes together to fit screen properly
         top = new HBox();
         top.getChildren().addAll(player, enemy);
-        top.setSpacing(550);
+
 
         // Will be used for smoother dialogue in the place of other buttons
         next = new Button("Head Back");
@@ -138,18 +159,15 @@ public class CombatView extends StackPane implements CombatSubscriber{
         buttonsMain.setSpacing(100);
         bottomMain.getChildren().addAll(buttonsMain, run);
         bottomMain.setAlignment(Pos.CENTER);
-        bottomMain.setSpacing(650);
+        bottomMain.setSpacing(200);
         dialogueMain = new VBox(Dialogue, bottomMain);
         dialogueMain.setAlignment(Pos.CENTER);
         main = new VBox();
         main.getChildren().addAll(top, dialogueMain);
-        main.setSpacing(700);
-        main.setPrefSize(1000,1000);
+        main.setSpacing(90);
 
 
         this.getChildren().addAll(imageView, main);
-        this.setPrefHeight(1000);
-        this.setPrefWidth(1000);
     }
 
     /**
@@ -166,12 +184,6 @@ public class CombatView extends StackPane implements CombatSubscriber{
         main.setOnMousePressed(controller::nextPhase);
     }
 
-    private void reset() {
-        this.getChildren().retainAll();
-        this.getChildren().addAll(imageView, main);
-        model.reset = false;
-    }
-
     /**
      * The views model to receive updates from (and to subscribe too)
      * @param comModel the model to set as the views model
@@ -179,9 +191,75 @@ public class CombatView extends StackPane implements CombatSubscriber{
     protected void setModel(CombatModel comModel){
 
         model = comModel;
-        Player.setText(model.player.name + " /Level: " + model.player.characterStats.getCharacterLevel());
-        Enemy.setText(model.enemy.name + " /Level: " + model.enemy.characterStats.getCharacterLevel());
+        Player.setText(model.player.name);
+        playerLevel.setText("Level: " + model.player.characterStats.getCharacterLevel());
+        Enemy.setText(model.enemy.name);
+        enemyLevel.setText("Level: " + model.enemy.characterStats.getCharacterLevel());
     }
+
+    /**
+     * Update view according to what has changed in the model
+     */
+    @Override
+    public void modelChanged() {
+        Dialogue.setText(model.getCurrentDialogue());
+
+        this.setBars();
+        this.checkTurn();
+
+
+        // If player loses, option to replay
+        if (model.player.characterStats.getHealth() <= 0) {
+            playerHealthBar.setProgress(0); // So it doesn't look like player has negative health
+            this.retryButtons();
+        }
+        // If player wins, go back to traversal scene
+        else if (model.enemy.characterStats.getHealth() <= 0) {
+            enemyHealthBar.setProgress(0);
+            this.end();
+        }
+        // If run is successful, go back to traversal scene
+        if (model.runAway) {
+            this.retryNo.fire();
+        }
+
+        // If mana bar is empty then player can no longer use magic button
+        if (model.player.characterStats.getMana() <= 0 || model.player.characterStats.getMana() < model.costPerSpell) {
+            magic.setDisable(true);
+        }
+
+    }
+
+    private void setBars() {
+        // Get current health, xp, and mana for the progress bars
+        // Normalized for progress bar needing number between 0-1
+        playerManaBar.setProgress((float) model.player.characterStats.getMana() / model.player.characterStats.getMaxMana());
+        playerHealthBar.setProgress((float) model.player.characterStats.getHealth() / model.player.characterStats.getMaxHealth());
+        playerXPBar.setProgress((float) model.player.characterStats.getExp() / model.player.characterStats.getMaxExp());
+        enemyHealthBar.setProgress((float) model.enemy.characterStats.getHealth() / model.enemy.characterStats.getMaxHealth());
+        enemyManaBar.setProgress((float) model.enemy.characterStats.getMana() / model.enemy.characterStats.getMaxMana());
+    }
+
+    private void checkTurn() {
+        if (model.playerTurnPhase == model.phase) {
+            if (model.player.characterStats.getMana() >= model.costPerSpell) {
+                magic.setDisable(false);
+            }
+            attack.setDisable(false);
+            run.setDisable(false);
+        } else {
+            magic.setDisable(true);
+            attack.setDisable(true);
+            run.setDisable(true);
+        }
+    }
+
+    private void reset() {
+        this.getChildren().retainAll();
+        this.getChildren().addAll(imageView, main);
+        model.reset = false;
+    }
+
 
     private void retryButtons(){
         this.getChildren().remove(1);
@@ -192,54 +270,5 @@ public class CombatView extends StackPane implements CombatSubscriber{
         Dialogue.setText("Player Wins!");
         this.getChildren().clear();
         this.getChildren().addAll(imageView, Dialogue, diaNext);
-    }
-
-
-    /**
-     * Update view according to what has changed in the model
-     */
-    @Override
-    public void modelChanged() {
-        Dialogue.setText(model.getCurrentDialogue());
-
-        // Get current health, xp, and mana for the progress bars
-        // Normalized for progress bar needing number between 0-1
-        playerManaBar.setProgress((float)model.player.characterStats.getMana()/model.player.characterStats.getMaxMana());
-        playerHealthBar.setProgress((float)model.player.characterStats.getHealth()/model.player.characterStats.getMaxHealth());
-        enemyHealthBar.setProgress((float)model.enemy.characterStats.getHealth()/model.enemy.characterStats.getMaxHealth());
-        enemyManaBar.setProgress((float)model.enemy.characterStats.getMana()/model.enemy.characterStats.getMaxMana());
-
-        // If player loses, option to replay
-        if(model.player.characterStats.getHealth() <= 0){
-            playerHealthBar.setProgress(0); // So it doesn't look like player has negative health
-            this.retryButtons();
-        }
-        // If player wins, go back to traversal scene
-        else if (model.enemy.characterStats.getHealth() <= 0){
-            enemyHealthBar.setProgress(0);
-            this.end();
-        }
-        // If run is successful, go back to traversal scene
-        if (model.runAway){
-            this.retryNo.fire();
-        }
-
-        // If mana bar is empty then player can no longer use magic button
-        if (model.player.characterStats.getMana() <= 0 || model.player.characterStats.getMana() < model.costPerSpell){
-            magic.setDisable(true);
-        }
-
-        //if it is not the players turn, then disable action buttons. Enable otherwise
-        if(model.playerTurnPhase == model.phase){
-            if(model.player.characterStats.getMana() >= model.costPerSpell){
-                magic.setDisable(false);
-            }
-            attack.setDisable(false);
-            run.setDisable(false);
-        }else{
-            magic.setDisable(true);
-            attack.setDisable(true);
-            run.setDisable(true);
-        }
     }
 }
