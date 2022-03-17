@@ -55,12 +55,14 @@ public class Controller {
         g.closeThread();
     }
 
-    public void switchScene(Scene scene) {
+    public void switchScene(KeyEvent event) {
+        Scene scene = (Scene) event.getSource();
         Stage stage = (Stage) scene.getWindow();
         CombatView c = (CombatView) combatModel.subs.get(0);
-        g.isCurrent = false;
         Scene sceneCombat =c.getScene();
         stage.setScene(sceneCombat);
+        g.isCurrent =false;
+        g.isInvincible=true;
         stage.show();
     }
 
@@ -96,6 +98,9 @@ public class Controller {
          */
 
         initPlayer();
+        if(!g.isInvincible && g.checkEncounter()) {
+            switchScene(event);
+        }
         switch (event.getCode()) {
             case UP -> moveUp(player);
             case DOWN -> moveDown(player);
@@ -141,16 +146,18 @@ public class Controller {
     }
 
     public void handleNoReset(Scene scene) {
+        g.isCurrent = true;
+        g.isInvincible = true;
         Stage stage = (Stage) scene.getWindow();
         gameView traversal = (gameView) g.subs.get(0);
         Scene sceneTraverse = traversal.getScene();
         stage.setScene(sceneTraverse);
         stage.show();
-        g.isCurrent = true;
         combatModel.restCombat();
     }
 
     public void handleWin(Scene scene){
+        g.entities.remove(1);
         this.handleNoReset(scene);
     }
 

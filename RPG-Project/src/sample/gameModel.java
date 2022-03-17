@@ -6,10 +6,11 @@ import java.lang.Math;
 public class gameModel implements Runnable{
     protected Thread thread;
     private boolean running;
-    private boolean isInvincible = false;
+    public boolean isInvincible = false;
     ArrayList<Entity> entities = new ArrayList<>();
     protected final int FPS = 60;
     protected boolean isCurrent = false;
+    private int counter=0;
 
 
     double drawInterval = (double)1000000000/FPS; //How often the thread needs to update in nanoseconds
@@ -60,16 +61,18 @@ public class gameModel implements Runnable{
         long lastTime = System.nanoTime();
         long currentTime;
 
-        while (running && isCurrent) {
+        while (running) {
             currentTime = System.nanoTime();
 
             delta+= (currentTime - lastTime) / drawInterval;
             lastTime = currentTime;
 
-            if(delta >=1) {
+            if(delta >=1 && isCurrent) {
                 update();
                 delta--;
-
+            }
+            else if(delta>=1) {
+                delta--;
             }
 
         }
@@ -80,7 +83,16 @@ public class gameModel implements Runnable{
     public void update() {
         /**Important details that need to be updated every frame go here*/
         notifySubscribers();
-        checkEncounter();
+        if(isInvincible && counter/60>=6) {
+            counter=0;
+            isInvincible=false;
+        }
+        else{
+            counter++;
+
+        }
+
+
 
     }
 
@@ -95,6 +107,7 @@ public class gameModel implements Runnable{
         for (GameSubscriber g : subs) {
             for(Entity e : entities) {
                 g.modelChanged();
+
             }
 
         }

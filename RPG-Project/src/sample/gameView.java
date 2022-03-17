@@ -2,13 +2,10 @@ package sample;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -110,6 +107,8 @@ public class gameView extends StackPane implements GameSubscriber {
             }
 
     }
+
+
 
 
 }
