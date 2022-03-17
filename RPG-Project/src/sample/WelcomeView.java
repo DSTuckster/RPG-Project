@@ -2,6 +2,7 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -35,11 +36,13 @@ public class WelcomeView extends Pane{
         VBox bottom = new VBox();
         VBox main = new VBox();
 
+
         // Welcome label
         welcome = new Label("Welcome!!");
         welcome.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 35));
+        welcome.setStyle("-fx-padding: 100 0 0 500");
         top.getChildren().addAll(welcome);
-        top.setAlignment(Pos.CENTER);
+
 
         // New character selection
         optionNew = new Label("Create a new character?");
@@ -49,6 +52,9 @@ public class WelcomeView extends Pane{
         newChar.setStyle("-fx-background-color: WHITE");
         middle.getChildren().addAll(optionNew, newChar);
         middle.setAlignment(Pos.CENTER);
+        middle.setSpacing(15);
+        middle.setStyle("-fx-padding: 0 0 0 450");
+
 
         // Use saved selection (add saved character from save.txt)
         choices = FXCollections.observableArrayList();
@@ -71,16 +77,15 @@ public class WelcomeView extends Pane{
         playEdit.setSpacing(10);
         playEdit.setAlignment(Pos.CENTER);
 
+
         // Gather everything together to fill view
         bottom.getChildren().addAll(optionSaved,saved, playEdit);
-        bottom.setAlignment(Pos.BOTTOM_CENTER);
-        bottom.setSpacing(15);
         bottom.setAlignment(Pos.CENTER);
+        bottom.setSpacing(15);
+        bottom.setStyle("-fx-padding: 0 0 0 450");
 
         main.getChildren().addAll(top,middle,bottom);
-        main.setSpacing(100);
-        main.setAlignment(Pos.CENTER);
-        main.setPrefSize(800,800);
+        main.setSpacing(150);
         this.getChildren().addAll(main);
     }
 
