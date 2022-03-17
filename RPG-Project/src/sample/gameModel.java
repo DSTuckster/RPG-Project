@@ -117,9 +117,5 @@ public class gameModel implements Runnable{
         }
 
         //test 2 checks to see if all player images load correctly
-
-
-
-
     }
 }

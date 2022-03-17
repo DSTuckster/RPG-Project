@@ -70,6 +70,7 @@ public class Controller {
         gameView traversal = (gameView) g.subs.get(0);
         Scene sceneTraversal = traversal.getScene();
         stage.setScene(sceneTraversal);
+        g.startThread();
         stage.show();
 
     }
@@ -124,6 +125,11 @@ public class Controller {
 
     public void handleMagic(){
         combatModel.usedMagic();
+        combatModel.nextPhase();
+    }
+
+    public void handleHeal(){
+        combatModel.heal();
         combatModel.nextPhase();
     }
 
