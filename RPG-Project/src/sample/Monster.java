@@ -15,10 +15,10 @@ public class Monster implements Entity {
     @Override
     public void setDefaultValues() {
         this.x = 480;
-        this.y =288;
+        this.y =240;
         this.speed = 0;
         try {
-            FileInputStream inputStream = new FileInputStream("enemy.png");
+            FileInputStream inputStream = new FileInputStream("IndividualTiles/Dino1.png");
             this.image = new Image(inputStream);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

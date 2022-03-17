@@ -4,7 +4,14 @@ import javafx.scene.image.Image;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-
+// Map Legend index0: grass
+//index 1: Mountain
+//index 2: Trees1
+//index 3: Trees2
+//index 4; Pathway 1
+//index 5: Pathway 2
+//index 6: Pathway 3
+//index 7: Water
 public class TileManager {
     ArrayList<Image> tileImages;
     public TileManager(){
@@ -23,6 +30,8 @@ public class TileManager {
             inputStream = new FileInputStream("IndividualTiles/Pathway2.png");
             tileImages.add(new Image(inputStream));
             inputStream = new FileInputStream("IndividualTiles/Pathway3.png");
+            tileImages.add(new Image(inputStream));
+            inputStream = new FileInputStream("IndividualTiles/Water.png");
             tileImages.add(new Image(inputStream));
 
         } catch (FileNotFoundException e) {

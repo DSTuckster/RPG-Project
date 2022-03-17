@@ -32,15 +32,21 @@ public class Player implements Entity {
         this.speed = 4;
         //loading images
         try {
-            FileInputStream inputStream = new FileInputStream("Player1.png");
+            FileInputStream inputStream = new FileInputStream("IndividualTiles/Player1.png");
             images.add(new Image(inputStream));
-            inputStream = new FileInputStream("boy_up_1.png");
+            inputStream = new FileInputStream("IndividualTiles/Player7.png");
             images.add(new Image(inputStream));
-            inputStream = new FileInputStream("boy_left_1.png");
+            inputStream = new FileInputStream("IndividualTiles/Player3.png");
             images.add(new Image(inputStream));
-            inputStream = new FileInputStream("boy_right_1.png");
+            inputStream = new FileInputStream("IndividualTiles/Player5.png");
             images.add(new Image(inputStream));
-            inputStream = new FileInputStream("Player2.png");
+            inputStream = new FileInputStream("IndividualTiles/Player2.png");
+            images.add(new Image(inputStream));
+            inputStream = new FileInputStream("IndividualTiles/Player8.png");
+            images.add(new Image(inputStream));
+            inputStream = new FileInputStream("IndividualTiles/Player4.png");
+            images.add(new Image(inputStream));
+            inputStream = new FileInputStream("IndividualTiles/Player6.png");
             images.add(new Image(inputStream));
             this.current = images.get(0);
         }
@@ -80,6 +86,10 @@ public class Player implements Entity {
         else if(playerCount<15&&(!defaultImg)) {
             switch (direction) {
                 case "down" -> this.current= images.get(4);
+                case "up" -> this.current = images.get(5);
+                case "left" -> this.current = images.get(6);
+                case "right" -> this.current = images.get(7);
+                default -> this.current = images.get(4);
             }
             playerCount++;
         }
