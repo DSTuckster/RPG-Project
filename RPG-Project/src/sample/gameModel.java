@@ -9,6 +9,7 @@ public class gameModel implements Runnable{
     private boolean isInvincible = false;
     ArrayList<Entity> entities = new ArrayList<>();
     protected final int FPS = 60;
+    protected boolean isCurrent = false;
 
 
     double drawInterval = (double)1000000000/FPS; //How often the thread needs to update in nanoseconds
@@ -59,7 +60,7 @@ public class gameModel implements Runnable{
         long lastTime = System.nanoTime();
         long currentTime;
 
-        while (running) {
+        while (running && isCurrent) {
             currentTime = System.nanoTime();
 
             delta+= (currentTime - lastTime) / drawInterval;

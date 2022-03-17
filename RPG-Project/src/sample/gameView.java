@@ -16,6 +16,7 @@ public class gameView extends StackPane implements GameSubscriber {
     protected Controller controller;
     protected Canvas canvas;
     private GraphicsContext gc;
+    private GraphicsContext gc2;
     TileManager t;
 
     final static int originalTileSize = 16;
@@ -32,13 +33,15 @@ public class gameView extends StackPane implements GameSubscriber {
          * onto the Scene,
          * height: canvas height
          * width: canvas width*/
+        Canvas canvas2 = new Canvas(width,height);
         canvas = new Canvas(width,height);
         gc = canvas.getGraphicsContext2D();
-        gc.setFill(Color.BLACK);
-        this.getChildren().addAll(canvas);
-        t = new TileManager();
+        gc2 = canvas2.getGraphicsContext2D();
+        this.getChildren().addAll(canvas2,canvas);
         numberMap = new int[maxCol][maxRow];
+        t = new TileManager();
         loadMap();
+
 
 
 
@@ -75,7 +78,7 @@ public class gameView extends StackPane implements GameSubscriber {
 
         while (col < maxCol && row < maxRow) {
             int tile = numberMap[col][row];
-            gc.drawImage(t.getTileImage(tile),x,y,scaledTileSize,scaledTileSize);
+            gc2.drawImage(t.getTileImage(tile),x,y,scaledTileSize,scaledTileSize);
             x+=scaledTileSize;
             col ++;
             if (col == maxCol) {
@@ -101,7 +104,7 @@ public class gameView extends StackPane implements GameSubscriber {
     public void modelChanged(){
         /**This function clears previous images of the entity and draws the new image of the entity at its new x,y coordinates and
          * possibly with a new picture depicting it facing a new direction*/
-            drawMap();
+            gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
             for (Entity entity :controller.g.entities){
                 gc.drawImage(entity.getImage(),entity.getX(),entity.getY(),scaledTileSize,scaledTileSize);
             }

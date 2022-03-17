@@ -58,6 +58,7 @@ public class Controller {
     public void switchScene(Scene scene) {
         Stage stage = (Stage) scene.getWindow();
         CombatView c = (CombatView) combatModel.subs.get(0);
+        g.isCurrent = false;
         Scene sceneCombat =c.getScene();
         stage.setScene(sceneCombat);
         stage.show();
@@ -71,6 +72,8 @@ public class Controller {
         Scene sceneTraversal = traversal.getScene();
         stage.setScene(sceneTraversal);
         g.startThread();
+        g.isCurrent=true;
+        traversal.drawMap();
         stage.show();
 
     }
@@ -143,7 +146,7 @@ public class Controller {
         Scene sceneTraverse = traversal.getScene();
         stage.setScene(sceneTraverse);
         stage.show();
-
+        g.isCurrent = true;
         combatModel.restCombat();
     }
 
@@ -158,6 +161,9 @@ public class Controller {
         gameView traversal = (gameView) g.subs.get(0);
         Scene sceneTraversal = traversal.getScene();
         stage.setScene(sceneTraversal);
+        g.isCurrent=true;
+        g.startThread();
+        traversal.drawMap();
         stage.show();
     }
 
