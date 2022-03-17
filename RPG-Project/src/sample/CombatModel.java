@@ -125,6 +125,39 @@ public class CombatModel {
         notifySubscribers();
     }
 
+    public void heal(){
+        int extraHealAmount = (int) (Math.random() * 5 + 1);
+        if(playerTurn && player.characterStats.getMana() >= costPerSpell){
+            int healAmount = player.characterStats.getWis() + extraHealAmount;
+            int newHealth = player.characterStats.getHealth() + healAmount;
+            player.characterStats.setMana(player.characterStats.getMana()-costPerSpell);
+
+
+            if(newHealth > player.characterStats.getMaxHealth()){
+                player.characterStats.setHealth(player.characterStats.getMaxHealth());
+
+            }else{
+                player.characterStats.setHealth(player.characterStats.getHealth() + healAmount);
+            }
+            combatDialogue.replace(phase+1, "The player used a spell and healed " + (player.characterStats.getWis() + extraHealAmount) + " health");
+            setCurrentDialogue(combatDialogue.get(phase));
+        }
+        if(!playerTurn && enemy.characterStats.getMana() >= costPerSpell){
+            int healAmount = enemy.characterStats.getWis() + extraHealAmount;
+            int newHealth = enemy.characterStats.getHealth() + healAmount;
+            enemy.characterStats.setMana(enemy.characterStats.getMana()-costPerSpell);
+
+            if(newHealth > enemy.characterStats.getMaxHealth()){
+                enemy.characterStats.setHealth(enemy.characterStats.getHealth() + healAmount);
+            }else{
+                enemy.characterStats.setHealth(enemy.characterStats.getMaxHealth());
+            }
+            combatDialogue.replace(phase+1, "The enemy used a spell and healed " + (enemy.characterStats.getWis() + extraHealAmount) + " health");
+            setCurrentDialogue(combatDialogue.get(phase));
+        }
+        notifySubscribers();
+    }
+
     /**
      * called when player wins
      * adds to player exp and levels up player (increments player stats)

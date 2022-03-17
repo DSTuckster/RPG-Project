@@ -132,6 +132,11 @@ public class Controller {
         combatModel.nextPhase();
     }
 
+    public void handleHeal(){
+        combatModel.heal();
+        combatModel.nextPhase();
+    }
+
     public void handleCombatRest(){
         combatModel.restCombat();
     }
