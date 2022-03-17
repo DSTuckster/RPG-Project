@@ -25,7 +25,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
     protected Label Enemy, Player, HP, XP, Mana, Retry, Dialogue, playerLevel, enemyLevel, enemyHP, enemyMana;
     protected CombatModel model;
     protected HBox bottomMain,hp ,xp, mana, top, enemyHPBOX, enemyMANABOX;
-    protected VBox main, retryBottom, buttonsMain, retry, enemy, player,diaNext, dialogueMain;
+    protected VBox main, retryBottom, buttonsMain, defenseButtons, retry, enemy, player,diaNext, dialogueMain;
     protected ImageView imageView;
     protected FileInputStream inputStream;
 
@@ -160,9 +160,12 @@ public class CombatView extends StackPane implements CombatSubscriber{
         // Main bottom of screen for CombatView
         buttonsMain = new VBox();
         bottomMain = new HBox();
+        defenseButtons = new VBox();
         buttonsMain.getChildren().addAll(attack, magic);
         buttonsMain.setSpacing(100);
-        bottomMain.getChildren().addAll(buttonsMain, run);
+        defenseButtons.getChildren().addAll(run, heal);
+        defenseButtons.setSpacing(100);
+        bottomMain.getChildren().addAll(buttonsMain, defenseButtons);
         bottomMain.setAlignment(Pos.CENTER);
         bottomMain.setSpacing(200);
         dialogueMain = new VBox(Dialogue, bottomMain);
