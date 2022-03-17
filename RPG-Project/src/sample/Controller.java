@@ -55,13 +55,12 @@ public class Controller {
         g.closeThread();
     }
 
-    public void switchScene(KeyEvent event) {
-        Scene node =  (Scene)event.getSource();
-        Stage thisStage = (Stage) node.getWindow();
+    public void switchScene(Scene scene) {
+        Stage stage = (Stage) scene.getWindow();
         CombatView c = (CombatView) combatModel.subs.get(0);
         Scene sceneCombat =c.getScene();
-        thisStage.setScene(sceneCombat);
-        thisStage.show();
+        stage.setScene(sceneCombat);
+        stage.show();
     }
 
     public void genToTraversal(Scene scene, ArrayList<String> character){
@@ -91,18 +90,14 @@ public class Controller {
     public void handleKeys(KeyEvent event) {
         /**This function handles key inputs from the view and determines which function to call and send the data to the model
          */
-        initPlayer();
-        if(g.checkEncounter()) {
-            switchScene(event);
-        }
 
+        initPlayer();
         switch (event.getCode()) {
             case UP -> moveUp(player);
             case DOWN -> moveDown(player);
             case LEFT -> moveLeft(player);
             case RIGHT -> moveRight(player);
             default -> {
-
             }
         }
     }

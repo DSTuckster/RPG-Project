@@ -5,10 +5,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-public class Player implements Entity{
+public class Player implements Entity {
     private int x, y, speed;
     private Image current;
     ArrayList<Image> images;
+    private int playerCount;
+    private boolean defaultImg;
 
     public Player(){
         /**Simple constructor to initialize default values to the player
@@ -30,13 +32,15 @@ public class Player implements Entity{
         this.speed = 4;
         //loading images
         try {
-            FileInputStream inputStream = new FileInputStream("boy_down_1.png");
+            FileInputStream inputStream = new FileInputStream("Player1.png");
             images.add(new Image(inputStream));
             inputStream = new FileInputStream("boy_up_1.png");
             images.add(new Image(inputStream));
             inputStream = new FileInputStream("boy_left_1.png");
             images.add(new Image(inputStream));
             inputStream = new FileInputStream("boy_right_1.png");
+            images.add(new Image(inputStream));
+            inputStream = new FileInputStream("Player2.png");
             images.add(new Image(inputStream));
             this.current = images.get(0);
         }
@@ -63,12 +67,26 @@ public class Player implements Entity{
          * String direction: a lowercase string of the direction the player is facing
          *
          */
-        switch(direction){
-            case "down" -> this.current = images.get(0);
-            case "up" -> this.current = images.get(1);
-            case "left" -> this.current =images.get(2);
-            case "right" ->this.current=images.get(3);
-            default -> this.current=images.get(0);
+        if(playerCount<15 && defaultImg) {
+            switch (direction) {
+                case "down" -> this.current = images.get(0);
+                case "up" -> this.current = images.get(1);
+                case "left" -> this.current = images.get(2);
+                case "right" -> this.current = images.get(3);
+                default -> this.current = images.get(0);
+            }
+            playerCount++;
+        }
+        else if(playerCount<15&&(!defaultImg)) {
+            switch (direction) {
+                case "down" -> this.current= images.get(4);
+            }
+            playerCount++;
+        }
+        else {
+            defaultImg = !defaultImg;
+            playerCount=0;
+
         }
     }
 

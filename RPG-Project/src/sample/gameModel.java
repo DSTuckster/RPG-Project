@@ -6,6 +6,7 @@ import java.lang.Math;
 public class gameModel implements Runnable{
     protected Thread thread;
     private boolean running;
+    private boolean isInvincible = false;
     ArrayList<Entity> entities = new ArrayList<>();
     protected final int FPS = 60;
 
@@ -13,15 +14,14 @@ public class gameModel implements Runnable{
     double drawInterval = (double)1000000000/FPS; //How often the thread needs to update in nanoseconds
     ArrayList<GameSubscriber> subs = new ArrayList<>();
 
+
     public boolean checkEncounter() {
         Entity player = entities.get(0);
-
         for(int i=1;i<entities.size();i++){
             Entity e = entities.get(i);
-            if(Math.abs(player.getX()-e.getX())<48) {
-                if(Math.abs(player.getY()-e.getY())<48) {
-                    return true;
-                }
+            if(Math.abs(player.getX()-e.getX())<32 && Math.abs(player.getY()-e.getY())<32) {
+                   return true;
+
             }
 
         }
@@ -31,6 +31,7 @@ public class gameModel implements Runnable{
     public void addEntity(Entity e) {
         entities.add(e);
     }
+
     public Entity getEntity(int index){
         return entities.get(index);
     }
@@ -78,6 +79,7 @@ public class gameModel implements Runnable{
     public void update() {
         /**Important details that need to be updated every frame go here*/
         notifySubscribers();
+        checkEncounter();
 
     }
 
