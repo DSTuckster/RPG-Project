@@ -20,7 +20,7 @@ import java.io.FileNotFoundException;
 
 public class CombatView extends StackPane implements CombatSubscriber{
     protected Image background;
-    protected Button attack, run, magic, retryYes, retryNo, next;
+    protected Button attack, run, magic, heal, retryYes, retryNo, next;
     protected ProgressBar playerXPBar, playerHealthBar, playerManaBar, enemyHealthBar, enemyManaBar;
     protected Label Enemy, Player, HP, XP, Mana, Retry, Dialogue, playerLevel, enemyLevel, enemyHP, enemyMana;
     protected CombatModel model;
@@ -120,6 +120,11 @@ public class CombatView extends StackPane implements CombatSubscriber{
         magic.setDisable(false);
         magic.setFont(font);
         magic.setStyle("-fx-background-color: WHITE; -fx-padding: 10 10 10 10");
+
+        heal = new Button("Heal");
+        heal.setDisable(false);
+        heal.setFont(font);
+        heal.setStyle("-fx-background-color: WHITE; -fx-padding: 10 10 10 10");
 
         Retry = new Label("Would you like to retry?");
         Retry.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.REGULAR, 25));
@@ -226,6 +231,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
         // If mana bar is empty then player can no longer use magic button
         if (model.player.characterStats.getMana() <= 0 || model.player.characterStats.getMana() < model.costPerSpell) {
             magic.setDisable(true);
+            heal.setDisable(true);
         }
 
     }
@@ -244,11 +250,13 @@ public class CombatView extends StackPane implements CombatSubscriber{
         if (model.playerTurnPhase == model.phase) {
             if (model.player.characterStats.getMana() >= model.costPerSpell) {
                 magic.setDisable(false);
+                heal.setDisable(false);
             }
             attack.setDisable(false);
             run.setDisable(false);
         } else {
             magic.setDisable(true);
+            heal.setDisable(true);
             attack.setDisable(true);
             run.setDisable(true);
         }
