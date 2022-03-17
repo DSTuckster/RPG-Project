@@ -39,7 +39,6 @@ public class Main extends Application {
         welcomeView = new WelcomeView();
 
         //enable this line if you are running the traversal mechanic
-        gModel.startThread();
         gModel.addSubscriber(gView);
 
         gView.setController(controller);

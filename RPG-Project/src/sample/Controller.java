@@ -71,6 +71,7 @@ public class Controller {
         gameView traversal = (gameView) g.subs.get(0);
         Scene sceneTraversal = traversal.getScene();
         stage.setScene(sceneTraversal);
+        g.startThread();
         stage.show();
 
     }
