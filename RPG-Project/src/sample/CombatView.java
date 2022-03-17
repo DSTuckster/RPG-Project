@@ -189,7 +189,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
         heal.setOnAction(e -> controller.handleHeal());
         retryYes.setOnAction(e -> {controller.handleCombatRest();this.reset();});
         retryNo.setOnAction(e -> {controller.handleNoReset(this.getScene());this.reset();});
-        next.setOnAction(e -> {controller.handleNoReset(this.getScene());this.reset();});
+        next.setOnAction(e -> {controller.handleWin(this.getScene());this.reset();});
         main.setOnMousePressed(controller::nextPhase);
     }
 
