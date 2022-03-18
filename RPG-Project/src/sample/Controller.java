@@ -143,7 +143,7 @@ public class Controller {
 
 
     public void handleAttack(){
-        combatModel.attack();
+        combatModel.attack(combatModel.player, combatModel.enemy);
         combatModel.nextPhase();
     }
 
@@ -152,12 +152,12 @@ public class Controller {
     }
 
     public void handleMagic(){
-        combatModel.usedMagic();
+        combatModel.usedMagic(combatModel.player, combatModel.enemy);
         combatModel.nextPhase();
     }
 
     public void handleHeal(){
-        combatModel.heal();
+        combatModel.heal(combatModel.player);
         combatModel.nextPhase();
     }
 

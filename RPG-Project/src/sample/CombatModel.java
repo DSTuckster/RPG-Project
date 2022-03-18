@@ -67,26 +67,15 @@ public class CombatModel {
      * subtract damage from character health
      * damage = character strength + random value between 1 and 5
      */
-    public void attack() {
+    public void attack(Character p, Character e) {
         int extraDamage = (int) (Math.random() * 5 + 1);
-        //IF statement checks whose turn it is
-        if(playerTurn){
-            //player attacks
-            int damage = player.characterStats.getStr() + extraDamage;
-            int newHealth = enemy.characterStats.getHealth() - damage;
-            enemy.characterStats.setHealth(newHealth);
 
-            combatDialogue.replace(phase+1, "The player did " + damage + " damage");
-            setCurrentDialogue(combatDialogue.get(phase));
-            playerTurn = false;
-        }else{
-            //enemy attacks
-            int damage = enemy.characterStats.getStr() + extraDamage;
-            int newHealth = player.characterStats.getHealth() - damage;
-            player.characterStats.setHealth(newHealth);
-            combatDialogue.replace(enemyTurnPhase+1, "The enemy did " + damage + " damage");
-            setCurrentDialogue(combatDialogue.get(enemyTurnPhase+1));
-        }
+        int damage = p.characterStats.getStr() + extraDamage;
+        int newHealth = e.characterStats.getHealth() - damage;
+        e.characterStats.setHealth(newHealth);
+
+        combatDialogue.replace(phase+1, p.getName() + " did " + damage + " damage");
+        setCurrentDialogue(combatDialogue.get(phase));
         notifySubscribers();
     }
 
@@ -96,63 +85,36 @@ public class CombatModel {
      * damage = character intelligence + random value between -3 and  8
      * Character must have enough mana to cast a spell (costPerSpell = 25)
      */
-    public void usedMagic() {
+    public void usedMagic(Character p, Character e) {
         int extraDamage = (int) (Math.random() * (8-(-3)) + -3);
-        if(playerTurn && player.characterStats.getMana() >= costPerSpell){
+        if(p.characterStats.getMana() >= costPerSpell){
             //player does damage
-            int newHealth = enemy.characterStats.getHealth() - player.characterStats.getInt() - extraDamage;
-            enemy.characterStats.setHealth(newHealth);
+            int newHealth = e.characterStats.getHealth() - p.characterStats.getInt() - extraDamage;
+            e.characterStats.setHealth(newHealth);
 
             // subtract magic points from player
-            player.characterStats.setMana(player.characterStats.getMana()-costPerSpell);
+            p.characterStats.setMana(p.characterStats.getMana()-costPerSpell);
 
-            combatDialogue.replace(phase+1, "The player used a spell and did " + (player.characterStats.getInt() + extraDamage) + " damage");
+            combatDialogue.replace(phase+1, p.getName() + " used a spell and did " + (p.characterStats.getInt() + extraDamage) + " damage");
             setCurrentDialogue(combatDialogue.get(phase));
-            playerTurn=false;
-
-        }
-        if(!playerTurn && enemy.characterStats.getMana() >= costPerSpell){
-            //enemy does damage
-            int newHealth = player.characterStats.getHealth() - enemy.characterStats.getInt() - extraDamage;
-            player.characterStats.setHealth(newHealth);
-
-            // subtract magic points from enemy
-            enemy.characterStats.setMana(enemy.characterStats.getMana()-costPerSpell);
-
-            combatDialogue.replace(enemyTurnPhase+1, "The enemy used a spell and did " + (enemy.characterStats.getInt() + extraDamage) + " damage");
-            setCurrentDialogue(combatDialogue.get(enemyTurnPhase+1));
         }
         notifySubscribers();
     }
 
-    public void heal(){
-        if(playerTurn && player.characterStats.getMana() >= costPerSpell){
-            int extraHealAmount = r.nextInt((player.characterStats.getCon()/2));
-            int healAmount = player.characterStats.getWis() + extraHealAmount;
-            int newHealth = player.characterStats.getHealth() + healAmount;
-            player.characterStats.setMana(player.characterStats.getMana()-costPerSpell);
+    public void heal(Character p){
+        if(p.characterStats.getMana() >= costPerSpell){
+            int extraHealAmount = r.nextInt((p.characterStats.getCon()/2));
+            int healAmount = p.characterStats.getWis() + extraHealAmount;
+            int newHealth = p.characterStats.getHealth() + healAmount;
+            p.characterStats.setMana(p.characterStats.getMana()-costPerSpell);
 
 
-            if(newHealth > player.characterStats.getMaxHealth()){
-                player.characterStats.setHealth(player.characterStats.getMaxHealth());
+            if(newHealth > p.characterStats.getMaxHealth()){
+                p.characterStats.setHealth(p.characterStats.getMaxHealth());
             }else{
-                player.characterStats.setHealth(player.characterStats.getHealth() + healAmount);
+                p.characterStats.setHealth(p.characterStats.getHealth() + healAmount);
             }
-            combatDialogue.replace(phase+1, "The player used a spell and healed " + (player.characterStats.getWis() + extraHealAmount) + " health");
-            setCurrentDialogue(combatDialogue.get(phase));
-        }
-        if(!playerTurn && enemy.characterStats.getMana() >= costPerSpell){
-            int extraHealAmount = r.nextInt((enemy.characterStats.getCon()/2));
-            int healAmount = enemy.characterStats.getWis() + extraHealAmount;
-            int newHealth = enemy.characterStats.getHealth() + healAmount;
-            enemy.characterStats.setMana(enemy.characterStats.getMana()-costPerSpell);
-
-            if(newHealth > enemy.characterStats.getMaxHealth()){
-                enemy.characterStats.setHealth(enemy.characterStats.getHealth() + healAmount);
-            }else{
-                enemy.characterStats.setHealth(enemy.characterStats.getMaxHealth());
-            }
-            combatDialogue.replace(phase+1, "The enemy used a spell and healed " + (enemy.characterStats.getWis() + extraHealAmount) + " health");
+            combatDialogue.replace(phase+1, p.getName() + " used a spell and healed " + (p.characterStats.getWis() + extraHealAmount) + " health");
             setCurrentDialogue(combatDialogue.get(phase));
         }
         notifySubscribers();
@@ -226,17 +188,17 @@ public class CombatModel {
         if(playerTurn){
             playerTurnPhase = 1;
             enemyTurnPhase = 3;
-            combatDialogue.put(1, "It is the players turn!");
-            combatDialogue.put(2, "The player did " + player.characterStats.getStr() + " damage");
-            combatDialogue.put(3, "It is the enemies turn!");
-            combatDialogue.put(4, "The enemy did " + enemy.characterStats.getStr() + " damage");
+            combatDialogue.put(1, "It is " + player.getName() + "'s turn!");
+            combatDialogue.put(2, player.getName() + " did " + player.characterStats.getStr() + " damage");
+            combatDialogue.put(3, "It is " + enemy.getName() + "'s turn!");
+            combatDialogue.put(4, "The " + enemy.getName() + " did " + enemy.characterStats.getStr() + " damage");
         }else{
             playerTurnPhase = 3;
             enemyTurnPhase = 1;
-            combatDialogue.put(1, "It is the enemies turn!");
-            combatDialogue.put(2, "The enemy did " + enemy.characterStats.getStr() + " damage");
-            combatDialogue.put(3, "It is the players turn!");
-            combatDialogue.put(4, "The player did " + player.characterStats.getStr() + " damage");
+            combatDialogue.put(1, "It is " + enemy.getName() + "'s turn!");
+            combatDialogue.put(2, enemy.getName() + " did " + enemy.characterStats.getStr() + " damage");
+            combatDialogue.put(3, "It is " + player.getName() + "'s turn!");
+            combatDialogue.put(4, player.getName() + " did " + player.characterStats.getStr() + " damage");
         }
     }
 
@@ -290,9 +252,9 @@ public class CombatModel {
      */
     public void enemyPhase() {
         if(enemy.characterStats.getInt() >= enemy.characterStats.getStr() && enemy.characterStats.getMana() >= costPerSpell){
-            usedMagic();
+            usedMagic(enemy, player);
         }else{
-            attack();
+            attack(enemy, player);
         }
     }
 
@@ -304,7 +266,7 @@ public class CombatModel {
         if(check > 51){
             runAway = true;
         }else{
-            combatDialogue.replace(playerTurnPhase+1, "The player failed to run away!");
+            combatDialogue.replace(playerTurnPhase+1, player.getName() + " failed to run away!");
             nextPhase();
         }
         notifySubscribers();
@@ -425,7 +387,7 @@ public class CombatModel {
             }
             if(model.playerTurn){
                 int enemyTotalHealth = model.enemy.characterStats.getHealth();
-                model.attack();
+                model.attack(model.player, model.enemy);
                 model.nextPhase();
                 int enemyHealth = model.enemy.characterStats.getHealth();
                 int playerDamage = enemyTotalHealth - enemyHealth;
@@ -437,7 +399,7 @@ public class CombatModel {
                 }
             }else if(model.enemyTurnPhase == model.phase){
                 int playerTotalHealth = model.player.characterStats.getHealth();
-                model.attack();
+                model.attack(model.enemy, model.player);
                 model.nextPhase();
                 int playerHealth = model.player.characterStats.getHealth();
                 int enemyDamage = playerTotalHealth - playerHealth;
@@ -476,7 +438,7 @@ public class CombatModel {
         //attack() test #1
         expected = model.enemy.characterStats.getHealth();
         model.playerTurn = true;
-        model.attack();
+        model.attack(model.player, model.enemy);
         result = model.enemy.characterStats.getHealth();
         if(expected <= result){
             System.out.println("attack() test # 1 failed! expected = " + expected + " result = " + result);

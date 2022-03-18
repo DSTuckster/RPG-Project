@@ -200,9 +200,9 @@ public class CombatView extends StackPane implements CombatSubscriber{
     protected void setModel(CombatModel comModel){
 
         model = comModel;
-        Player.setText(model.player.name);
+        Player.setText(model.player.getName());
         playerLevel.setText("Level: " + model.player.characterStats.getCharacterLevel());
-        Enemy.setText(model.enemy.name);
+        Enemy.setText(model.enemy.getName());
         enemyLevel.setText("Level: " + model.enemy.characterStats.getCharacterLevel());
     }
 
