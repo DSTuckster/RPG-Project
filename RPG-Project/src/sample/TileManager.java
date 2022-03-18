@@ -13,44 +13,42 @@ import java.util.ArrayList;
 //index 6: Pathway 3
 //index 7: Water
 public class TileManager {
-    ArrayList<Image> tileImages;
+    ArrayList<Tile> tiles;
     public TileManager(){
-        tileImages = new ArrayList<>();
         try {
+            tiles = new ArrayList<>();
+            for(int i=0;i<8;i++){
+                tiles.add(new Tile());
+            }
+
             FileInputStream inputStream = new FileInputStream("IndividualTiles/grass.png");
-            tileImages.add(new Image(inputStream));
+            tiles.get(0).image =(new Image(inputStream));
             inputStream = new FileInputStream("IndividualTiles/Mountain.png");
-            tileImages.add(new Image(inputStream));
+            tiles.get(1).image=(new Image(inputStream));
+            tiles.get(1).collision=true;
             inputStream = new FileInputStream("IndividualTiles/Trees1.png");
-            tileImages.add(new Image(inputStream));
+            tiles.get(2).image=(new Image(inputStream));
+            tiles.get(2).collision=true;
             inputStream = new FileInputStream("IndividualTiles/Trees2.png");
-            tileImages.add(new Image(inputStream));
+            tiles.get(3).image=(new Image(inputStream));
+            tiles.get(3).collision=true;
             inputStream = new FileInputStream("IndividualTiles/Pathway1.png");
-            tileImages.add(new Image(inputStream));
+            tiles.get(4).image=(new Image(inputStream));
             inputStream = new FileInputStream("IndividualTiles/Pathway2.png");
-            tileImages.add(new Image(inputStream));
+            tiles.get(5).image=(new Image(inputStream));
             inputStream = new FileInputStream("IndividualTiles/Pathway3.png");
-            tileImages.add(new Image(inputStream));
+            tiles.get(6).image=(new Image(inputStream));
             inputStream = new FileInputStream("IndividualTiles/Water.png");
-            tileImages.add(new Image(inputStream));
+            tiles.get(7).image=(new Image(inputStream));
+            tiles.get(7).collision=true;
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
-    public boolean getTileCollision(int index) {
-        boolean collision;
-        switch (index) {
-            case 1 -> collision=true;
-            case 2 -> collision=true;
-            case 3 -> collision=true;
-            case 7 -> collision=true;
-            default -> collision=false;
-        }
-        return collision;
-    }
+
 
     public Image getTileImage(int index){
-        return tileImages.get(index);
+        return tiles.get(index).image;
     }
 }

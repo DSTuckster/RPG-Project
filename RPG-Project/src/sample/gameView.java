@@ -59,49 +59,31 @@ public class gameView extends StackPane implements GameSubscriber {
 
         int tile1,tile2;
 
-        switch (direction){
-            case "up":
-                topRow = (entityTopY - entity.getSpeed())/scaledTileSize;
-                tile1= numberMap[leftCol][topRow];
-                tile2= numberMap[rightCol][topRow];
-                if(t.getTileCollision(tile1) || t.getTileCollision(tile2)) {
-                    return false;
-                }
-                else {
-                    return true;
-                }
-            case "down":
-                botRow = (entityBottomY + entity.getSpeed())/scaledTileSize;
-                tile1= numberMap[leftCol][botRow];
-                tile2= numberMap[rightCol][botRow];
-                if(t.getTileCollision(tile1) || t.getTileCollision(tile2)) {
-                    return false;
-                }
-                else {
-                    return true;
-                }
-            case "left":
-                leftCol = (entityLeftX - entity.getSpeed())/scaledTileSize;
-                tile1= numberMap[leftCol][topRow];
-                tile2= numberMap[leftCol][botRow];
-                System.out.println(t.getTileCollision(tile1) || t.getTileCollision(tile2));;
-                if(t.getTileCollision(tile1) || t.getTileCollision(tile2)) {
-
-                    return false;
-                }
-                else {
-                    return true;
-                }
-            case "right":
-                rightCol = (entityRightX + entity.getSpeed())/scaledTileSize;
-                tile1= numberMap[rightCol][topRow];
-                tile2= numberMap[rightCol][botRow];
-                if(t.getTileCollision(tile1) || t.getTileCollision(tile2)) {
-                    return false;
-                }
-                else {
-                    return true;
-                }
+        switch (direction) {
+            case "up" -> {
+                topRow = (entityTopY - entity.getSpeed()) / scaledTileSize;
+                tile1 = numberMap[leftCol][topRow];
+                tile2 = numberMap[rightCol][topRow];
+                return !t.tiles.get(tile1).collision && !t.tiles.get(tile2).collision;
+            }
+            case "down" -> {
+                botRow = (entityBottomY + entity.getSpeed()) / scaledTileSize;
+                tile1 = numberMap[leftCol][botRow];
+                tile2 = numberMap[rightCol][botRow];
+                return !t.tiles.get(tile1).collision && !t.tiles.get(tile2).collision;
+            }
+            case "left" -> {
+                leftCol = (entityLeftX - entity.getSpeed()) / scaledTileSize;
+                tile1 = numberMap[leftCol][topRow];
+                tile2 = numberMap[leftCol][botRow];
+                return !t.tiles.get(tile1).collision && !t.tiles.get(tile2).collision;
+            }
+            case "right" -> {
+                rightCol = (entityRightX + entity.getSpeed()) / scaledTileSize;
+                tile1 = numberMap[rightCol][topRow];
+                tile2 = numberMap[rightCol][botRow];
+                return !t.tiles.get(tile1).collision && !t.tiles.get(tile2).collision;
+            }
         }
         return true;
 

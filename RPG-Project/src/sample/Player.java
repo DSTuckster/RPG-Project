@@ -30,7 +30,7 @@ public class Player implements Entity {
          */
         //initializing default values
         images = new ArrayList<>();
-        this.x = 0;
+        this.x = 200;
         this.y = 272;
         this.speed = 4;
         solidArea = new Rectangle();
@@ -72,12 +72,8 @@ public class Player implements Entity {
     public int getHitBoxHeight() {
         return (int)solidArea.getHeight();
     }
-    public int getHitBoxX(){
-        return getX()+ 8;
-    }
-    public int getHitboxY(){
-        return getY()+ 16;
-    }
+    public int getHitBoxX(){ return (int)this.solidArea.getX();}
+    public int getHitboxY(){ return (int)this.solidArea.getY(); }
 
     public int getX() { return this.x; }
 
