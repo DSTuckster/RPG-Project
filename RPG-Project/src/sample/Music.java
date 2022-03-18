@@ -11,7 +11,6 @@ public class Music {
     public Music(String scene) {
         scene=scene+".wav";
         file = new File(scene);
-        System.out.println("success music"+scene );
         }
 
     protected void playMusic(File file) {
@@ -19,7 +18,6 @@ public class Music {
             try {
                 AudioInputStream audio = AudioSystem.getAudioInputStream(file);
                 this.c = AudioSystem.getClip();
-                System.out.println("success music");
                 this.c.open(audio);
                 this.c.loop(Clip.LOOP_CONTINUOUSLY);
             } catch (IOException e) {
