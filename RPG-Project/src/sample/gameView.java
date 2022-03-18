@@ -47,10 +47,10 @@ public class gameView extends StackPane implements GameSubscriber {
     }
 
     public boolean checkTile(Entity entity,String direction) {
-        int entityLeftX = entity.getHitBoxX();
-        int entityRightX = entityLeftX + entity.getHitBoxWidth();
-        int entityTopY = entity.getHitboxY();
-        int entityBottomY = entityTopY+entity.getHitBoxHeight();
+        int entityLeftX = entity.getX()+entity.getHitBoxX();
+        int entityRightX = entity.getX()+entity.getHitBoxX()+entity.getHitBoxWidth();
+        int entityTopY = entity.getY()+entity.getHitboxY();
+        int entityBottomY = entity.getY()+entity.getHitboxY()+entity.getHitBoxHeight();
 
         int leftCol = entityLeftX/scaledTileSize;
         int rightCol = entityRightX/scaledTileSize;
@@ -67,28 +67,41 @@ public class gameView extends StackPane implements GameSubscriber {
                 if(t.getTileCollision(tile1) || t.getTileCollision(tile2)) {
                     return false;
                 }
+                else {
+                    return true;
+                }
             case "down":
-                botRow =(entityBottomY+entity.getSpeed())/scaledTileSize;
+                botRow = (entityBottomY + entity.getSpeed())/scaledTileSize;
                 tile1= numberMap[leftCol][botRow];
-                tile2=numberMap[rightCol][botRow];
+                tile2= numberMap[rightCol][botRow];
                 if(t.getTileCollision(tile1) || t.getTileCollision(tile2)) {
                     return false;
                 }
+                else {
+                    return true;
+                }
             case "left":
-                leftCol =(entityLeftX - entity.getSpeed())/scaledTileSize;
-                tile1 = numberMap[leftCol][topRow];
-                tile2 = numberMap[leftCol][botRow];
+                leftCol = (entityLeftX - entity.getSpeed())/scaledTileSize;
+                tile1= numberMap[leftCol][topRow];
+                tile2= numberMap[leftCol][botRow];
+                System.out.println(t.getTileCollision(tile1) || t.getTileCollision(tile2));;
                 if(t.getTileCollision(tile1) || t.getTileCollision(tile2)) {
+
                     return false;
+                }
+                else {
+                    return true;
                 }
             case "right":
                 rightCol = (entityRightX + entity.getSpeed())/scaledTileSize;
-                tile1=numberMap[rightCol][topRow];
-                tile2=numberMap[rightCol][botRow];
+                tile1= numberMap[rightCol][topRow];
+                tile2= numberMap[rightCol][botRow];
                 if(t.getTileCollision(tile1) || t.getTileCollision(tile2)) {
                     return false;
                 }
-
+                else {
+                    return true;
+                }
         }
         return true;
 
