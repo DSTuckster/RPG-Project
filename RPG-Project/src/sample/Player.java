@@ -36,6 +36,8 @@ public class Player implements Entity {
         solidArea = new Rectangle();
         solidArea.setWidth(32);
         solidArea.setHeight(32);
+        solidArea.setX(8);
+        solidArea.setY(16);
 
         //loading images
         try {
