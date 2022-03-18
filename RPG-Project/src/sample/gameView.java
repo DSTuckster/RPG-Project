@@ -3,6 +3,7 @@ package sample;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -37,12 +38,65 @@ public class gameView extends StackPane implements GameSubscriber {
         this.getChildren().addAll(canvas2,canvas);
         numberMap = new int[maxCol][maxRow];
         t = new TileManager();
+        gc.setFill(Color.RED);
         loadMap();
 
 
 
 
     }
+
+    public boolean checkTile(Entity entity,String direction) {
+        int entityLeftX = entity.getHitBoxX();
+        int entityRightX = entityLeftX + entity.getHitBoxWidth();
+        int entityTopY = entity.getHitboxY();
+        int entityBottomY = entityTopY+entity.getHitBoxHeight();
+
+        int leftCol = entityLeftX/scaledTileSize;
+        int rightCol = entityRightX/scaledTileSize;
+        int topRow = entityTopY/scaledTileSize;
+        int botRow = entityBottomY/scaledTileSize;
+
+        int tile1,tile2;
+
+        switch (direction){
+            case "up":
+                topRow = (entityTopY - entity.getSpeed())/scaledTileSize;
+                tile1= numberMap[leftCol][topRow];
+                tile2= numberMap[rightCol][topRow];
+                if(t.getTileCollision(tile1) || t.getTileCollision(tile2)) {
+                    return false;
+                }
+            case "down":
+                botRow =(entityBottomY+entity.getSpeed())/scaledTileSize;
+                tile1= numberMap[leftCol][botRow];
+                tile2=numberMap[rightCol][botRow];
+                if(t.getTileCollision(tile1) || t.getTileCollision(tile2)) {
+                    return false;
+                }
+            case "left":
+                leftCol =(entityLeftX - entity.getSpeed())/scaledTileSize;
+                tile1 = numberMap[leftCol][topRow];
+                tile2 = numberMap[leftCol][botRow];
+                if(t.getTileCollision(tile1) || t.getTileCollision(tile2)) {
+                    return false;
+                }
+            case "right":
+                rightCol = (entityRightX + entity.getSpeed())/scaledTileSize;
+                tile1=numberMap[rightCol][topRow];
+                tile2=numberMap[rightCol][botRow];
+                if(t.getTileCollision(tile1) || t.getTileCollision(tile2)) {
+                    return false;
+                }
+
+        }
+        return true;
+
+    }
+
+
+    
+
     public void loadMap() {
         try  {
             FileInputStream map = new FileInputStream("map.txt"); {

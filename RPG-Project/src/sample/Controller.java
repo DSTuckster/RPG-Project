@@ -31,22 +31,33 @@ public class Controller {
 
     public void moveUp(Entity e){
         //self-descriptive
-        e.setY(e.getY()-e.getSpeed());
-        e.setImage("up");}
+        e.setImage("up");
+        if(g.subs.get(0).checkTile(e,"up")) {
+            e.setY(e.getY() - e.getSpeed());
+        }
+    }
     public void moveDown(Entity e) {
         //self-descriptive
-        e.setY(e.getY()+e.getSpeed());
-        e.setImage("down");}
+        e.setImage("down");
+        if(g.subs.get(0).checkTile(e,"down")) {
+            e.setY(e.getY() + e.getSpeed());
+
+        }
+        }
 
     public void moveLeft(Entity e) {
         //self-descriptive
+        e.setImage("left");
+        if(g.subs.get(0).checkTile(e,"left")) {
         e.setX(player.getX()-e.getSpeed());
-        e.setImage("left");}
+        }}
 
     public void moveRight(Entity e) {
         //self-descriptive
+        e.setImage("right");
+        if(g.subs.get(0).checkTile(e,"right")) {
         e.setX(player.getX()+e.getSpeed());
-        e.setImage("right");}
+        }}
 
 
     public void dispose(){
@@ -101,6 +112,7 @@ public class Controller {
             combatModel.nextPhase();
         }
     }
+
     public void handleKeys(KeyEvent event) {
         /**This function handles key inputs from the view and determines which function to call and send the data to the model
          */

@@ -17,6 +17,7 @@ public class gameModel implements Runnable{
     ArrayList<GameSubscriber> subs = new ArrayList<>();
 
 
+
     public boolean checkEncounter() {
         Entity player = entities.get(0);
         for(int i=1;i<entities.size();i++){

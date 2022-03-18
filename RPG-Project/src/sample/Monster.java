@@ -13,6 +13,26 @@ public class Monster implements Entity {
     }
 
     @Override
+    public int getHitBoxWidth() {
+        return 0;
+    }
+
+    @Override
+    public int getHitBoxHeight() {
+        return 0;
+    }
+
+    @Override
+    public int getHitBoxX() {
+        return 0;
+    }
+
+    @Override
+    public int getHitboxY() {
+        return 0;
+    }
+
+    @Override
     public void setDefaultValues() {
         this.x = 480;
         this.y =240;

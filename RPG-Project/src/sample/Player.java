@@ -1,5 +1,6 @@
 package sample;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,6 +12,8 @@ public class Player implements Entity {
     ArrayList<Image> images;
     private int playerCount;
     private boolean defaultImg;
+    public Rectangle solidArea;
+    public boolean collisionOn =false;
 
     public Player(){
         /**Simple constructor to initialize default values to the player
@@ -30,6 +33,10 @@ public class Player implements Entity {
         this.x = 0;
         this.y = 272;
         this.speed = 4;
+        solidArea = new Rectangle();
+        solidArea.setWidth(32);
+        solidArea.setHeight(32);
+
         //loading images
         try {
             FileInputStream inputStream = new FileInputStream("IndividualTiles/Player1.png");
@@ -57,15 +64,34 @@ public class Player implements Entity {
     }
 
     // getters and setters for player attributes, all self-descriptive
-    public int getX() { return x; }
 
-    public int getY() { return y; }
 
-    public int getSpeed() { return speed; }
+    public int getHitBoxWidth() {
+        return (int)solidArea.getWidth();
+    }
+    public int getHitBoxHeight() {
+        return (int)solidArea.getHeight();
+    }
+    public int getHitBoxX(){
+        return getX()+ 8;
+    }
+    public int getHitboxY(){
+        return getY()+ 16;
+    }
+
+    public int getX() { return this.x; }
+
+    public int getY() { return this.y; }
+
+    public int getSpeed() { return this.speed; }
 
     public void setX(int x) { this.x = x; }
 
     public void setY(int y) { this.y = y; }
+
+
+
+
 
     public void setImage(String direction) {
         /** This function changes the player image based on which string has been passed into the function

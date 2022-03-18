@@ -38,6 +38,17 @@ public class TileManager {
             e.printStackTrace();
         }
     }
+    public boolean getTileCollision(int index) {
+        boolean collision;
+        switch (index) {
+            case 1 -> collision=true;
+            case 2 -> collision=true;
+            case 3 -> collision=true;
+            case 7 -> collision=true;
+            default -> collision=false;
+        }
+        return collision;
+    }
 
     public Image getTileImage(int index){
         return tileImages.get(index);

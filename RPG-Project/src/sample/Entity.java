@@ -1,11 +1,17 @@
 package sample;
 
 import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
 
-import java.util.ArrayList;
 
 public interface Entity {
 
+
+
+    int getHitBoxWidth();
+    int getHitBoxHeight();
+    int getHitBoxX();
+    int getHitboxY();
     void setDefaultValues();
 
     int getX();

@@ -6,4 +6,5 @@ public interface GameSubscriber {
 
     void modelChanged();
 
+    boolean checkTile(Entity entity,String d);
 }
