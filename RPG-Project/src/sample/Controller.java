@@ -14,7 +14,7 @@ public class Controller {
     protected CharacterGenerator charModel;
     protected gameModel g;
     protected Entity player;
-
+    protected Music nextMusic= new Music("next");
 
     //sets the combat model and characterGen model
     public void setModels(CombatModel cm, gameModel gM, CharacterGenerator characterModel){
@@ -56,6 +56,7 @@ public class Controller {
     }
 
     public void switchScene(KeyEvent event) {
+        nextMusic.stopMusic();
         Scene scene = (Scene) event.getSource();
         Stage stage = (Stage) scene.getWindow();
         CombatView c = (CombatView) combatModel.subs.get(0);
@@ -64,9 +65,12 @@ public class Controller {
         g.isCurrent =false;
         g.isInvincible=true;
         stage.show();
+        nextMusic= new Music("combat");
+        nextMusic.playMusic(nextMusic.file);
     }
 
     public void genToTraversal(Scene scene, ArrayList<String> character){
+        nextMusic.stopMusic();
         charModel.generateCustom(character);
         combatModel.setCombatScenario(new CombatScenario(charModel.character, combatModel.createEnemy()));
         Stage stage = (Stage) scene.getWindow();
@@ -77,15 +81,19 @@ public class Controller {
         g.isCurrent=true;
         traversal.drawMap();
         stage.show();
-
+        nextMusic= new Music("traversal");
+        nextMusic.playMusic(nextMusic.file);
     }
 
-    public void welcomeToGen(Scene scene){
+    public void welcomeToGen(Scene scene, Music music){
+        music.stopMusic();
         Stage stage = (Stage) scene.getWindow();
         CharacterGeneratorView charGen = (CharacterGeneratorView) charModel.subs.get(0);
         Scene sceneCharGen = charGen.getScene();
         stage.setScene(sceneCharGen);
         stage.show();
+        nextMusic= new Music("generator");
+        nextMusic.playMusic(nextMusic.file);
     }
 
     public void nextPhase(MouseEvent e) {
@@ -146,6 +154,7 @@ public class Controller {
     }
 
     public void handleNoReset(Scene scene) {
+        nextMusic.stopMusic();
         g.isCurrent = true;
         g.isInvincible = true;
         Stage stage = (Stage) scene.getWindow();
@@ -154,6 +163,8 @@ public class Controller {
         stage.setScene(sceneTraverse);
         stage.show();
         combatModel.restCombat();
+        nextMusic= new Music("traversal");
+        nextMusic.playMusic(nextMusic.file);
     }
 
     public void handleWin(Scene scene){
@@ -161,7 +172,8 @@ public class Controller {
         this.handleNoReset(scene);
     }
 
-    public void handlePlayWithSaved(Scene scene, Character character){
+    public void handlePlayWithSaved(Scene scene, Character character, Music music){
+        music.stopMusic();
         charModel.setCharacter(character);
         combatModel.setCombatScenario(new CombatScenario(charModel.character, combatModel.createEnemy()));
         Stage stage = (Stage) scene.getWindow();
@@ -172,10 +184,12 @@ public class Controller {
         g.startThread();
         traversal.drawMap();
         stage.show();
+        nextMusic= new Music("traversal");
+        nextMusic.playMusic(nextMusic.file);
     }
 
-    public void handleEdit(Scene scene, Character character){
-        welcomeToGen(scene);
+    public void handleEdit(Scene scene, Character character,Music music){
+        welcomeToGen(scene,music);
         charModel.editChar(character);
     }
 
