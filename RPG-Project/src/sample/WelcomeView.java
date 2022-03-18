@@ -23,11 +23,14 @@ public class WelcomeView extends Pane{
     ChoiceBox<String> saved;
     ObservableList<String> choices;
     Character character;
+    Music music = new Music("welcome");
 
     /**
      * Constructor for welcome view
      */
     WelcomeView() throws FileNotFoundException {
+        //Open the background music 
+        music.playMusic(music.file);
 
         // Boxes for view structure
         HBox top = new HBox();
@@ -95,8 +98,8 @@ public class WelcomeView extends Pane{
      * @param controller the controller to handle user interaction
      */
     public void setController(Controller controller){
-        newChar.setOnAction(e -> controller.welcomeToGen(this.getScene()));
-        play.setOnAction(e -> controller.handlePlayWithSaved(this.getScene(), character));
-        edit.setOnAction(e -> controller.handleEdit(this.getScene(), character));
+        newChar.setOnAction(e -> controller.welcomeToGen(this.getScene(),music));
+        play.setOnAction(e -> controller.handlePlayWithSaved(this.getScene(), character,music));
+        edit.setOnAction(e -> controller.handleEdit(this.getScene(), character,music));
     }
 }
