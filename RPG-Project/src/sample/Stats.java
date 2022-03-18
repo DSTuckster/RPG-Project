@@ -9,8 +9,6 @@ public class Stats {
     protected int Health;
     protected int Mana;
 
-    // TODO - add Mana get/set and levelup methods
-
     protected int Strength;
     protected int Dexterity;
     protected int Constitution;

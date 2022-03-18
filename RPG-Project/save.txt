@@ -1,32 +1,32 @@
 name : 
-Piercentress
+Torreflame
 Stats : 
 CharacterLevel :
 1
 Health :
 100
 Strength :
-9
+11
 Dexterity :
-16
+11
 Constitution :
-15
+14
 Wisdom :
 11
 Intelligence :
-13
+14
 Charisma :
-10
+9
 Features : 
 race :
-Orc
+Dwarf
 hairColor :
-Orange
+Red
 hairType :
-Short
+Horned
 eyeColor :
-Brown
+Faded
 bodyType :
-Average
+Stout
 Story : 
-You are a(n) Orc. Your hair is Short and noticeably Orange. Your eyes shine a bold Brown color. Your build is Average...and impressive. You are brimming with vitality, and ripe for adventure!
+You are a(n) Dwarf. Your hair is Horned and noticeably Red. Your eyes shine a bold Faded color. Your build is Stout...and impressive. You are brimming with vitality, and ripe for adventure!
