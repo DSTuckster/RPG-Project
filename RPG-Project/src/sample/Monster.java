@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class Monster implements Entity {
-    Image image;
+    Image image,image2,current;
     int x,y,speed;
     public Monster() {
         setDefaultValues();
@@ -34,12 +34,12 @@ public class Monster implements Entity {
 
     @Override
     public void setDefaultValues() {
-        this.x = 480;
-        this.y =240;
         this.speed = 0;
         try {
-            FileInputStream inputStream = new FileInputStream("IndividualTiles/Dino1.png");
+            FileInputStream inputStream = new FileInputStream("IndividualTiles/Baby1.png");
             this.image = new Image(inputStream);
+            inputStream = new FileInputStream("IndividualTiles/Baby2.png");
+            this.image2 = new Image(inputStream);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -64,22 +64,29 @@ public class Monster implements Entity {
 
     @Override
     public void setX(int x) {
+        this.x = x;
 
     }
 
     @Override
     public void setY(int y) {
+        this.y = y;
 
     }
 
     @Override
     public void setImage(String direction) {
-        this.image = this.image;
+        if(this.current==this.image) {
+            this.current = this.image2;
+        }
+        else {
+            this.current = this.image;
+        }
 
     }
 
     @Override
     public Image getImage() {
-        return this.image;
+        return this.current;
     }
 }

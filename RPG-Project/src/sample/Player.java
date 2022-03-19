@@ -13,7 +13,6 @@ public class Player implements Entity {
     private int playerCount;
     private boolean defaultImg;
     public Rectangle solidArea;
-    public boolean collisionOn =false;
 
     public Player(){
         /**Simple constructor to initialize default values to the player

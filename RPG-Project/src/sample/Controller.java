@@ -126,6 +126,7 @@ public class Controller {
             case DOWN -> moveDown(player);
             case LEFT -> moveLeft(player);
             case RIGHT -> moveRight(player);
+            case A -> System.out.println(player.getX() + "_"+player.getY());
             default -> {
             }
         }

@@ -11,6 +11,8 @@ public class gameModel implements Runnable{
     protected final int FPS = 60;
     protected boolean isCurrent = false;
     private int counter=0;
+    private int modelCounter=0;
+    public final static int[][] monsterSpawns = new int[6][2];
 
 
     double drawInterval = (double)1000000000/FPS; //How often the thread needs to update in nanoseconds
@@ -39,9 +41,34 @@ public class gameModel implements Runnable{
         return entities.get(index);
     }
 
-    public void createMonster() {
+    public void addBoss() {
+        MonsterBoss boss = new MonsterBoss();
+        addEntity(boss);
+    }
+    public Monster createMonster() {
         Monster m = new Monster();
-        addEntity(m);
+        return m;
+    }
+
+    public void addMonster() {
+        for(int i=0;i<3;i++) {
+            Monster m = createMonster();
+            m.setX(monsterSpawns[i][0]);
+            m.setY(monsterSpawns[i][1]);
+            addEntity(m);
+        }
+    }
+    public void initMonsterSpawns(){
+        monsterSpawns[0][0] = 812;
+        monsterSpawns[0][1]= 572;
+        monsterSpawns[1][0]= 140;
+        monsterSpawns[1][1]= 472;
+        monsterSpawns[2][0]=528;
+        monsterSpawns[2][1]=136;
+        for(int i=0;i<3;i++) {
+            addMonster();
+        }
+        addBoss();
     }
 
     public void startThread() {
@@ -56,7 +83,8 @@ public class gameModel implements Runnable{
         /**Core game loop function, Creates a player object and runs the loop and the update function every 1/FPS seconds
          * tries to let the thread sleep if there is remaining time as to not overload the thread optimizing performance*/
         addEntity(new Player());// The player should always be the first Entity in the Arraylist
-        createMonster();
+        initMonsterSpawns();
+
 
         double delta =0;
         long lastTime = System.nanoTime();
@@ -84,6 +112,17 @@ public class gameModel implements Runnable{
     public void update() {
         /**Important details that need to be updated every frame go here*/
         notifySubscribers();
+        if(modelCounter < 30) {
+            modelCounter++;
+        }
+        else {
+            for(int i=1;i<entities.size();i++) {
+                Entity e = entities.get(i);
+                e.setImage("");
+            }
+
+            modelCounter=0;
+        }
         if(isInvincible && counter/60>=6) {
             counter=0;
             isInvincible=false;
@@ -106,10 +145,9 @@ public class gameModel implements Runnable{
     public void notifySubscribers(){
         /**updates all gameSubscribers in this case, the view so that they can draw with the new locations and required images*/
         for (GameSubscriber g : subs) {
-            for(Entity e : entities) {
                 g.modelChanged();
 
-            }
+
 
         }
 
