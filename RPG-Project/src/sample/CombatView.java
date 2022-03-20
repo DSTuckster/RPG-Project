@@ -198,8 +198,13 @@ public class CombatView extends StackPane implements CombatSubscriber{
      * @param comModel the model to set as the views model
      */
     protected void setModel(CombatModel comModel){
-
         model = comModel;
+    }
+
+    /**
+     * Set player and enemy names/character level
+     */
+    protected void setNames(){
         Player.setText(model.player.getName());
         playerLevel.setText("Level: " + model.player.characterStats.getCharacterLevel());
         Enemy.setText(model.enemy.getName());
@@ -212,6 +217,8 @@ public class CombatView extends StackPane implements CombatSubscriber{
     @Override
     public void modelChanged() {
         Dialogue.setText(model.getCurrentDialogue());
+
+        setNames();
 
         this.setBars();
         this.checkTurn();
@@ -268,7 +275,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
 
     private void reset() {
         this.getChildren().retainAll();
-        this.getChildren().addAll(imageView, main);
+        this.getChildren().addAll(imageView, Dialogue, main);
         model.reset = false;
     }
 
