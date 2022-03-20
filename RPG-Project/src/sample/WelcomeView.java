@@ -7,30 +7,47 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-public class WelcomeView extends Pane{
-    Label welcome, optionNew, optionSaved;
-    Button newChar, play, edit;
-    ChoiceBox<String> saved;
-    ObservableList<String> choices;
-    Character character;
-    Music music = new Music("welcome");
+public class WelcomeView extends StackPane {
+    protected Label welcome, optionNew, optionSaved;
+    protected Button newChar, play, edit;
+    protected ChoiceBox<String> saved;
+    protected ObservableList<String> choices;
+    protected Character character;
+    protected Music music;
+    protected ImageView imageView;
+    protected FileInputStream inputStream;
+    protected Image background;
 
     /**
      * Constructor for welcome view
      */
     WelcomeView() throws FileNotFoundException {
-        //Open the background music 
+        //Open the background music
+        music = new Music("welcome");
         music.playMusic(music.file);
+
+        // Background
+        inputStream = new FileInputStream("WelcomeBackground.png");
+        background = new Image(inputStream);
+        imageView = new ImageView();
+        imageView.setImage(background);
+        imageView.setFitWidth(1296);
+        imageView.setFitHeight(720);
 
         // Boxes for view structure
         HBox top = new HBox();
@@ -41,9 +58,10 @@ public class WelcomeView extends Pane{
 
 
         // Welcome label
-        welcome = new Label("Welcome!!");
+        welcome = new Label("Blue Boy and the Dino's");
+        welcome.setTextFill(Color.BLUE);
         welcome.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 35));
-        welcome.setStyle("-fx-padding: 100 0 0 500");
+        welcome.setStyle("-fx-padding: 100 0 0 425");
         top.getChildren().addAll(welcome);
 
 
@@ -56,7 +74,7 @@ public class WelcomeView extends Pane{
         middle.getChildren().addAll(optionNew, newChar);
         middle.setAlignment(Pos.CENTER);
         middle.setSpacing(15);
-        middle.setStyle("-fx-padding: 0 0 0 450");
+
 
 
         // Use saved selection (add saved character from save.txt)
@@ -85,11 +103,11 @@ public class WelcomeView extends Pane{
         bottom.getChildren().addAll(optionSaved,saved, playEdit);
         bottom.setAlignment(Pos.CENTER);
         bottom.setSpacing(15);
-        bottom.setStyle("-fx-padding: 0 0 0 450");
+
 
         main.getChildren().addAll(top,middle,bottom);
         main.setSpacing(150);
-        this.getChildren().addAll(main);
+        this.getChildren().addAll(imageView, main);
     }
 
 
