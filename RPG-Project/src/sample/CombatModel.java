@@ -56,7 +56,7 @@ public class CombatModel {
             enemy = boss;
         }
 
-        combatDialogue.put(0 ,"A wild " + enemy.name + " has appeared!");
+        combatDialogue.put(0 ,"A wild " + enemy.getName() + " has appeared!");
         setCurrentDialogue(combatDialogue.get(phase));
 
         whoGoesFirst();
@@ -158,6 +158,7 @@ public class CombatModel {
             playerTurn = false;
         }
 
+        endCombatChecks();
         phase += 1;
         setCurrentDialogue(combatDialogue.get(phase));
         notifySubscribers();
@@ -211,11 +212,11 @@ public class CombatModel {
         Character c = new Character();
         int maxEnemyLevel = player.characterStats.getCharacterLevel()+2;
         int minEnemyLevel = player.characterStats.getCharacterLevel()-2;
-        if(minEnemyLevel <= 0){
-            minEnemyLevel = 1;
-        }
 
         int enemyLevel = minEnemyLevel + r.nextInt(maxEnemyLevel - minEnemyLevel + 1);
+        if(enemyLevel <= 0){
+            enemyLevel = 1;
+        }
         for(int i = 1; i < enemyLevel; i++){
             c.characterStats.levelUp();
         }
@@ -273,24 +274,12 @@ public class CombatModel {
     }
 
     /**
-     * check for end combat conditions, if conditions are true, then return true
-     * conditions that result in true:
-     * Player ran away
-     * player health below zero
-     * enemy Health below zero
+     * check if enemy health <= 0, if true give player XP
      */
-    public boolean endCombatChecks(){
-        boolean end = false;
-        if(player.characterStats.getHealth() <= 0){
-            end = true;
-        }else if(enemy.characterStats.getHealth() <= 0){
+    public void endCombatChecks(){
+        if(enemy.characterStats.getHealth() <= 0){
             expGain();
-            end = true;
-        }else if(runAway){
-            end = true;
         }
-
-        return end;
     }
 
     /**
@@ -380,7 +369,7 @@ public class CombatModel {
         //This variable is a safety net, I would occasionally get an infinite loop. I think I fixed it, but just in case...
         int count = 0;
         model.phase = 0;
-        while(!model.endCombatChecks()){
+        while(model.player.characterStats.getHealth() <= 0 && model.enemy.characterStats.getHealth() <= 0){
             if(count == 20){
                 System.out.println("break!!!!!!!!!!!!!!!!!!!!");
                 break;
