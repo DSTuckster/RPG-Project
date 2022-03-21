@@ -15,6 +15,7 @@ public class CombatModel {
     protected Character enemy;
 
     protected CombatScenario scenario;
+    protected ArrayList<CombatScenario> allScenarios;
 
     public int phase;
     public int playerTurnPhase;
@@ -39,6 +40,8 @@ public class CombatModel {
         combatDialogue = new Hashtable<>();
         boss = new Character();
         setBoss(20);
+
+        allScenarios = new ArrayList<>();
     }
 
     /**
@@ -61,6 +64,27 @@ public class CombatModel {
 
         whoGoesFirst();
         notifySubscribers();
+    }
+    public ArrayList<CombatScenario> getCombatScenarios(){
+        return allScenarios;
+    }
+    public void setAllCombatScenarios(Character p){
+        Character bubbles = createEnemy();
+        Character blossom = createEnemy();
+        Character buttercup = createEnemy();
+        bubbles.setName("Bubbles");
+        blossom.setName("Blossom");
+        buttercup.setName("Buttercup");
+
+        CombatScenario scene1 = new CombatScenario(p, bubbles);
+        CombatScenario scene2 = new CombatScenario(p, blossom);
+        CombatScenario scene3 = new CombatScenario(p, buttercup);
+        CombatScenario scene4 = new CombatScenario(p);
+
+        allScenarios.add(scene1);
+        allScenarios.add(scene2);
+        allScenarios.add(scene3);
+        allScenarios.add(scene4);
     }
 
     /**
