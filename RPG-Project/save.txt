@@ -1,32 +1,32 @@
 name : 
-Firemas
+Dunavaca
 Stats : 
 CharacterLevel :
 1
 Health :
 100
 Strength :
-17
-Dexterity :
 12
+Dexterity :
+9
 Constitution :
-9
+11
 Wisdom :
-9
+12
 Intelligence :
-10
+12
 Charisma :
-8
+10
 Features : 
 race :
 Spoodle
 hairColor :
-Orange
+Black
 hairType :
-Braided
+Dreadlocks
 eyeColor :
-Gold
+Black
 bodyType :
-Girthy
+Thin
 Story : 
-You are a(n) Spoodle. Your hair is Braided and noticeably Orange. Your eyes shine a bold Gold color. Your build is Girthy...and impressive. You are brimming with vitality, and ripe for adventure!
+You are a(n) Spoodle. Your hair is Dreadlocks and noticeably Black. Your eyes shine a bold Black color. Your build is Thin...and impressive. You are brimming with vitality, and ripe for adventure!

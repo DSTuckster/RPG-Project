@@ -194,7 +194,7 @@ public class Controller {
     public void handlePlayWithSaved(Scene scene, Character character, Music music){
         music.stopMusic();
         charModel.setCharacter(character);
-        combatModel.setCombatScenario(new CombatScenario(charModel.character, combatModel.createEnemy()));
+        combatModel.setAllCombatScenarios(charModel.character);
         Stage stage = (Stage) scene.getWindow();
         gameView traversal = (gameView) g.subs.get(0);
         Scene sceneTraversal = traversal.getScene();
