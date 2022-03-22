@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Controller {
 
@@ -67,6 +68,11 @@ public class Controller {
     }
 
     public void switchScene(KeyEvent event) {
+        // I assume logic for which combat scenario to set goes here (for now it is random; delete and change as needed) - Dylan
+            //4th scenario is boss fight
+        Random r = new Random();
+        combatModel.setCombatScenario(combatModel.getCombatScenarios().get(r.nextInt(3)));
+
         nextMusic.stopMusic();
         Scene scene = (Scene) event.getSource();
         Stage stage = (Stage) scene.getWindow();
@@ -83,7 +89,7 @@ public class Controller {
     public void genToTraversal(Scene scene, ArrayList<String> character){
         nextMusic.stopMusic();
         charModel.generateCustom(character);
-        combatModel.setCombatScenario(new CombatScenario(charModel.character, combatModel.createEnemy()));
+        combatModel.setAllCombatScenarios(charModel.character);
         Stage stage = (Stage) scene.getWindow();
         gameView traversal = (gameView) g.subs.get(0);
         Scene sceneTraversal = traversal.getScene();
@@ -188,7 +194,7 @@ public class Controller {
     public void handlePlayWithSaved(Scene scene, Character character, Music music){
         music.stopMusic();
         charModel.setCharacter(character);
-        combatModel.setCombatScenario(new CombatScenario(charModel.character, combatModel.createEnemy()));
+        combatModel.setAllCombatScenarios(charModel.character);
         Stage stage = (Stage) scene.getWindow();
         gameView traversal = (gameView) g.subs.get(0);
         Scene sceneTraversal = traversal.getScene();
