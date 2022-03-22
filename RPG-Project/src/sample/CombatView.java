@@ -19,7 +19,7 @@ import java.io.FileNotFoundException;
 
 
 public class CombatView extends StackPane implements CombatSubscriber{
-    protected Image background;
+    protected Image background, bossBackground;
     protected Button attack, run, magic, heal, retryYes, retryNo, next;
     protected ProgressBar playerXPBar, playerHealthBar, playerManaBar, enemyHealthBar, enemyManaBar;
     protected Label Enemy, Player, HP, XP, Mana, Retry, Dialogue, playerLevel, enemyLevel, enemyHP, enemyMana;
@@ -27,7 +27,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
     protected HBox bottomMain,hp ,xp, mana, top, enemyHPBOX, enemyMANABOX;
     protected VBox main, retryBottom, buttonsMain, defenseButtons, retry, enemy, player,diaNext, dialogueMain;
     protected ImageView imageView;
-    protected FileInputStream inputStream;
+    protected FileInputStream inputStreamBaby, inputStreamBoss;
 
     /**
      * CombatView controller
@@ -35,13 +35,17 @@ public class CombatView extends StackPane implements CombatSubscriber{
      */
     public CombatView() throws FileNotFoundException {
 
-        // Background Picture
-        inputStream = new FileInputStream("background.png");
-        background = new Image(inputStream);
+        // Main Background Picture
+        inputStreamBaby = new FileInputStream("background.png");
+        background = new Image(inputStreamBaby);
         imageView = new ImageView();
         imageView.setImage(background);
         imageView.setFitWidth(1300);
         imageView.setFitHeight(800);
+
+        // Boss Background Picture
+        inputStreamBoss = new FileInputStream("bossBackground.png");
+        bossBackground = new Image(inputStreamBoss);
 
         // XP, Mana, and Health Bars
         playerXPBar = new ProgressBar(0);
@@ -211,18 +215,23 @@ public class CombatView extends StackPane implements CombatSubscriber{
         enemyLevel.setText("Level: " + model.enemy.characterStats.getCharacterLevel());
     }
 
+    protected void setBossBackground() {
+        imageView.setImage(bossBackground);
+    }
+
     /**
      * Update view according to what has changed in the model
      */
     @Override
     public void modelChanged() {
+
+        //setBossBackground();
         Dialogue.setText(model.getCurrentDialogue());
 
         setNames();
 
         this.setBars();
         this.checkTurn();
-
 
         // If player loses, option to replay
         if (model.player.characterStats.getHealth() <= 0) {
