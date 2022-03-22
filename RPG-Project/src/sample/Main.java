@@ -24,6 +24,8 @@ public class Main extends Application {
     protected CharacterGeneratorView charView;
     protected CharacterGenerator charModel;
 
+    protected CreditsView creditsView;
+
     protected WelcomeView welcomeView;
 
 
@@ -37,6 +39,8 @@ public class Main extends Application {
         charView = new CharacterGeneratorView();
         charModel = new CharacterGenerator();
         welcomeView = new WelcomeView();
+
+        creditsView = new CreditsView(resWidth, resHeight);
 
         //enable this line if you are running the traversal mechanic
         gModel.addSubscriber(gView);
@@ -60,22 +64,19 @@ public class Main extends Application {
 
         welcomeView.setController(controller);
 
-
-
-        HBox root = new HBox();
-
         // Transitioning works from the welcome page through to the battle. For testing input
         // any of these scenes into primaryStage.setScene( "HERE" )
         Scene sceneWelcome = new Scene(welcomeView, resWidth, resHeight);
         Scene sceneCharGen = new Scene(charView, resWidth, resHeight);
         Scene sceneCombat = new Scene(combatView, resWidth, resHeight);
         Scene sceneTraversal = new Scene(gView, resWidth, resHeight);
+        Scene sceneCredits = new Scene(creditsView, resWidth, resHeight);
         sceneTraversal.setFill(Color.BLACK);
         sceneTraversal.setOnKeyPressed(controller::handleKeys);
 
 
         primaryStage.setTitle("RPG");
-        primaryStage.setScene(sceneWelcome);
+        primaryStage.setScene(sceneCredits);
         primaryStage.show();
 
 
