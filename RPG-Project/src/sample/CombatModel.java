@@ -25,6 +25,7 @@ public class CombatModel {
     protected int costPerSpell;
 
     protected boolean runAway;
+    protected boolean bossFight;
 
     protected boolean reset;
 
@@ -57,6 +58,9 @@ public class CombatModel {
 
         if(enemy == null){
             enemy = boss;
+            bossFight = true;
+        }else{
+            bossFight = false;
         }
 
         combatDialogue.put(0 ,"A wild " + enemy.getName() + " has appeared!");
