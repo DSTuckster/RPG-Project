@@ -70,13 +70,13 @@ public class Main extends Application {
         Scene sceneCharGen = new Scene(charView, resWidth, resHeight);
         Scene sceneCombat = new Scene(combatView, resWidth, resHeight);
         Scene sceneTraversal = new Scene(gView, resWidth, resHeight);
-        Scene sceneCredits = new Scene(creditsView, resWidth, resHeight);
+        controller.credits = new Scene(creditsView, resWidth, resHeight);
         sceneTraversal.setFill(Color.BLACK);
         sceneTraversal.setOnKeyPressed(controller::handleKeys);
 
 
         primaryStage.setTitle("RPG");
-        primaryStage.setScene(sceneCredits);
+        primaryStage.setScene(sceneWelcome);
         primaryStage.show();
 
 

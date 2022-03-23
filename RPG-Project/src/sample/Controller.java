@@ -14,6 +14,7 @@ public class Controller {
     protected CombatModel combatModel;
     protected CharacterGenerator charModel;
     protected gameModel g;
+    protected Scene credits;
     protected Entity player;
     protected Music nextMusic= new Music("next");
 
@@ -61,11 +62,6 @@ public class Controller {
         }}
 
 
-    public void dispose(){
-
-        //closes the thread
-        g.closeThread();
-    }
 
     public void switchScene(KeyEvent event) {
         // I assume logic for which combat scenario to set goes here (for now it is random; delete and change as needed) - Dylan
@@ -77,6 +73,7 @@ public class Controller {
         Scene scene = (Scene) event.getSource();
         Stage stage = (Stage) scene.getWindow();
         CombatView c = (CombatView) combatModel.subs.get(0);
+        combatModel.createEnemy();
         Scene sceneCombat =c.getScene();
         stage.setScene(sceneCombat);
         g.isCurrent =false;
@@ -132,7 +129,6 @@ public class Controller {
             case DOWN -> moveDown(player);
             case LEFT -> moveLeft(player);
             case RIGHT -> moveRight(player);
-            case A -> System.out.println(player.getX() + "_"+player.getY());
             default -> {
             }
         }
@@ -187,10 +183,21 @@ public class Controller {
     }
 
     public void handleWin(Scene scene){
-        g.entities.remove(1);
-        this.handleNoReset(scene);
+        g.entities.remove(g.getClosest());
+        if(g.entities.size()<=1) {
+            this.handleGameEnd(scene);
+        }
+        else {
+            this.handleNoReset(scene);
+        }
     }
+    public void handleGameEnd(Scene scene) {
+        Stage stage = (Stage) scene.getWindow();
+        stage.setScene(credits);
+        stage.show();
 
+
+    }
     public void handlePlayWithSaved(Scene scene, Character character, Music music){
         music.stopMusic();
         charModel.setCharacter(character);

@@ -33,6 +33,27 @@ public class gameModel implements Runnable{
         return false;
     }
 
+    /** Returns the closest entity to the player by getting the euclidean distance to the player
+     *
+     * @return
+     */
+    public Entity getClosest() {
+        Entity currentClosest = entities.get(1);
+        Entity player = entities.get(0);
+        double closestEuclidean = 1000000000000000.0;
+        double currentEuclidean = 0;
+        for(int i=1;i<entities.size();i++){
+            Entity current = entities.get(i);
+            currentEuclidean = Math.sqrt(Math.pow((player.getX() - current.getX()),2) + Math.pow(player.getY() - current.getY(),2));
+            if(currentEuclidean <= closestEuclidean) {
+                currentClosest = current;
+                closestEuclidean = currentEuclidean;
+            }
+        }
+        return currentClosest;
+
+    }
+
     public void addEntity(Entity e) {
         entities.add(e);
     }
@@ -50,7 +71,7 @@ public class gameModel implements Runnable{
         return m;
     }
 
-    public void addMonster() {
+    public void addMonsters() {
         for(int i=0;i<3;i++) {
             Monster m = createMonster();
             m.setX(monsterSpawns[i][0]);
@@ -65,9 +86,7 @@ public class gameModel implements Runnable{
         monsterSpawns[1][1]= 472;
         monsterSpawns[2][0]=528;
         monsterSpawns[2][1]=136;
-        for(int i=0;i<3;i++) {
-            addMonster();
-        }
+        addMonsters();
         addBoss();
     }
 
