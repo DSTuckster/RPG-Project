@@ -32,9 +32,6 @@ public class Features {
     protected String[] bodyTypePresets = {"Tiny", "Petite", "Stout", "Thin", "Sturdy", "Average", "Tall", "Round", "Girthy", "Gargantuan"};
 
     public Features() {
-        // TODO: Write methods to add user inputs to the presets!
-        //       Paige needs those methods to do the user story:
-        //          "Add new values to pre-existing ones"
         r = new Random();
 
         races = new ArrayList<>();
