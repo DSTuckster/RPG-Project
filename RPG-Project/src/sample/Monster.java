@@ -9,6 +9,7 @@ public class Monster implements Entity {
     Image image,image2,current;
     int x,y,speed;
     CombatScenario scenario;
+    protected boolean isBoss = false;
     public Monster() {
         setDefaultValues();
     }

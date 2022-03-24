@@ -233,6 +233,12 @@ public class CombatView extends StackPane implements CombatSubscriber{
         this.setBars();
         this.checkTurn();
 
+        if(model.bossFight){
+            setBossBackground();
+        }else{
+            imageView.setImage(background);
+        }
+
         // If player loses, option to replay
         if (model.player.characterStats.getHealth() <= 0) {
             playerHealthBar.setProgress(0); // So it doesn't look like player has negative health

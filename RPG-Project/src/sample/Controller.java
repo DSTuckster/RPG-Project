@@ -67,7 +67,13 @@ public class Controller {
         // I assume logic for which combat scenario to set goes here (for now it is random; delete and change as needed) - Dylan
             //4th scenario is boss fight
         Random r = new Random();
-        combatModel.setCombatScenario(combatModel.getCombatScenarios().get(r.nextInt(3)));
+        Monster m = (Monster) g.getClosest();
+
+        if(m.isBoss){
+            combatModel.setCombatScenario(combatModel.getCombatScenarios().get(3));
+        }else{
+            combatModel.setCombatScenario(combatModel.getCombatScenarios().get(r.nextInt(3)));
+        }
 
         nextMusic.stopMusic();
         Scene scene = (Scene) event.getSource();

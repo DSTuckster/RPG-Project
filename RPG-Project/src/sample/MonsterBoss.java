@@ -13,6 +13,7 @@ public class MonsterBoss  extends Monster implements Entity{
 
     @Override
     public void setDefaultValues() {
+        isBoss = true;
         this.x = 1132;
         this.y = 444;
         this.speed = 0;
