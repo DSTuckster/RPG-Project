@@ -144,11 +144,11 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
 
 
         // Random stickman just for fun (in middle)
-        FileInputStream inputStream = new FileInputStream("stickfigure.jpg");
+        FileInputStream inputStream = new FileInputStream("CharGenFront.png");
         character = new Image(inputStream);
         ImageView imageView = new ImageView();
         imageView.setImage(character);
-        imageView.setFitHeight(350);
+        imageView.setFitHeight(400);
         imageView.setFitWidth(200);
 
         // Labels for combo boxes
