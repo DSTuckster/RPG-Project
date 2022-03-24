@@ -170,7 +170,6 @@ public class CombatModel {
      * go to next phase of battle
      */
     public void nextPhase() {
-        //TODO this method can be optimized better. Also, the view handles end of combat, so this class does not need to
         //If player or enemy are not dead and both characters have attacked, then go back to phase 1
         if(phase >= 4){
             phase = 0;
@@ -249,12 +248,12 @@ public class CombatModel {
             c.characterStats.levelUp();
         }
         if(enemyLevel <= 2){
-            c.characterStats.setStr(3);
+            //c.characterStats.setStr(3);
         }else{
             c.characterStats.setStr(c.characterStats.getStr()-6);
         }
         if(enemyLevel <= 2){
-            c.characterStats.setInt(4);
+            //c.characterStats.setInt(4);
         }else{
             c.characterStats.setInt(c.characterStats.getInt()-7);
         }
@@ -328,6 +327,9 @@ public class CombatModel {
         reset = true;
 
         CombatScenario newCombatScenario = new CombatScenario(player, enemy);
+        if(enemy == boss){
+            newCombatScenario = new CombatScenario(player);
+        }
         setCombatScenario(newCombatScenario);
         notifySubscribers();
     }

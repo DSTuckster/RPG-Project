@@ -296,8 +296,8 @@ public class CombatView extends StackPane implements CombatSubscriber{
 
 
     private void retryButtons(){
-        this.getChildren().remove(1);
-        this.getChildren().add(1, retry);
+        this.getChildren().retainAll();
+        this.getChildren().addAll(imageView, retry);
     }
 
     private void end(){

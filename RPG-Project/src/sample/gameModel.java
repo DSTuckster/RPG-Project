@@ -26,9 +26,7 @@ public class gameModel implements Runnable{
             Entity e = entities.get(i);
             if(Math.abs(player.getX()-e.getX())<32 && Math.abs(player.getY()-e.getY())<32) {
                    return true;
-
             }
-
         }
         return false;
     }
