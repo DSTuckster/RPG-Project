@@ -40,7 +40,7 @@ public class CombatModel {
         costPerSpell = 25;
         combatDialogue = new Hashtable<>();
         boss = new Character();
-        setBoss(4);
+        setBoss(5);
 
         allScenarios = new ArrayList<>();
     }
@@ -53,15 +53,14 @@ public class CombatModel {
     public void setCombatScenario(CombatScenario s) {
         scenario = s;
 
-        player = scenario.player;
-        enemy = scenario.enemy;
-
-        if(enemy == null){
+        if(scenario.enemy == null){
             enemy = boss;
             bossFight = true;
         }else{
             bossFight = false;
+            enemy = scenario.enemy;
         }
+        player = scenario.player;
 
         combatDialogue.put(0 ,"A wild " + enemy.getName() + " has appeared!");
         setCurrentDialogue(combatDialogue.get(phase));
@@ -80,9 +79,25 @@ public class CombatModel {
         blossom.setName("Blossom");
         buttercup.setName("Buttercup");
 
-        CombatScenario scene1 = new CombatScenario(p, bubbles);
-        CombatScenario scene2 = new CombatScenario(p, blossom);
-        CombatScenario scene3 = new CombatScenario(p, buttercup);
+        bubbles.characterStats.levelUp();
+        for(int i = 0; i < 4; i++){
+            buttercup.characterStats.levelUp();
+        }
+        for(int i = 0; i < 5; i++){
+            blossom.characterStats.levelUp();
+        }
+        bubbles.characterStats.setStr(5);
+        bubbles.characterStats.setInt(8);
+
+        blossom.characterStats.setInt(15);
+        blossom.characterStats.setStr(20);
+
+        buttercup.characterStats.setInt(17);
+        buttercup.characterStats.setStr(12);
+
+        CombatScenario scene1 = new CombatScenario(p, blossom);
+        CombatScenario scene2 = new CombatScenario(p, buttercup);
+        CombatScenario scene3 = new CombatScenario(p, bubbles);
         CombatScenario scene4 = new CombatScenario(p);
 
         allScenarios.add(scene1);
@@ -96,7 +111,7 @@ public class CombatModel {
      * damage = character strength + random value between 1 and 5
      */
     public void attack(Character p, Character e) {
-        int extraDamage = (int) (Math.random() * 5 + 1);
+        int extraDamage = r.nextInt(7);
 
         int damage = p.characterStats.getStr() + extraDamage;
         int newHealth = e.characterStats.getHealth() - damage;
@@ -114,7 +129,7 @@ public class CombatModel {
      * Character must have enough mana to cast a spell (costPerSpell = 25)
      */
     public void usedMagic(Character p, Character e) {
-        int extraDamage = (int) (Math.random() * (8-(-3)) + -3);
+        int extraDamage = r.nextInt(15);
         if(p.characterStats.getMana() >= costPerSpell){
             //player does damage
             int newHealth = e.characterStats.getHealth() - p.characterStats.getInt() - extraDamage;
@@ -131,7 +146,7 @@ public class CombatModel {
 
     public void heal(Character p){
         if(p.characterStats.getMana() >= costPerSpell){
-            int extraHealAmount = r.nextInt((p.characterStats.getCon()/2));
+            int extraHealAmount = r.nextInt((p.characterStats.getCon()+10));
             int healAmount = p.characterStats.getWis() + extraHealAmount;
             int newHealth = p.characterStats.getHealth() + healAmount;
             p.characterStats.setMana(p.characterStats.getMana()-costPerSpell);
@@ -237,26 +252,6 @@ public class CombatModel {
      */
     public Character createEnemy(){
         Character c = new Character();
-        int maxEnemyLevel = player.characterStats.getCharacterLevel()+2;
-        int minEnemyLevel = player.characterStats.getCharacterLevel()-1;
-
-        int enemyLevel = minEnemyLevel + r.nextInt(maxEnemyLevel - minEnemyLevel + 1);
-        if(enemyLevel <= 0){
-            enemyLevel = 1;
-        }
-        for(int i = 1; i < enemyLevel; i++){
-            c.characterStats.levelUp();
-        }
-        if(enemyLevel <= 1){
-            c.characterStats.setStr((c.characterStats.getStr()/2) -1 );
-        }else{
-            c.characterStats.setStr(c.characterStats.getStr()-6);
-        }
-        if(enemyLevel <= 2){
-            c.characterStats.setInt((c.characterStats.getInt()/2)-1);
-        }else{
-            c.characterStats.setInt(c.characterStats.getInt()-7);
-        }
         return c;
     }
 
@@ -268,9 +263,9 @@ public class CombatModel {
         for(int i = 1; i < bossLevel; i++){
             boss.characterStats.levelUp();
         }
-        boss.characterStats.setStr(115);
-        boss.characterStats.setInt(110);
-        boss.characterStats.setCon(105);
+        boss.characterStats.setStr(30);
+        boss.characterStats.setInt(30);
+        boss.characterStats.setCon(40);
         boss.setName("Megasaurus Rex");
     }
 

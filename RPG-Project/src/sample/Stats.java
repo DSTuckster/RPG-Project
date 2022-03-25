@@ -56,6 +56,10 @@ public class Stats {
     public void levelUp(){
         exp -= getMaxExp();
         CharacterLevel++;
+        while(exp >= getMaxExp()){
+            exp -= getMaxExp();
+            CharacterLevel++;
+        }
         Health = getMaxHealth();
         Strength += 5;
         Dexterity += 5;
@@ -77,7 +81,7 @@ public class Stats {
 
     //add points to exp
     public void addExp(int enemyLevel){
-        exp += (int)Math.pow(2, enemyLevel)+2;
+        exp += (int)Math.pow(2, enemyLevel)+10;
     }
 
     // Health get & set methods

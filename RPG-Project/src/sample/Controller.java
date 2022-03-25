@@ -72,7 +72,9 @@ public class Controller {
         if(m.isBoss){
             combatModel.setCombatScenario(combatModel.getCombatScenarios().get(3));
         }else{
-            combatModel.setCombatScenario(combatModel.getCombatScenarios().get(r.nextInt(3)));
+            System.out.println(g.entities.indexOf(m));
+
+            combatModel.setCombatScenario(combatModel.getCombatScenarios().get(g.entities.indexOf(m)-1));
         }
 
         nextMusic.stopMusic();
