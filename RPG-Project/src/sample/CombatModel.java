@@ -40,7 +40,7 @@ public class CombatModel {
         costPerSpell = 25;
         combatDialogue = new Hashtable<>();
         boss = new Character();
-        setBoss(20);
+        setBoss(4);
 
         allScenarios = new ArrayList<>();
     }
@@ -238,7 +238,7 @@ public class CombatModel {
     public Character createEnemy(){
         Character c = new Character();
         int maxEnemyLevel = player.characterStats.getCharacterLevel()+2;
-        int minEnemyLevel = player.characterStats.getCharacterLevel()-2;
+        int minEnemyLevel = player.characterStats.getCharacterLevel()-1;
 
         int enemyLevel = minEnemyLevel + r.nextInt(maxEnemyLevel - minEnemyLevel + 1);
         if(enemyLevel <= 0){
@@ -247,13 +247,13 @@ public class CombatModel {
         for(int i = 1; i < enemyLevel; i++){
             c.characterStats.levelUp();
         }
-        if(enemyLevel <= 2){
-            //c.characterStats.setStr(3);
+        if(enemyLevel <= 1){
+            c.characterStats.setStr((c.characterStats.getStr()/2) -1 );
         }else{
             c.characterStats.setStr(c.characterStats.getStr()-6);
         }
         if(enemyLevel <= 2){
-            //c.characterStats.setInt(4);
+            c.characterStats.setInt((c.characterStats.getInt()/2)-1);
         }else{
             c.characterStats.setInt(c.characterStats.getInt()-7);
         }
