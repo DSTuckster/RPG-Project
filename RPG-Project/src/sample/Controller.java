@@ -125,16 +125,18 @@ public class Controller {
     public void handleKeys(KeyEvent event) {
         /**This function handles key inputs from the view and determines which function to call and send the data to the model
          */
-
+        gameView game = (gameView)g.subs.get(0);
         initPlayer();
         if(!g.isInvincible && g.checkEncounter()) {
             switchScene(event);
         }
+
         switch (event.getCode()) {
             case UP -> moveUp(player);
             case DOWN -> moveDown(player);
             case LEFT -> moveLeft(player);
             case RIGHT -> moveRight(player);
+
             default -> {
             }
         }

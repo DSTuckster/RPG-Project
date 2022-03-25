@@ -12,6 +12,7 @@ public class gameModel implements Runnable{
     protected boolean isCurrent = false;
     private int counter=0;
     private int modelCounter=0;
+    private boolean showingText=false;
     public final static int[][] monsterSpawns = new int[6][2];
 
 
@@ -23,10 +24,23 @@ public class gameModel implements Runnable{
     public boolean checkEncounter() {
         Entity player = entities.get(0);
         for(int i=1;i<entities.size();i++){
-            Entity e = entities.get(i);
-            if(Math.abs(player.getX()-e.getX())<32 && Math.abs(player.getY()-e.getY())<32) {
+            Monster e = (Monster)entities.get(i);
+            boolean inCombatDistance = Math.abs(player.getX()-e.getX())<32 && Math.abs(player.getY()-e.getY())<32;
+            if(e.isBoss) {
+                if(entities.size()>2 && inCombatDistance) {
+                    showingText=true;
+                    subs.get(0).drawText(e.getX(),e.getY()-48);
+                    counter=0;
+                    return false;
+                }
+                return inCombatDistance;
+
+            }
+            else if(inCombatDistance) {
                    return true;
             }
+
+
         }
         return false;
     }
@@ -143,6 +157,14 @@ public class gameModel implements Runnable{
         if(isInvincible && counter/60>=6) {
             counter=0;
             isInvincible=false;
+
+        }
+        else if(showingText && counter/60>=6) {
+            subs.get(0).clearText();
+            counter=0;
+        }
+        else if(counter/60>=7) {
+            counter=0;
         }
         else{
             counter++;

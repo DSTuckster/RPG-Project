@@ -4,7 +4,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
+import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -13,8 +15,7 @@ import java.util.Scanner;
 public class gameView extends StackPane implements GameSubscriber {
     protected Controller controller;
     protected Canvas canvas;
-    private GraphicsContext gc;
-    private GraphicsContext gc2;
+    private GraphicsContext gc,gc2,gc3;
     TileManager t;
 
     final static int originalTileSize = 16;
@@ -31,11 +32,13 @@ public class gameView extends StackPane implements GameSubscriber {
          * onto the Scene,
          * height: canvas height
          * width: canvas width*/
+        Canvas canvas3 = new Canvas(width,height);
         Canvas canvas2 = new Canvas(width,height);
         canvas = new Canvas(width,height);
         gc = canvas.getGraphicsContext2D();
         gc2 = canvas2.getGraphicsContext2D();
-        this.getChildren().addAll(canvas2,canvas);
+        gc3 = canvas3.getGraphicsContext2D();
+        this.getChildren().addAll(canvas2,canvas,canvas3);
         numberMap = new int[maxCol][maxRow];
         t = new TileManager();
         gc.setFill(Color.RED);
@@ -89,9 +92,18 @@ public class gameView extends StackPane implements GameSubscriber {
 
     }
 
+    public void clearText(){
+        gc3.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
+    }
 
     
+    public void  drawText(int x, int y){
+        gc3.setFont(Font.font("Tahoma",12.0));
+        gc3.strokeText("YOU ARE FAR TOO WEAK TO FIGHT ME!",x-120,y-24);
+        gc3.strokeText("GO SLAY MY MINIONS FIRST,",x-120,y);
+        gc3.strokeText("IF YOU DARE...",x-120,y+24);
 
+    }
     public void loadMap() {
         try  {
             FileInputStream map = new FileInputStream("map.txt"); {
@@ -153,6 +165,7 @@ public class gameView extends StackPane implements GameSubscriber {
             gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
             for (Entity entity :controller.g.entities){
                 gc.drawImage(entity.getImage(),entity.getX(),entity.getY(),scaledTileSize,scaledTileSize);
+
             }
 
     }
