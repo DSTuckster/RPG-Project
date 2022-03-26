@@ -1,32 +1,32 @@
 name : 
-Firemas
+Kinganimated
 Stats : 
 CharacterLevel :
 1
 Health :
 100
 Strength :
-17
+18
 Dexterity :
-12
+18
 Constitution :
-9
+18
 Wisdom :
-9
+18
 Intelligence :
-10
+18
 Charisma :
-8
+18
 Features : 
 race :
-Spoodle
+Draconian
 hairColor :
 Orange
 hairType :
-Braided
+Short
 eyeColor :
-Gold
+Faded
 bodyType :
 Girthy
 Story : 
-You are a(n) Spoodle. Your hair is Braided and noticeably Orange. Your eyes shine a bold Gold color. Your build is Girthy...and impressive. You are brimming with vitality, and ripe for adventure!
+You are a(n) Draconian. Your hair is Short and noticeably Orange. Your eyes shine a bold Faded color. Your build is Girthy...and impressive. You are brimming with vitality, and ripe for adventure!
