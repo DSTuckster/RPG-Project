@@ -25,6 +25,7 @@ public class Main extends Application {
     protected CharacterGenerator charModel;
 
     protected CreditsView creditsView;
+    protected CreditsModel creditsModel;
 
     protected WelcomeView welcomeView;
 
@@ -39,30 +40,29 @@ public class Main extends Application {
         charView = new CharacterGeneratorView();
         charModel = new CharacterGenerator();
         welcomeView = new WelcomeView();
-
         creditsView = new CreditsView(resWidth, resHeight);
+        creditsModel = new CreditsModel();
 
         //enable this line if you are running the traversal mechanic
         gModel.addSubscriber(gView);
-
         gView.setController(controller);
 
         //NOTE: This is for testing the combatView, delete it later
         combatModel.setCombatScenario(new CombatScenario(new Character(), new Character()));
-
-
         combatView.setModel(combatModel);
-        controller.setModels(combatModel, gModel, charModel);
-
         combatView.setController(controller);
+        combatModel.addSubscriber(combatView);
+        charModel.addSubscriber(charView);
+        controller.setModels(combatModel, gModel, charModel, creditsModel);
 
         charView.setController(controller);
         charView.setModel(charModel);
 
-        combatModel.addSubscriber(combatView);
-        charModel.addSubscriber(charView);
-
         welcomeView.setController(controller);
+
+        creditsView.setController(controller);
+        creditsView.setModel(creditsModel);
+        creditsModel.addSubscriber(creditsView);
 
         // Transitioning works from the welcome page through to the battle. For testing input
         // any of these scenes into primaryStage.setScene( "HERE" )
@@ -70,7 +70,7 @@ public class Main extends Application {
         Scene sceneCharGen = new Scene(charView, resWidth, resHeight);
         Scene sceneCombat = new Scene(combatView, resWidth, resHeight);
         Scene sceneTraversal = new Scene(gView, resWidth, resHeight);
-        controller.credits = new Scene(creditsView, resWidth, resHeight);
+        Scene sceneCredits = new Scene(creditsView, resWidth, resHeight);
         sceneTraversal.setFill(Color.BLACK);
         sceneTraversal.setOnKeyPressed(controller::handleKeys);
 
@@ -78,7 +78,6 @@ public class Main extends Application {
         primaryStage.setTitle("RPG");
         primaryStage.setScene(sceneWelcome);
         primaryStage.show();
-
 
     }
 

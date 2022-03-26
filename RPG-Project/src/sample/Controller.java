@@ -15,14 +15,16 @@ public class Controller {
     protected CharacterGenerator charModel;
     protected gameModel g;
     protected Scene credits;
+    protected CreditsModel creditsModel;
     protected Entity player;
     protected Music nextMusic= new Music("next");
 
     //sets the combat model and characterGen model
-    public void setModels(CombatModel cm, gameModel gM, CharacterGenerator characterModel){
+    public void setModels(CombatModel cm, gameModel gM, CharacterGenerator characterModel, CreditsModel newCreditsModel){
         combatModel = cm;
         g = gM;
         charModel = characterModel;
+        creditsModel = newCreditsModel;
     }
 
     public void initPlayer() {
@@ -205,6 +207,8 @@ public class Controller {
         Stage stage = (Stage) scene.getWindow();
         stage.setScene(credits);
         stage.show();
+
+        creditsModel.notifySubscribers();
 
 
     }
