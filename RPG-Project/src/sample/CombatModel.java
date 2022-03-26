@@ -359,7 +359,8 @@ public class CombatModel {
         CombatModel model = new CombatModel();
 
         //set combat scenario test #1
-        model.setCombatScenario(new CombatScenario(new Character(), new Character()));
+        model.setAllCombatScenarios(new Character());
+        model.setCombatScenario(model.getCombatScenarios().get(2));
 
         //nextPhase() test #1
         //model.nextPhase();
@@ -459,9 +460,11 @@ public class CombatModel {
         }
 
         //check combatDialogue
+        /**
         for(int i =  0; i < model.combatDialogue.size(); i++){
             System.out.println(model.combatDialogue.get(i));
         }
+         */
 
         //resetCombat() test
         expected = model.player.characterStats.getHealth();
@@ -469,6 +472,89 @@ public class CombatModel {
         result = model.player.characterStats.getHealth();
         if(expected == result){
             System.out.println("RestCombat() test failed! expected = " + expected + " result = " + result);
+        }
+
+        //expGain() test#1
+        result = 4 + model.player.characterStats.getExp()+10;
+        while(result >= model.player.characterStats.getMaxExp()){
+            result -= model.player.characterStats.getMaxExp();
+        }
+        model.expGain();
+        expected = model.player.characterStats.getExp();
+
+        if(expected != result){
+            System.out.println("expGain() test#1 failed");
+            System.out.println("Current exp: " + model.player.characterStats.getExp() + ", expected = " + expected);
+            System.out.println("Current max exp: " + model.player.characterStats.getMaxExp());
+            System.out.println("formula 2^(Enemy Level) = " + model.enemy.characterStats.getCharacterLevel());
+            System.out.println("result = " + result);
+        }
+
+        //expGain() test#2
+        result = 4 + model.player.characterStats.getExp()+10;
+        while(result >= model.player.characterStats.getMaxExp()){
+            result -= model.player.characterStats.getMaxExp();
+        }
+        model.expGain();
+        expected = model.player.characterStats.getExp();
+
+        if(expected != result){
+            System.out.println("expGain() test#2 failed");
+            System.out.println("expected = " + expected);
+            System.out.println("Current max exp: " + model.player.characterStats.getMaxExp());
+            System.out.println("(Enemy Level) = " + model.enemy.characterStats.getCharacterLevel());
+            System.out.println("result = " + result);
+        }
+
+        model.setCombatScenario(model.getCombatScenarios().get(1));
+        //resetCombat() test#2
+        expected = model.player.characterStats.getHealth();
+        model.restCombat();
+        result = model.player.characterStats.getHealth();
+        if(expected != result){
+            System.out.println("RestCombat() test#2 failed! expected = " + expected + " result = " + result);
+        }
+
+        //expGain() test#3
+        result = 32 + model.player.characterStats.getExp()+10;
+        while(result >= model.player.characterStats.getMaxExp()){
+            result -= model.player.characterStats.getMaxExp();
+        }
+        model.expGain();
+        expected = model.player.characterStats.getExp();
+
+        if(expected != result){
+            System.out.println("expGain() test#3 failed");
+            System.out.println("expected = " + expected);
+            System.out.println("Current max exp: " + model.player.characterStats.getMaxExp());
+            System.out.println("(Enemy Level) = " + model.enemy.characterStats.getCharacterLevel());
+            System.out.println("result = " + result);
+        }
+
+        //expGain() test#4
+        result = 32 + model.player.characterStats.getExp()+10;
+        while(result >= model.player.characterStats.getMaxExp()){
+            result -= model.player.characterStats.getMaxExp();
+        }
+        model.expGain();
+        expected = model.player.characterStats.getExp();
+        while(result >= model.player.characterStats.getMaxExp()){
+            result -= model.player.characterStats.getMaxExp();
+        }
+
+        if(expected != result){
+            System.out.println("expGain() test#4 failed");
+            System.out.println("expected = " + expected);
+            System.out.println("Current max exp: " + model.player.characterStats.getMaxExp());
+            System.out.println("(Enemy Level) = " + model.enemy.characterStats.getCharacterLevel());
+            System.out.println("result = " + result);
+        }
+
+        //expGain level test
+        expected = 6;
+        result = model.player.characterStats.getCharacterLevel();
+        if(expected != result){
+            System.out.println("level test failed! expected = " + expected + ", result = " + result);
         }
     }
 }
