@@ -68,18 +68,23 @@ public class Controller {
     public void switchScene(KeyEvent event) {
         // I assume logic for which combat scenario to set goes here (for now it is random; delete and change as needed) - Dylan
             //4th scenario is boss fight
+        nextMusic.stopMusic();
         Random r = new Random();
         Monster m = (Monster) g.getClosest();
 
         if(m.isBoss){
             combatModel.setCombatScenario(combatModel.getCombatScenarios().get(3));
+            nextMusic= new Music("boss");
+            nextMusic.playMusic(nextMusic.file);
         }else{
             System.out.println(g.entities.indexOf(m));
 
             combatModel.setCombatScenario(combatModel.getCombatScenarios().get(g.entities.indexOf(m)-1));
+            nextMusic= new Music("combat");
+            nextMusic.playMusic(nextMusic.file);
         }
 
-        nextMusic.stopMusic();
+
         Scene scene = (Scene) event.getSource();
         Stage stage = (Stage) scene.getWindow();
         CombatView c = (CombatView) combatModel.subs.get(0);
@@ -89,8 +94,6 @@ public class Controller {
         g.isCurrent =false;
         g.isInvincible=true;
         stage.show();
-        nextMusic= new Music("combat");
-        nextMusic.playMusic(nextMusic.file);
     }
 
     public void genToTraversal(Scene scene, ArrayList<String> character){
@@ -204,10 +207,12 @@ public class Controller {
         }
     }
     public void handleGameEnd(Scene scene) {
+        nextMusic.stopMusic();
         Stage stage = (Stage) scene.getWindow();
         stage.setScene(credits);
         stage.show();
-
+        nextMusic= new Music("last");
+        nextMusic.playMusic(nextMusic.file);
         creditsModel.notifySubscribers();
 
 
