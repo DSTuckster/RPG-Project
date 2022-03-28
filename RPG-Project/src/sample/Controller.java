@@ -75,10 +75,12 @@ public class Controller {
         if(m.isBoss){
             combatModel.setCombatScenario(combatModel.getCombatScenarios().get(3));
             nextMusic= new Music("boss");
+            nextMusic.playMusic(nextMusic.file);
             combatModel.setCombatScenario(combatModel.getCombatScenarios().get(3));
         }else{
             combatModel.setCombatScenario(combatModel.getCombatScenarios().get(g.entities.indexOf(m)-1));
             nextMusic= new Music("combat");
+            nextMusic.playMusic(nextMusic.file);
             System.out.println(g.entities.indexOf(m));
 
             combatModel.setCombatScenario(combatModel.getCombatScenarios().get(g.entities.indexOf(m)-1));
