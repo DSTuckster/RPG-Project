@@ -68,12 +68,17 @@ public class Controller {
     public void switchScene(KeyEvent event) {
         // I assume logic for which combat scenario to set goes here (for now it is random; delete and change as needed) - Dylan
             //4th scenario is boss fight
+        nextMusic.stopMusic();
         Random r = new Random();
         Monster m = (Monster) g.getClosest();
 
         if(m.isBoss){
             combatModel.setCombatScenario(combatModel.getCombatScenarios().get(3));
+            nextMusic= new Music("boss");
+            combatModel.setCombatScenario(combatModel.getCombatScenarios().get(3));
         }else{
+            combatModel.setCombatScenario(combatModel.getCombatScenarios().get(g.entities.indexOf(m)-1));
+            nextMusic= new Music("combat");
             System.out.println(g.entities.indexOf(m));
 
             combatModel.setCombatScenario(combatModel.getCombatScenarios().get(g.entities.indexOf(m)-1));
@@ -204,10 +209,13 @@ public class Controller {
         }
     }
     public void handleGameEnd(Scene scene) {
+        nextMusic.stopMusic();
         Stage stage = (Stage) scene.getWindow();
         stage.setScene(credits);
         stage.show();
         creditsModel.notifySubscribers();
+        nextMusic= new Music("last");
+        nextMusic.playMusic(nextMusic.file);
     }
 
     protected void setCreditsScene(Scene creditsScene) {
