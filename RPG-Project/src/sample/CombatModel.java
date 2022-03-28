@@ -40,7 +40,7 @@ public class CombatModel {
         costPerSpell = 25;
         combatDialogue = new Hashtable<>();
         boss = new Character();
-        setBoss(5);
+        setBoss(8);
 
         allScenarios = new ArrayList<>();
     }
@@ -86,14 +86,14 @@ public class CombatModel {
         for(int i = 0; i < 5; i++){
             blossom.characterStats.levelUp();
         }
-        bubbles.characterStats.setStr(5);
-        bubbles.characterStats.setInt(8);
+        bubbles.characterStats.setStr(2);
+        bubbles.characterStats.setInt(5);
 
-        blossom.characterStats.setInt(15);
-        blossom.characterStats.setStr(20);
+        blossom.characterStats.setInt(10);
+        blossom.characterStats.setStr(14);
 
-        buttercup.characterStats.setInt(17);
-        buttercup.characterStats.setStr(12);
+        buttercup.characterStats.setInt(11);
+        buttercup.characterStats.setStr(8);
 
         CombatScenario scene1 = new CombatScenario(p, blossom);
         CombatScenario scene2 = new CombatScenario(p, buttercup);
@@ -263,8 +263,8 @@ public class CombatModel {
         for(int i = 1; i < bossLevel; i++){
             boss.characterStats.levelUp();
         }
-        boss.characterStats.setStr(30);
-        boss.characterStats.setInt(30);
+        boss.characterStats.setStr(20);
+        boss.characterStats.setInt(21);
         boss.characterStats.setCon(40);
         boss.setName("Megasaurus Rex");
     }
