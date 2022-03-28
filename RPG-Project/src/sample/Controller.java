@@ -207,11 +207,13 @@ public class Controller {
         Stage stage = (Stage) scene.getWindow();
         stage.setScene(credits);
         stage.show();
-
         creditsModel.notifySubscribers();
-
-
     }
+
+    protected void setCreditsScene(Scene creditsScene) {
+        credits = creditsScene;
+    }
+
     public void handlePlayWithSaved(Scene scene, Character character, Music music){
         music.stopMusic();
         charModel.setCharacter(character);

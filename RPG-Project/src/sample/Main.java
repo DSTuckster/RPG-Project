@@ -71,6 +71,7 @@ public class Main extends Application {
         Scene sceneCombat = new Scene(combatView, resWidth, resHeight);
         Scene sceneTraversal = new Scene(gView, resWidth, resHeight);
         Scene sceneCredits = new Scene(creditsView, resWidth, resHeight);
+        controller.setCreditsScene(sceneCredits);
         sceneTraversal.setFill(Color.BLACK);
         sceneTraversal.setOnKeyPressed(controller::handleKeys);
 

@@ -1,5 +1,5 @@
 package sample;
 
-public interface CreditsSubscriber {
+public interface CreditsSubs {
     void modelChanged();
 }

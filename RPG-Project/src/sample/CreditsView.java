@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.util.Duration;
 
-public class CreditsView extends StackPane implements CreditsSubscriber {
+public class CreditsView extends StackPane implements CreditsSubs {
 
     private final Canvas myCanvas;
     private final GraphicsContext gc;
@@ -45,7 +45,7 @@ public class CreditsView extends StackPane implements CreditsSubscriber {
         userTrans.setCycleCount(1);
 
         // Aidan's text
-        Text aiw = new Text(0, -4000, "Aidan Waring \nOverworld Traversal \nOverworld Design\nInteraction Logic");
+        Text aiw = new Text(0, -4000, "Aidan Waring \n\nOverworld Traversal \nOverworld Design\nInteraction Logic");
         aiw.setFont(Font.font("Helvetica", FontWeight.EXTRA_BOLD, FontPosture.ITALIC, 30));
         aiw.setTextAlignment(TextAlignment.CENTER);
         aiw.setFill(Color.WHITE);
@@ -56,7 +56,7 @@ public class CreditsView extends StackPane implements CreditsSubscriber {
         aiwTrans.setCycleCount(1);
 
         // Bob's text
-        Text shx = new Text(0, -3200, "Shaobo Xu \nData Management \nMusic Architecture");
+        Text shx = new Text(0, -3200, "Shaobo Xu \n\nData Management \nMusic Architecture");
         shx.setFont(Font.font("Helvetica", FontWeight.EXTRA_BOLD, FontPosture.ITALIC, 30));
         shx.setTextAlignment(TextAlignment.CENTER);
         shx.setFill(Color.WHITE);
@@ -67,7 +67,7 @@ public class CreditsView extends StackPane implements CreditsSubscriber {
         shxTrans.setCycleCount(1);
 
         // Dylan's text
-        Text dst = new Text(0, -2400, "Dylan Tucker \nCombat Loop & Logic\nGameplay Direction");
+        Text dst = new Text(0, -2400, "Dylan Tucker \n\nCombat Loop & Logic\nGameplay Direction");
         dst.setFont(Font.font("Helvetica", FontWeight.EXTRA_BOLD, FontPosture.ITALIC, 30));
         dst.setTextAlignment(TextAlignment.CENTER);
         dst.setFill(Color.WHITE);
