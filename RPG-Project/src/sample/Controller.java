@@ -83,8 +83,6 @@ public class Controller {
 
             combatModel.setCombatScenario(combatModel.getCombatScenarios().get(g.entities.indexOf(m)-1));
         }
-
-        nextMusic.stopMusic();
         Scene scene = (Scene) event.getSource();
         Stage stage = (Stage) scene.getWindow();
         CombatView c = (CombatView) combatModel.subs.get(0);
@@ -94,8 +92,6 @@ public class Controller {
         g.isCurrent =false;
         g.isInvincible=true;
         stage.show();
-        nextMusic= new Music("combat");
-        nextMusic.playMusic(nextMusic.file);
     }
 
     public void genToTraversal(Scene scene, ArrayList<String> character){
