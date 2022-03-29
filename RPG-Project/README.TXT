@@ -25,3 +25,6 @@ If installing from the wiki:
   2. Navigate to 'Project JAR'
   3. Click and download the project
   4. Open the project
+
+
+Enjoy, and thank you!!
