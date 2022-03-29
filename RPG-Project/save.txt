@@ -1,32 +1,32 @@
 name : 
-Jonesgan Le Fraser
+Hudsonshimmer
 Stats : 
 CharacterLevel :
 1
 Health :
 100
 Strength :
-18
+9
 Dexterity :
-18
+16
 Constitution :
-18
+13
 Wisdom :
-18
+11
 Intelligence :
-18
+7
 Charisma :
-18
+6
 Features : 
 race :
-Gnome
+Dwarf
 hairColor :
 Orange
 hairType :
-Short
+Braided
 eyeColor :
-Red
+Gold
 bodyType :
-Thin
+Gargantuan
 Story : 
-You are a(n) Gnome. Your hair is Short and noticeably Orange. Your eyes shine a bold Red color. Your build is Thin...and impressive. You are brimming with vitality, and ripe for adventure!
+You are a(n) Dwarf. Your hair is Braided and noticeably Orange. Your eyes shine a bold Gold color. Your build is Gargantuan...and impressive. You are brimming with vitality, and ripe for adventure!
