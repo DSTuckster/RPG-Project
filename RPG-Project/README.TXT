@@ -2,8 +2,17 @@ CMPT 370 - Group 4 - T12 - Character Generator RPG
 
 Installation instructions:
 
-If installing from source code (getting the project from Git)
-  1. Download or clone the project from 'https://git.cs.usask.ca/dms224/cmpt370/-/tree/master'
+If running from source code in IDE
+  1. Download or Clone the project from 'https://git.cs.usask.ca/dms224/cmpt370/-/tree/master'
+  2. Open the project using 'IntelliJ IDEA' (The project must be built using this IDE)
+  3. Click the dropdown box beside the green arrow at the top of the screen
+  4. Click 'edit configurations'
+  5. Select 'Java SDK 17' as your JDK
+  6. Choose 'sample.Main' as the main class
+
+
+If installing from source code and creating JAR.exe
+  1. Download or Clone the project from 'https://git.cs.usask.ca/dms224/cmpt370/-/tree/master'
   2. Open the project using 'IntelliJ IDEA' (The project must be built using this IDE)
   3. Create an 'Artifact' from the source code
       - Click 'File' on the toolbar
