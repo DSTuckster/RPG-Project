@@ -8,11 +8,20 @@ public class Music {
     protected String path=".wav";
     protected File file = new File(path);
     protected Clip c;
+
+    /**
+     * initialize the music file
+     * @param scene the music file name
+     */
     public Music(String scene) {
         scene=scene+".wav";
         file = new File(scene);
         }
 
+    /**
+     * play the music file you want
+     * @param file the music file you want to play
+     */
     protected void playMusic(File file) {
         if (file.exists()) {
             try {
@@ -29,6 +38,10 @@ public class Music {
             }
         }
     }
+    
+    /**
+     * stop the music file you are playing
+     */
     protected void stopMusic(){
         this.c.stop();
     }
