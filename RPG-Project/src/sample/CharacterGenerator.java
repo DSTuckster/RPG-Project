@@ -6,16 +6,26 @@ public class CharacterGenerator{
     Character character;
     ArrayList<CharacterSubscribers> subs;
 
+    /**
+     * Creates character to update view
+     */
     public CharacterGenerator() {
         subs = new ArrayList<>();
     }
 
 
+    /**
+     * Generates a random character
+     */
     public void generateRandom() {
         character = new Character();
         notifySubscribers();
     }
 
+    /**
+     * Sets users choices to the new character
+     * @param custom A list of chosen attributes to set for the character
+     */
     public void generateCustom(ArrayList<String> custom){
         // New customer character
         character = new Character();
@@ -45,17 +55,32 @@ public class CharacterGenerator{
         notifySubscribers();
     }
 
+    /**
+     * Set the current character to the given
+     * @param c the given character
+     */
     protected void setCharacter(Character c){
         character = c;
     }
 
+    /**
+     * Sets the character to edit
+     * @param c the character to edit
+     */
     protected void editChar(Character c){
         character = c;
         notifySubscribers();
     }
 
+    /**
+     * Adds new subscriber
+     * @param sub the subscriber (view)
+     */
     public void addSubscriber (CharacterSubscribers sub) {subs.add(sub);}
 
+    /**
+     * Call to notify subscribers (view)
+     */
     public void notifySubscribers(){
         for (CharacterSubscribers sub : subs){
             sub.modelChanged();

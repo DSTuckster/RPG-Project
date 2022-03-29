@@ -2,16 +2,12 @@ package sample;
 
 import javafx.animation.TranslateTransition;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.util.Duration;
 
 public class CreditsView extends StackPane implements CreditsSubs {
-
-    private final Canvas myCanvas;
-    private final GraphicsContext gc;
 
     protected TranslateTransition userTrans;
     protected TranslateTransition aiwTrans;
@@ -20,13 +16,10 @@ public class CreditsView extends StackPane implements CreditsSubs {
     protected TranslateTransition pmwTrans;
     protected TranslateTransition dmsTrans;
     protected TranslateTransition creditsTrans;
-    private Controller controller;
-    private CreditsModel model;
 
 
     public CreditsView(int width, int height) {
-        myCanvas = new Canvas(width, height);
-        gc = myCanvas.getGraphicsContext2D();
+        Canvas myCanvas = new Canvas(width, height);
         this.setStyle("-fx-background-color: black");
 
         // Used as a 'finishing position' for the text which travels down-screen
@@ -121,14 +114,6 @@ public class CreditsView extends StackPane implements CreditsSubs {
         this.pmwTrans.play();
         this.dmsTrans.play();
         this.creditsTrans.play();
-    }
-
-    public void setController(Controller newController) {
-        this.controller = newController;
-    }
-
-    public void setModel(CreditsModel newCreditsModel) {
-        this.model = newCreditsModel;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package sample;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class transData {
@@ -34,7 +33,7 @@ public class transData {
 
     /**
      * translate the data class to a list
-     * @return
+     * @return the list created
      */
     public ArrayList<String> CreateValueList(Character character){
         valuelist.add(character.getName());
@@ -52,7 +51,6 @@ public class transData {
         valuelist.add(character.characterFeatures.getEyeColor());
         valuelist.add(character.characterFeatures.getBodyType());
         valuelist.add(character.getCharacterStory());
-        System.out.println(character.getCharacterStory());
         return valuelist;
     }
     
@@ -76,14 +74,9 @@ public class transData {
         character.characterFeatures.setHairType(list.get(11));
         character.characterFeatures.setEyeColor(list.get(12));
         character.characterFeatures.setBodyType(list.get(13));
-        character.getCharacterStory();
         character.setCharacterStory(list.get(14));
     }
 
-    //set character a new name
-    public void setName(Character character, String name){
-        character.name = name;
-    }
     //set character a new race
     public void setRace(Character character, String race){
         character.characterFeatures.setRace(race);
@@ -120,7 +113,5 @@ public class transData {
     public void setInt(Character character, Integer intelligence){ if (intelligence>=3&&intelligence<=18){character.characterStats.setInt(intelligence);}}
     //set character a new charisma
     public void setCha(Character character, Integer cha){ if (cha>=3&&cha<=18){character.characterStats.setCha(cha);}}
-    //set character's story
-    public void setStory(Character character, String story){character.setCharacterStory(story);}
 
 }

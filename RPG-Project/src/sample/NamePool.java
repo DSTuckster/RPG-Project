@@ -31,7 +31,7 @@ public class NamePool {
         String name;
         boolean ErrorDetected = false;
         for (int i=0; i<1000; i++) {
-            name = this.fetchName();
+            name = fetchName();
             if (name.length() < 1) {
                 System.out.println("Error in NamePoolTestSuite\nName == "+name);
                 ErrorDetected = true;

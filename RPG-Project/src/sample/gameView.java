@@ -6,7 +6,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -15,7 +14,9 @@ import java.util.Scanner;
 public class gameView extends StackPane implements GameSubscriber {
     protected Controller controller;
     protected Canvas canvas;
-    private GraphicsContext gc,gc2,gc3;
+    private final GraphicsContext gc;
+    private final GraphicsContext gc2;
+    private final GraphicsContext gc3;
     TileManager t;
 
     final static int originalTileSize = 16;
@@ -26,12 +27,13 @@ public class gameView extends StackPane implements GameSubscriber {
     int[][] numberMap;
 
 
-
+    /**
+     * Constructor that initializes a new canvas so the player object can be drawn
+     * onto the Scene,
+     * @param height canvas height
+     * @param width canvas width*/
     public gameView(int width, int height) {
-        /**Constructor that initializes a new canvas so the player object can be drawn
-         * onto the Scene,
-         * height: canvas height
-         * width: canvas width*/
+
         Canvas canvas3 = new Canvas(width,height);
         Canvas canvas2 = new Canvas(width,height);
         canvas = new Canvas(width,height);
@@ -158,21 +160,16 @@ public class gameView extends StackPane implements GameSubscriber {
         controller = c;
     }
 
-
+    /**
+     * This function clears previous images of the entity and draws the new image of the entity at its new x,y
+     * coordinates and possibly with a new picture depicting it facing a new direction
+     */
     public void modelChanged(){
-        /**This function clears previous images of the entity and draws the new image of the entity at its new x,y coordinates and
-         * possibly with a new picture depicting it facing a new direction*/
-            gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
-            for (Entity entity :controller.g.entities){
-                gc.drawImage(entity.getImage(),entity.getX(),entity.getY(),scaledTileSize,scaledTileSize);
-
-            }
-
+        gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
+        for (Entity entity :controller.g.entities){
+            gc.drawImage(entity.getImage(),entity.getX(),entity.getY(),scaledTileSize,scaledTileSize);
+        }
     }
-
-
-
-
 }
 
 

@@ -3,7 +3,6 @@ package sample;
 import javafx.application.Application;
 
 import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -43,16 +42,15 @@ public class Main extends Application {
         creditsView = new CreditsView(resWidth, resHeight);
         creditsModel = new CreditsModel();
 
-        //enable this line if you are running the traversal mechanic
+
         gModel.addSubscriber(gView);
         gView.setController(controller);
 
-        //NOTE: This is for testing the combatView, delete it later
-        combatModel.setCombatScenario(new CombatScenario(new Character(), new Character()));
         combatView.setModel(combatModel);
         combatView.setController(controller);
         combatModel.addSubscriber(combatView);
         charModel.addSubscriber(charView);
+
         controller.setModels(combatModel, gModel, charModel, creditsModel);
 
         charView.setController(controller);
@@ -60,18 +58,15 @@ public class Main extends Application {
 
         welcomeView.setController(controller);
 
-        creditsView.setController(controller);
-        creditsView.setModel(creditsModel);
         creditsModel.addSubscriber(creditsView);
 
-        // Transitioning works from the welcome page through to the battle. For testing input
-        // any of these scenes into primaryStage.setScene( "HERE" )
+        // Scenes to switch through
         Scene sceneWelcome = new Scene(welcomeView, resWidth, resHeight);
         Scene sceneCharGen = new Scene(charView, resWidth, resHeight);
         Scene sceneCombat = new Scene(combatView, resWidth, resHeight);
         Scene sceneTraversal = new Scene(gView, resWidth, resHeight);
         Scene sceneCredits = new Scene(creditsView, resWidth, resHeight);
-        controller.setCreditsScene(sceneCredits);
+
         sceneTraversal.setFill(Color.BLACK);
         sceneTraversal.setOnKeyPressed(controller::handleKeys);
 

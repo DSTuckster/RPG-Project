@@ -34,7 +34,7 @@ public class CombatModel {
 
     public Character boss;
 
-    private Random r = new Random();
+    private final Random r = new Random();
 
     public CombatModel(){
         costPerSpell = 25;
@@ -46,7 +46,8 @@ public class CombatModel {
     }
 
     /**
-     * When the player triggers a combat scenario, then the traversal system will create a new combat scenario and call this method
+     * When the player triggers a combat scenario, then the traversal system will create a new combat scenario and call
+     * this method.
      * This method prepares the model for combat
      * @param s: a new combat scenario
      */
@@ -251,13 +252,12 @@ public class CombatModel {
      * return: enemy Character
      */
     public Character createEnemy(){
-        Character c = new Character();
-        return c;
+        return new Character();
     }
 
     /**
      * sets the character level for the boss and sets appropriate attributes so the fight is consistent
-     * @param bossLevel: set to 20 for now
+     * @param bossLevel: set to 8 for now
      */
     private void setBoss(int bossLevel){
         for(int i = 1; i < bossLevel; i++){
@@ -461,9 +461,9 @@ public class CombatModel {
 
         //check combatDialogue
         /**
-        for(int i =  0; i < model.combatDialogue.size(); i++){
+            for(int i =  0; i < model.combatDialogue.size(); i++){
             System.out.println(model.combatDialogue.get(i));
-        }
+            }
          */
 
         //resetCombat() test

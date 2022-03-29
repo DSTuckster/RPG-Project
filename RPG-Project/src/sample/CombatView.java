@@ -102,7 +102,7 @@ public class CombatView extends StackPane implements CombatSubscriber{
         player.setSpacing(5);
         enemy.setSpacing(5);
         player.setStyle("-fx-padding: 200 0 0 100");
-        enemy.setStyle("-fx-padding: 30 0 0 800");
+        enemy.setStyle("-fx-padding: 30 0 0 775");
 
         // Dialogue Label
         Dialogue = new Label();
@@ -184,14 +184,14 @@ public class CombatView extends StackPane implements CombatSubscriber{
 
     /**
      * Notifies controller that a button has been pressed
-     * @param controller The views controller to handle user interaction
+     * @param controller The view's controller to handle user interaction
      */
     protected void setController(Controller controller){
         attack.setOnAction(e -> controller.handleAttack());
         run.setOnAction((e -> controller.handleRun()));
         magic.setOnAction(e -> controller.handleMagic());
         heal.setOnAction(e -> controller.handleHeal());
-        retryYes.setOnAction(e -> {controller.handleCombatRest();this.reset();});
+        retryYes.setOnAction(e -> {controller.handleCombatReset();this.reset();});
         retryNo.setOnAction(e -> {controller.handleNoReset(this.getScene());this.reset();});
         next.setOnAction(e -> {controller.handleWin(this.getScene());this.reset();});
         main.setOnMousePressed(controller::nextPhase);
@@ -215,6 +215,9 @@ public class CombatView extends StackPane implements CombatSubscriber{
         enemyLevel.setText("Level: " + model.enemy.characterStats.getCharacterLevel());
     }
 
+    /**
+     * Sets the background to have the boss image
+     */
     protected void setBossBackground() {
         imageView.setImage(bossBackground);
     }
@@ -262,6 +265,9 @@ public class CombatView extends StackPane implements CombatSubscriber{
 
     }
 
+    /**
+     * Sets the progress bars to the current health, mana, and XP
+     */
     private void setBars() {
         // Get current health, xp, and mana for the progress bars
         // Normalized for progress bar needing number between 0-1
@@ -272,6 +278,10 @@ public class CombatView extends StackPane implements CombatSubscriber{
         enemyManaBar.setProgress((float) model.enemy.characterStats.getMana() / model.enemy.characterStats.getMaxMana());
     }
 
+    /**
+     * Checks whose turn it is to display the right dialogue and
+     * disable buttons if enemies turn
+     */
     private void checkTurn() {
         if (model.playerTurnPhase == model.phase) {
             if (model.player.characterStats.getMana() >= model.costPerSpell) {
@@ -288,18 +298,26 @@ public class CombatView extends StackPane implements CombatSubscriber{
         }
     }
 
+    /**
+     * Resets the view
+     */
     private void reset() {
         this.getChildren().retainAll();
         this.getChildren().addAll(imageView, Dialogue, main);
         model.reset = false;
     }
 
-
+    /**
+     * Called when enemy has beat player to give player a chance to retry or not
+     */
     private void retryButtons(){
         this.getChildren().retainAll();
         this.getChildren().addAll(imageView, retry);
     }
 
+    /**
+     * Called when player beats the enemy to go back to traversal
+     */
     private void end(){
         Dialogue.setText("Player Wins!");
         this.getChildren().clear();

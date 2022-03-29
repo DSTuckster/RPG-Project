@@ -5,8 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Music {
-    protected String path=".wav";
-    protected File file = new File(path);
+    protected File file;
     protected Clip c;
     public Music(String scene) {
         scene=scene+".wav";
@@ -20,13 +19,7 @@ public class Music {
                 this.c = AudioSystem.getClip();
                 this.c.open(audio);
                 this.c.loop(Clip.LOOP_CONTINUOUSLY);
-            } catch (IOException e) {
-
-            } catch (UnsupportedAudioFileException e) {
-
-            } catch (LineUnavailableException e) {
-
-            }
+            } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ignored) {}
         }
     }
     protected void stopMusic(){

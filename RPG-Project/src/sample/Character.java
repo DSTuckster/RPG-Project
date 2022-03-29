@@ -29,12 +29,13 @@ public class Character {
     }
 
     protected String generateName() {
-        return namePool.fetchName();
+        return NamePool.fetchName();
     }
 
     public void setName(String name) {
         this.name = name;
     }
+
     public String getName() {
         return name;
     }

@@ -8,18 +8,12 @@ import java.io.FileNotFoundException;
 public class Monster implements Entity {
     Image image,image2,current;
     int x,y,speed;
-    CombatScenario scenario;
     protected boolean isBoss = false;
+
     public Monster() {
         setDefaultValues();
     }
 
-    public void setCombatScenario(CombatScenario scenario) {
-        this.scenario = scenario;
-    }
-    public CombatScenario getCombat() {
-        return this.scenario;
-    }
     public int getHitBoxWidth() {
         return 0;
     }

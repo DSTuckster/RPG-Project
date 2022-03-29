@@ -12,7 +12,6 @@ public class SaveSystem {
      *save the particular type of data to the file you want to name
      * @param Filename the file name you want to set
      * @param character the character want to save
-     * @throws FileNotFoundException
      */
     public static void SaveToFile(String Filename, Character character) throws FileNotFoundException {
         transData data=new transData();
@@ -54,7 +53,6 @@ public class SaveSystem {
      * load the content of the chose file
      * @param filename file name you want to load
      * @param character the character would contain the data from the file
-     * @throws FileNotFoundException
      */
     public static void LoadFile(String filename, Character character) throws FileNotFoundException {
 

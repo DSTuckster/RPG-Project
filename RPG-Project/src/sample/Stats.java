@@ -118,19 +118,6 @@ public class Stats {
     public int getCha() { return Charisma; }
     public void setCha(int newCharisma) { Charisma = newCharisma; }
 
-    /**
-     * reRollStats()
-     * A simple function to re-roll stats in one go
-     * Changes all the stats to a random value between 2 and 18 (inclusive)
-     */
-    protected void reRollStats() {
-        Strength = roll4toss1();
-        Dexterity = roll4toss1();
-        Constitution = roll4toss1();
-        Wisdom = roll4toss1();
-        Intelligence = roll4toss1();
-        Charisma = roll4toss1();
-    }
 
     /**
      * roll4Toss1()

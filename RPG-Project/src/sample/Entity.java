@@ -1,7 +1,6 @@
 package sample;
 
 import javafx.scene.image.Image;
-import javafx.scene.shape.Rectangle;
 
 
 public interface Entity {

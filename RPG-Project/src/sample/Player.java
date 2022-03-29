@@ -14,19 +14,19 @@ public class Player implements Entity {
     private boolean defaultImg;
     public Rectangle solidArea;
 
+    /**
+     * Simple constructor to initialize default values to the player
+     */
     public Player(){
-        /**Simple constructor to initialize default values to the player
-         */
         setDefaultValues();
     }
 
-
-        public void setDefaultValues() {
-        /** Sets the default x,y coordinates and speed values for our character so the view can draw
-         * the character at its starting position, also loads all required images beforehand to make
-         * running more efficient
-         *  can cause a filenotfoundException if the png files are not loaded correctly
-         */
+    /** Sets the default x,y coordinates and speed values for our character so the view can draw
+     * the character at its starting position, also loads all required images beforehand to make
+     * running more efficient
+     * can cause a filenotfoundException if the png files are not loaded correctly
+     */
+    public void setDefaultValues() {
         //initializing default values
         images = new ArrayList<>();
         this.x = 200;
@@ -64,8 +64,6 @@ public class Player implements Entity {
 
     }
 
-    // getters and setters for player attributes, all self-descriptive
-
 
     public int getHitBoxWidth() {
         return (int)solidArea.getWidth();
@@ -89,16 +87,14 @@ public class Player implements Entity {
 
 
 
-
+    /** This function changes the player image based on which string has been passed into the function
+     * mainly used in conjunction with a key handler so that each picture is used when moving in the corresponding direction
+     * @param direction: a lowercase string of the direction the player is facing
+     */
     public void setImage(String direction) {
-        /** This function changes the player image based on which string has been passed into the function
-         * mainly used in conjunction with a key handler so that each picture is used when moving in the corresponding direction
-         * String direction: a lowercase string of the direction the player is facing
-         *
-         */
+
         if(playerCount<15 && defaultImg) {
             switch (direction) {
-                case "down" -> this.current = images.get(0);
                 case "up" -> this.current = images.get(1);
                 case "left" -> this.current = images.get(2);
                 case "right" -> this.current = images.get(3);
@@ -106,9 +102,8 @@ public class Player implements Entity {
             }
             playerCount++;
         }
-        else if(playerCount<15&&(!defaultImg)) {
+        else if(playerCount<15) {
             switch (direction) {
-                case "down" -> this.current= images.get(4);
                 case "up" -> this.current = images.get(5);
                 case "left" -> this.current = images.get(6);
                 case "right" -> this.current = images.get(7);

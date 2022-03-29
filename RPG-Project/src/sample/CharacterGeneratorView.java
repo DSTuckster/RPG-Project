@@ -143,7 +143,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         combo.setSpacing(16);
 
 
-        // Random stickman just for fun (in middle)
+        // Image of a character (does not change)
         FileInputStream inputStream = new FileInputStream("CharGenFront.png");
         character = new Image(inputStream);
         ImageView imageView = new ImageView();
@@ -185,7 +185,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
         vboxChoice.getChildren().addAll(raceList, hairColour, eyeColour, hairType, bodyType);
         vboxChoice.setSpacing(18);
 
-        // Mid section grouping (label -> combobox -> stickman -> label -> choicebox)
+        // Mid section grouping (label -> combobox -> character -> label -> choicebox)
         mid.getChildren().addAll(labels,combo,imageView,choiceLabels, vboxChoice);
         mid.setSpacing(75);
         mid.setAlignment(Pos.CENTER);
@@ -209,7 +209,7 @@ public class CharacterGeneratorView extends Pane implements CharacterSubscribers
 
     /**
      * Lets controller know a button was pushed, and which button
-     * @param controller The views controller to handle all user interaction
+     * @param controller The view's controller to handle all user interaction
      */
     public void setController(Controller controller){
         generateRandom.setOnAction(e -> controller.handleGenerateRandom());

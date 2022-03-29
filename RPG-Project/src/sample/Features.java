@@ -64,9 +64,7 @@ public class Features {
     protected void setRace(String newRace) {
         race = newRace;
     }
-    protected void addRace(String addedRace) {
-        races.add(addedRace);
-    }
+
 
     // Hair color get, set, and add methods
     protected String getHairColor() {
@@ -75,9 +73,7 @@ public class Features {
     protected void setHairColor(String newHairColor) {
         hairColor = newHairColor;
     }
-    protected void addHairColor(String addedHairColor) {
-        hairColors.add(addedHairColor);
-    }
+
 
     // Hair type get, set, and add methods
     protected String getHairType() {
@@ -86,9 +82,7 @@ public class Features {
     protected void setHairType(String newHairType) {
         hairType = newHairType;
     }
-    protected void addHairType(String addedHairType) {
-        hairTypes.add(addedHairType);
-    }
+
 
     // Eye color get, set, and add methods
     protected String getEyeColor() {
@@ -97,9 +91,7 @@ public class Features {
     protected void setEyeColor(String newEyeColor) {
         eyeColor = newEyeColor;
     }
-    protected void addEyeColor(String addedEyeColor) {
-        eyeColors.add(addedEyeColor);
-    }
+
 
     // Body type get, set, and add methods
     protected String getBodyType() {
@@ -108,9 +100,7 @@ public class Features {
     protected void setBodyType(String newBodyType) {
         bodyType = newBodyType;
     }
-    protected void addBodyType(String addedBodyType) {
-        bodyTypes.add(addedBodyType);
-    }
+
 
     /**
      * randomize()
