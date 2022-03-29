@@ -115,7 +115,7 @@ public class gameView extends StackPane implements GameSubscriber {
                     String newLine = scanner.nextLine();
 
                     while (col < maxCol) {
-                        String chars[] = newLine.split( " ");
+                        String[] chars = newLine.split( " ");
                         int num = Integer.parseInt(chars[col]);
                         numberMap[col][row] = num;
                         col++;

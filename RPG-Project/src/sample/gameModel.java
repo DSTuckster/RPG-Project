@@ -47,13 +47,13 @@ public class gameModel implements Runnable{
 
     /** Returns the closest entity to the player by getting the euclidean distance to the player
      *
-     * @return
+     * @return the closest entity
      */
     public Entity getClosest() {
         Entity currentClosest = entities.get(1);
         Entity player = entities.get(0);
         double closestEuclidean = 1000000000000000.0;
-        double currentEuclidean = 0;
+        double currentEuclidean;
         for(int i=1;i<entities.size();i++){
             Entity current = entities.get(i);
             currentEuclidean = Math.sqrt(Math.pow((player.getX() - current.getX()),2) + Math.pow(player.getY() - current.getY(),2));
@@ -70,17 +70,12 @@ public class gameModel implements Runnable{
         entities.add(e);
     }
 
-    public Entity getEntity(int index){
-        return entities.get(index);
-    }
-
     public void addBoss() {
         MonsterBoss boss = new MonsterBoss();
         addEntity(boss);
     }
     public Monster createMonster() {
-        Monster m = new Monster();
-        return m;
+        return new Monster();
     }
 
     public void addMonsters() {
@@ -102,17 +97,23 @@ public class gameModel implements Runnable{
         addBoss();
     }
 
+    /**
+     * Creates and starts the game thread in such a way that it will close when the javaFX window is closed
+     */
     public void startThread() {
-        /** Creates and starts the game thread in such a way that it will close when the javaFX window is closed*/
+
         thread = new Thread(this);
         thread.setDaemon(true);
         thread.start();
         running = true;
     }
+
+    /**
+     * Core game loop function, Creates a player object and runs the loop and the update function every 1/FPS seconds
+     * tries to let the thread sleep if there is remaining time as to not overload the thread optimizing performance
+     */
     @Override
     public void run() {
-        /**Core game loop function, Creates a player object and runs the loop and the update function every 1/FPS seconds
-         * tries to let the thread sleep if there is remaining time as to not overload the thread optimizing performance*/
         addEntity(new Player());// The player should always be the first Entity in the Arraylist
         initMonsterSpawns();
 
@@ -139,9 +140,11 @@ public class gameModel implements Runnable{
 
     }
 
-
+    /**
+     * Important details that need to be updated every frame go here
+     */
     public void update() {
-        /**Important details that need to be updated every frame go here*/
+
         notifySubscribers();
         if(modelCounter < 30) {
             modelCounter++;
@@ -175,28 +178,28 @@ public class gameModel implements Runnable{
 
     }
 
+    /**
+     * adds a subscriber to the arraylist Subs that will be updated every frame from the update function
+     */
     public void addSubscriber(GameSubscriber g){
-        /**adds a subscriber to the arraylist Subs that will be updated every frame from the update function*/
+
         subs.add(g);
 
     }
 
+    /**
+     * updates all gameSubscribers in this case, the view so that they can draw with the new locations and required
+     * images
+     */
     public void notifySubscribers(){
-        /**updates all gameSubscribers in this case, the view so that they can draw with the new locations and required images*/
+
         for (GameSubscriber g : subs) {
                 g.modelChanged();
-
-
-
         }
 
     }
-    public void closeThread(){
-        /**closes the thread when window is closed*/
-        running=false;
-    }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
 
         //test 1 checks to see if thread closes and starts properly
         gameModel g = new gameModel();

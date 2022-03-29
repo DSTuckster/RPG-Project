@@ -1,6 +1,5 @@
 package sample;
 
-import java.util.Objects;
 
 public class Character {
     Stats characterStats;
